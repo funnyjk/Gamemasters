@@ -1,0 +1,2039 @@
+export type Maybe<T> = T | null;
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string,
+  String: string,
+  Boolean: boolean,
+  Int: number,
+  Float: number,
+  DateTime: any,
+  Long: any,
+  Upload: any,
+};
+
+export type AggregateGame = {
+   __typename?: 'AggregateGame',
+  count: Scalars['Int'],
+};
+
+export type AggregatePlayer = {
+   __typename?: 'AggregatePlayer',
+  count: Scalars['Int'],
+};
+
+export type AggregateScore = {
+   __typename?: 'AggregateScore',
+  count: Scalars['Int'],
+};
+
+export type AggregateSession = {
+   __typename?: 'AggregateSession',
+  count: Scalars['Int'],
+};
+
+export type AggregateTournament = {
+   __typename?: 'AggregateTournament',
+  count: Scalars['Int'],
+};
+
+export type AggregateTournamentPlayer = {
+   __typename?: 'AggregateTournamentPlayer',
+  count: Scalars['Int'],
+};
+
+export type BatchPayload = {
+   __typename?: 'BatchPayload',
+  count: Scalars['Long'],
+};
+
+export enum CacheControlScope {
+  Public = 'PUBLIC',
+  Private = 'PRIVATE'
+}
+
+
+export type Game = {
+   __typename?: 'Game',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameConnection = {
+   __typename?: 'GameConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<GameEdge>>,
+  aggregate: AggregateGame,
+};
+
+export type GameCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameCreateOneInput = {
+  create?: Maybe<GameCreateInput>,
+  connect?: Maybe<GameWhereUniqueInput>,
+};
+
+export type GameEdge = {
+   __typename?: 'GameEdge',
+  node: Game,
+  cursor: Scalars['String'],
+};
+
+export enum GameOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  BggIdAsc = 'bgg_id_ASC',
+  BggIdDesc = 'bgg_id_DESC',
+  NotesAsc = 'notes_ASC',
+  NotesDesc = 'notes_DESC'
+}
+
+export type GamePreviousValues = {
+   __typename?: 'GamePreviousValues',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameSubscriptionPayload = {
+   __typename?: 'GameSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Game>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<GamePreviousValues>,
+};
+
+export type GameSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<GameWhereInput>,
+  AND?: Maybe<Array<GameSubscriptionWhereInput>>,
+  OR?: Maybe<Array<GameSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<GameSubscriptionWhereInput>>,
+};
+
+export type GameUpdateDataInput = {
+  name?: Maybe<Scalars['String']>,
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameUpdateInput = {
+  name?: Maybe<Scalars['String']>,
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+  bgg_id?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type GameUpdateOneRequiredInput = {
+  create?: Maybe<GameCreateInput>,
+  update?: Maybe<GameUpdateDataInput>,
+  upsert?: Maybe<GameUpsertNestedInput>,
+  connect?: Maybe<GameWhereUniqueInput>,
+};
+
+export type GameUpsertNestedInput = {
+  update: GameUpdateDataInput,
+  create: GameCreateInput,
+};
+
+export type GameWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  bgg_id?: Maybe<Scalars['String']>,
+  bgg_id_not?: Maybe<Scalars['String']>,
+  bgg_id_in?: Maybe<Array<Scalars['String']>>,
+  bgg_id_not_in?: Maybe<Array<Scalars['String']>>,
+  bgg_id_lt?: Maybe<Scalars['String']>,
+  bgg_id_lte?: Maybe<Scalars['String']>,
+  bgg_id_gt?: Maybe<Scalars['String']>,
+  bgg_id_gte?: Maybe<Scalars['String']>,
+  bgg_id_contains?: Maybe<Scalars['String']>,
+  bgg_id_not_contains?: Maybe<Scalars['String']>,
+  bgg_id_starts_with?: Maybe<Scalars['String']>,
+  bgg_id_not_starts_with?: Maybe<Scalars['String']>,
+  bgg_id_ends_with?: Maybe<Scalars['String']>,
+  bgg_id_not_ends_with?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  notes_not?: Maybe<Scalars['String']>,
+  notes_in?: Maybe<Array<Scalars['String']>>,
+  notes_not_in?: Maybe<Array<Scalars['String']>>,
+  notes_lt?: Maybe<Scalars['String']>,
+  notes_lte?: Maybe<Scalars['String']>,
+  notes_gt?: Maybe<Scalars['String']>,
+  notes_gte?: Maybe<Scalars['String']>,
+  notes_contains?: Maybe<Scalars['String']>,
+  notes_not_contains?: Maybe<Scalars['String']>,
+  notes_starts_with?: Maybe<Scalars['String']>,
+  notes_not_starts_with?: Maybe<Scalars['String']>,
+  notes_ends_with?: Maybe<Scalars['String']>,
+  notes_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<GameWhereInput>>,
+  OR?: Maybe<Array<GameWhereInput>>,
+  NOT?: Maybe<Array<GameWhereInput>>,
+};
+
+export type GameWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+
+export type Mutation = {
+   __typename?: 'Mutation',
+  createGame: Game,
+  updateGame?: Maybe<Game>,
+  updateManyGames: BatchPayload,
+  upsertGame: Game,
+  deleteGame?: Maybe<Game>,
+  deleteManyGames: BatchPayload,
+  createPlayer: Player,
+  updatePlayer?: Maybe<Player>,
+  updateManyPlayers: BatchPayload,
+  upsertPlayer: Player,
+  deletePlayer?: Maybe<Player>,
+  deleteManyPlayers: BatchPayload,
+  createScore: Score,
+  updateScore?: Maybe<Score>,
+  updateManyScores: BatchPayload,
+  upsertScore: Score,
+  deleteScore?: Maybe<Score>,
+  deleteManyScores: BatchPayload,
+  createSession: Session,
+  updateSession?: Maybe<Session>,
+  updateManySessions: BatchPayload,
+  upsertSession: Session,
+  deleteSession?: Maybe<Session>,
+  deleteManySessions: BatchPayload,
+  createTournament: Tournament,
+  updateTournament?: Maybe<Tournament>,
+  updateManyTournaments: BatchPayload,
+  upsertTournament: Tournament,
+  deleteTournament?: Maybe<Tournament>,
+  deleteManyTournaments: BatchPayload,
+  createTournamentPlayer: TournamentPlayer,
+  updateTournamentPlayer?: Maybe<TournamentPlayer>,
+  updateManyTournamentPlayers: BatchPayload,
+  upsertTournamentPlayer: TournamentPlayer,
+  deleteTournamentPlayer?: Maybe<TournamentPlayer>,
+  deleteManyTournamentPlayers: BatchPayload,
+};
+
+
+export type MutationCreateGameArgs = {
+  data: GameCreateInput
+};
+
+
+export type MutationUpdateGameArgs = {
+  data: GameUpdateInput,
+  where: GameWhereUniqueInput
+};
+
+
+export type MutationUpdateManyGamesArgs = {
+  data: GameUpdateManyMutationInput,
+  where?: Maybe<GameWhereInput>
+};
+
+
+export type MutationUpsertGameArgs = {
+  where: GameWhereUniqueInput,
+  create: GameCreateInput,
+  update: GameUpdateInput
+};
+
+
+export type MutationDeleteGameArgs = {
+  where: GameWhereUniqueInput
+};
+
+
+export type MutationDeleteManyGamesArgs = {
+  where?: Maybe<GameWhereInput>
+};
+
+
+export type MutationCreatePlayerArgs = {
+  data: PlayerCreateInput
+};
+
+
+export type MutationUpdatePlayerArgs = {
+  data: PlayerUpdateInput,
+  where: PlayerWhereUniqueInput
+};
+
+
+export type MutationUpdateManyPlayersArgs = {
+  data: PlayerUpdateManyMutationInput,
+  where?: Maybe<PlayerWhereInput>
+};
+
+
+export type MutationUpsertPlayerArgs = {
+  where: PlayerWhereUniqueInput,
+  create: PlayerCreateInput,
+  update: PlayerUpdateInput
+};
+
+
+export type MutationDeletePlayerArgs = {
+  where: PlayerWhereUniqueInput
+};
+
+
+export type MutationDeleteManyPlayersArgs = {
+  where?: Maybe<PlayerWhereInput>
+};
+
+
+export type MutationCreateScoreArgs = {
+  data: ScoreCreateInput
+};
+
+
+export type MutationUpdateScoreArgs = {
+  data: ScoreUpdateInput,
+  where: ScoreWhereUniqueInput
+};
+
+
+export type MutationUpdateManyScoresArgs = {
+  data: ScoreUpdateManyMutationInput,
+  where?: Maybe<ScoreWhereInput>
+};
+
+
+export type MutationUpsertScoreArgs = {
+  where: ScoreWhereUniqueInput,
+  create: ScoreCreateInput,
+  update: ScoreUpdateInput
+};
+
+
+export type MutationDeleteScoreArgs = {
+  where: ScoreWhereUniqueInput
+};
+
+
+export type MutationDeleteManyScoresArgs = {
+  where?: Maybe<ScoreWhereInput>
+};
+
+
+export type MutationCreateSessionArgs = {
+  data: SessionCreateInput
+};
+
+
+export type MutationUpdateSessionArgs = {
+  data: SessionUpdateInput,
+  where: SessionWhereUniqueInput
+};
+
+
+export type MutationUpdateManySessionsArgs = {
+  data: SessionUpdateManyMutationInput,
+  where?: Maybe<SessionWhereInput>
+};
+
+
+export type MutationUpsertSessionArgs = {
+  where: SessionWhereUniqueInput,
+  create: SessionCreateInput,
+  update: SessionUpdateInput
+};
+
+
+export type MutationDeleteSessionArgs = {
+  where: SessionWhereUniqueInput
+};
+
+
+export type MutationDeleteManySessionsArgs = {
+  where?: Maybe<SessionWhereInput>
+};
+
+
+export type MutationCreateTournamentArgs = {
+  data: TournamentCreateInput
+};
+
+
+export type MutationUpdateTournamentArgs = {
+  data: TournamentUpdateInput,
+  where: TournamentWhereUniqueInput
+};
+
+
+export type MutationUpdateManyTournamentsArgs = {
+  data: TournamentUpdateManyMutationInput,
+  where?: Maybe<TournamentWhereInput>
+};
+
+
+export type MutationUpsertTournamentArgs = {
+  where: TournamentWhereUniqueInput,
+  create: TournamentCreateInput,
+  update: TournamentUpdateInput
+};
+
+
+export type MutationDeleteTournamentArgs = {
+  where: TournamentWhereUniqueInput
+};
+
+
+export type MutationDeleteManyTournamentsArgs = {
+  where?: Maybe<TournamentWhereInput>
+};
+
+
+export type MutationCreateTournamentPlayerArgs = {
+  data: TournamentPlayerCreateInput
+};
+
+
+export type MutationUpdateTournamentPlayerArgs = {
+  data: TournamentPlayerUpdateInput,
+  where: TournamentPlayerWhereUniqueInput
+};
+
+
+export type MutationUpdateManyTournamentPlayersArgs = {
+  data: TournamentPlayerUpdateManyMutationInput,
+  where?: Maybe<TournamentPlayerWhereInput>
+};
+
+
+export type MutationUpsertTournamentPlayerArgs = {
+  where: TournamentPlayerWhereUniqueInput,
+  create: TournamentPlayerCreateInput,
+  update: TournamentPlayerUpdateInput
+};
+
+
+export type MutationDeleteTournamentPlayerArgs = {
+  where: TournamentPlayerWhereUniqueInput
+};
+
+
+export type MutationDeleteManyTournamentPlayersArgs = {
+  where?: Maybe<TournamentPlayerWhereInput>
+};
+
+export enum MutationType {
+  Created = 'CREATED',
+  Updated = 'UPDATED',
+  Deleted = 'DELETED'
+}
+
+export type Node = {
+  id: Scalars['ID'],
+};
+
+export type PageInfo = {
+   __typename?: 'PageInfo',
+  hasNextPage: Scalars['Boolean'],
+  hasPreviousPage: Scalars['Boolean'],
+  startCursor?: Maybe<Scalars['String']>,
+  endCursor?: Maybe<Scalars['String']>,
+};
+
+export type Player = {
+   __typename?: 'Player',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  tournaments?: Maybe<Array<TournamentPlayer>>,
+  scores?: Maybe<Array<Score>>,
+};
+
+
+export type PlayerTournamentsArgs = {
+  where?: Maybe<TournamentPlayerWhereInput>,
+  orderBy?: Maybe<TournamentPlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type PlayerScoresArgs = {
+  where?: Maybe<ScoreWhereInput>,
+  orderBy?: Maybe<ScoreOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+export type PlayerConnection = {
+   __typename?: 'PlayerConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<PlayerEdge>>,
+  aggregate: AggregatePlayer,
+};
+
+export type PlayerCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  tournaments?: Maybe<TournamentPlayerCreateManyWithoutPlayerInput>,
+  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>,
+};
+
+export type PlayerCreateOneWithoutScoresInput = {
+  create?: Maybe<PlayerCreateWithoutScoresInput>,
+  connect?: Maybe<PlayerWhereUniqueInput>,
+};
+
+export type PlayerCreateOneWithoutTournamentsInput = {
+  create?: Maybe<PlayerCreateWithoutTournamentsInput>,
+  connect?: Maybe<PlayerWhereUniqueInput>,
+};
+
+export type PlayerCreateWithoutScoresInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  tournaments?: Maybe<TournamentPlayerCreateManyWithoutPlayerInput>,
+};
+
+export type PlayerCreateWithoutTournamentsInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>,
+};
+
+export type PlayerEdge = {
+   __typename?: 'PlayerEdge',
+  node: Player,
+  cursor: Scalars['String'],
+};
+
+export enum PlayerOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  PicAsc = 'pic_ASC',
+  PicDesc = 'pic_DESC',
+  NicknameAsc = 'nickname_ASC',
+  NicknameDesc = 'nickname_DESC'
+}
+
+export type PlayerPreviousValues = {
+   __typename?: 'PlayerPreviousValues',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type PlayerSubscriptionPayload = {
+   __typename?: 'PlayerSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Player>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<PlayerPreviousValues>,
+};
+
+export type PlayerSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<PlayerWhereInput>,
+  AND?: Maybe<Array<PlayerSubscriptionWhereInput>>,
+  OR?: Maybe<Array<PlayerSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<PlayerSubscriptionWhereInput>>,
+};
+
+export type PlayerUpdateInput = {
+  name?: Maybe<Scalars['String']>,
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  tournaments?: Maybe<TournamentPlayerUpdateManyWithoutPlayerInput>,
+  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>,
+};
+
+export type PlayerUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type PlayerUpdateOneRequiredWithoutScoresInput = {
+  create?: Maybe<PlayerCreateWithoutScoresInput>,
+  update?: Maybe<PlayerUpdateWithoutScoresDataInput>,
+  upsert?: Maybe<PlayerUpsertWithoutScoresInput>,
+  connect?: Maybe<PlayerWhereUniqueInput>,
+};
+
+export type PlayerUpdateOneRequiredWithoutTournamentsInput = {
+  create?: Maybe<PlayerCreateWithoutTournamentsInput>,
+  update?: Maybe<PlayerUpdateWithoutTournamentsDataInput>,
+  upsert?: Maybe<PlayerUpsertWithoutTournamentsInput>,
+  connect?: Maybe<PlayerWhereUniqueInput>,
+};
+
+export type PlayerUpdateWithoutScoresDataInput = {
+  name?: Maybe<Scalars['String']>,
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  tournaments?: Maybe<TournamentPlayerUpdateManyWithoutPlayerInput>,
+};
+
+export type PlayerUpdateWithoutTournamentsDataInput = {
+  name?: Maybe<Scalars['String']>,
+  pic?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>,
+};
+
+export type PlayerUpsertWithoutScoresInput = {
+  update: PlayerUpdateWithoutScoresDataInput,
+  create: PlayerCreateWithoutScoresInput,
+};
+
+export type PlayerUpsertWithoutTournamentsInput = {
+  update: PlayerUpdateWithoutTournamentsDataInput,
+  create: PlayerCreateWithoutTournamentsInput,
+};
+
+export type PlayerWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  pic?: Maybe<Scalars['String']>,
+  pic_not?: Maybe<Scalars['String']>,
+  pic_in?: Maybe<Array<Scalars['String']>>,
+  pic_not_in?: Maybe<Array<Scalars['String']>>,
+  pic_lt?: Maybe<Scalars['String']>,
+  pic_lte?: Maybe<Scalars['String']>,
+  pic_gt?: Maybe<Scalars['String']>,
+  pic_gte?: Maybe<Scalars['String']>,
+  pic_contains?: Maybe<Scalars['String']>,
+  pic_not_contains?: Maybe<Scalars['String']>,
+  pic_starts_with?: Maybe<Scalars['String']>,
+  pic_not_starts_with?: Maybe<Scalars['String']>,
+  pic_ends_with?: Maybe<Scalars['String']>,
+  pic_not_ends_with?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  nickname_not?: Maybe<Scalars['String']>,
+  nickname_in?: Maybe<Array<Scalars['String']>>,
+  nickname_not_in?: Maybe<Array<Scalars['String']>>,
+  nickname_lt?: Maybe<Scalars['String']>,
+  nickname_lte?: Maybe<Scalars['String']>,
+  nickname_gt?: Maybe<Scalars['String']>,
+  nickname_gte?: Maybe<Scalars['String']>,
+  nickname_contains?: Maybe<Scalars['String']>,
+  nickname_not_contains?: Maybe<Scalars['String']>,
+  nickname_starts_with?: Maybe<Scalars['String']>,
+  nickname_not_starts_with?: Maybe<Scalars['String']>,
+  nickname_ends_with?: Maybe<Scalars['String']>,
+  nickname_not_ends_with?: Maybe<Scalars['String']>,
+  tournaments_every?: Maybe<TournamentPlayerWhereInput>,
+  tournaments_some?: Maybe<TournamentPlayerWhereInput>,
+  tournaments_none?: Maybe<TournamentPlayerWhereInput>,
+  scores_every?: Maybe<ScoreWhereInput>,
+  scores_some?: Maybe<ScoreWhereInput>,
+  scores_none?: Maybe<ScoreWhereInput>,
+  AND?: Maybe<Array<PlayerWhereInput>>,
+  OR?: Maybe<Array<PlayerWhereInput>>,
+  NOT?: Maybe<Array<PlayerWhereInput>>,
+};
+
+export type PlayerWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+export type Query = {
+   __typename?: 'Query',
+  game?: Maybe<Game>,
+  games: Array<Maybe<Game>>,
+  gamesConnection: GameConnection,
+  player?: Maybe<Player>,
+  players: Array<Maybe<Player>>,
+  playersConnection: PlayerConnection,
+  score?: Maybe<Score>,
+  scores: Array<Maybe<Score>>,
+  scoresConnection: ScoreConnection,
+  session?: Maybe<Session>,
+  sessions: Array<Maybe<Session>>,
+  sessionsConnection: SessionConnection,
+  tournament?: Maybe<Tournament>,
+  tournaments: Array<Maybe<Tournament>>,
+  tournamentsConnection: TournamentConnection,
+  tournamentPlayer?: Maybe<TournamentPlayer>,
+  tournamentPlayers: Array<Maybe<TournamentPlayer>>,
+  tournamentPlayersConnection: TournamentPlayerConnection,
+  node?: Maybe<Node>,
+};
+
+
+export type QueryGameArgs = {
+  where: GameWhereUniqueInput
+};
+
+
+export type QueryGamesArgs = {
+  where?: Maybe<GameWhereInput>,
+  orderBy?: Maybe<GameOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryGamesConnectionArgs = {
+  where?: Maybe<GameWhereInput>,
+  orderBy?: Maybe<GameOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryPlayerArgs = {
+  where: PlayerWhereUniqueInput
+};
+
+
+export type QueryPlayersArgs = {
+  where?: Maybe<PlayerWhereInput>,
+  orderBy?: Maybe<PlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryPlayersConnectionArgs = {
+  where?: Maybe<PlayerWhereInput>,
+  orderBy?: Maybe<PlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryScoreArgs = {
+  where: ScoreWhereUniqueInput
+};
+
+
+export type QueryScoresArgs = {
+  where?: Maybe<ScoreWhereInput>,
+  orderBy?: Maybe<ScoreOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryScoresConnectionArgs = {
+  where?: Maybe<ScoreWhereInput>,
+  orderBy?: Maybe<ScoreOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySessionArgs = {
+  where: SessionWhereUniqueInput
+};
+
+
+export type QuerySessionsArgs = {
+  where?: Maybe<SessionWhereInput>,
+  orderBy?: Maybe<SessionOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySessionsConnectionArgs = {
+  where?: Maybe<SessionWhereInput>,
+  orderBy?: Maybe<SessionOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentArgs = {
+  where: TournamentWhereUniqueInput
+};
+
+
+export type QueryTournamentsArgs = {
+  where?: Maybe<TournamentWhereInput>,
+  orderBy?: Maybe<TournamentOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentsConnectionArgs = {
+  where?: Maybe<TournamentWhereInput>,
+  orderBy?: Maybe<TournamentOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentPlayerArgs = {
+  where: TournamentPlayerWhereUniqueInput
+};
+
+
+export type QueryTournamentPlayersArgs = {
+  where?: Maybe<TournamentPlayerWhereInput>,
+  orderBy?: Maybe<TournamentPlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentPlayersConnectionArgs = {
+  where?: Maybe<TournamentPlayerWhereInput>,
+  orderBy?: Maybe<TournamentPlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryNodeArgs = {
+  id: Scalars['ID']
+};
+
+export type Score = {
+   __typename?: 'Score',
+  id: Scalars['ID'],
+  player: Player,
+  session: Session,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreConnection = {
+   __typename?: 'ScoreConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<ScoreEdge>>,
+  aggregate: AggregateScore,
+};
+
+export type ScoreCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  player: PlayerCreateOneWithoutScoresInput,
+  session: SessionCreateOneWithoutScoresInput,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreCreateManyWithoutPlayerInput = {
+  create?: Maybe<Array<ScoreCreateWithoutPlayerInput>>,
+  connect?: Maybe<Array<ScoreWhereUniqueInput>>,
+};
+
+export type ScoreCreateManyWithoutSessionInput = {
+  create?: Maybe<Array<ScoreCreateWithoutSessionInput>>,
+  connect?: Maybe<Array<ScoreWhereUniqueInput>>,
+};
+
+export type ScoreCreateWithoutPlayerInput = {
+  id?: Maybe<Scalars['ID']>,
+  session: SessionCreateOneWithoutScoresInput,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreCreateWithoutSessionInput = {
+  id?: Maybe<Scalars['ID']>,
+  player: PlayerCreateOneWithoutScoresInput,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreEdge = {
+   __typename?: 'ScoreEdge',
+  node: Score,
+  cursor: Scalars['String'],
+};
+
+export enum ScoreOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  ScoreAsc = 'score_ASC',
+  ScoreDesc = 'score_DESC',
+  NotesAsc = 'notes_ASC',
+  NotesDesc = 'notes_DESC'
+}
+
+export type ScorePreviousValues = {
+   __typename?: 'ScorePreviousValues',
+  id: Scalars['ID'],
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  score?: Maybe<Scalars['Int']>,
+  score_not?: Maybe<Scalars['Int']>,
+  score_in?: Maybe<Array<Scalars['Int']>>,
+  score_not_in?: Maybe<Array<Scalars['Int']>>,
+  score_lt?: Maybe<Scalars['Int']>,
+  score_lte?: Maybe<Scalars['Int']>,
+  score_gt?: Maybe<Scalars['Int']>,
+  score_gte?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+  notes_not?: Maybe<Scalars['String']>,
+  notes_in?: Maybe<Array<Scalars['String']>>,
+  notes_not_in?: Maybe<Array<Scalars['String']>>,
+  notes_lt?: Maybe<Scalars['String']>,
+  notes_lte?: Maybe<Scalars['String']>,
+  notes_gt?: Maybe<Scalars['String']>,
+  notes_gte?: Maybe<Scalars['String']>,
+  notes_contains?: Maybe<Scalars['String']>,
+  notes_not_contains?: Maybe<Scalars['String']>,
+  notes_starts_with?: Maybe<Scalars['String']>,
+  notes_not_starts_with?: Maybe<Scalars['String']>,
+  notes_ends_with?: Maybe<Scalars['String']>,
+  notes_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<ScoreScalarWhereInput>>,
+  OR?: Maybe<Array<ScoreScalarWhereInput>>,
+  NOT?: Maybe<Array<ScoreScalarWhereInput>>,
+};
+
+export type ScoreSubscriptionPayload = {
+   __typename?: 'ScoreSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Score>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<ScorePreviousValues>,
+};
+
+export type ScoreSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<ScoreWhereInput>,
+  AND?: Maybe<Array<ScoreSubscriptionWhereInput>>,
+  OR?: Maybe<Array<ScoreSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<ScoreSubscriptionWhereInput>>,
+};
+
+export type ScoreUpdateInput = {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutScoresInput>,
+  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreUpdateManyDataInput = {
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreUpdateManyMutationInput = {
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreUpdateManyWithoutPlayerInput = {
+  create?: Maybe<Array<ScoreCreateWithoutPlayerInput>>,
+  delete?: Maybe<Array<ScoreWhereUniqueInput>>,
+  connect?: Maybe<Array<ScoreWhereUniqueInput>>,
+  set?: Maybe<Array<ScoreWhereUniqueInput>>,
+  disconnect?: Maybe<Array<ScoreWhereUniqueInput>>,
+  update?: Maybe<Array<ScoreUpdateWithWhereUniqueWithoutPlayerInput>>,
+  upsert?: Maybe<Array<ScoreUpsertWithWhereUniqueWithoutPlayerInput>>,
+  deleteMany?: Maybe<Array<ScoreScalarWhereInput>>,
+  updateMany?: Maybe<Array<ScoreUpdateManyWithWhereNestedInput>>,
+};
+
+export type ScoreUpdateManyWithoutSessionInput = {
+  create?: Maybe<Array<ScoreCreateWithoutSessionInput>>,
+  delete?: Maybe<Array<ScoreWhereUniqueInput>>,
+  connect?: Maybe<Array<ScoreWhereUniqueInput>>,
+  set?: Maybe<Array<ScoreWhereUniqueInput>>,
+  disconnect?: Maybe<Array<ScoreWhereUniqueInput>>,
+  update?: Maybe<Array<ScoreUpdateWithWhereUniqueWithoutSessionInput>>,
+  upsert?: Maybe<Array<ScoreUpsertWithWhereUniqueWithoutSessionInput>>,
+  deleteMany?: Maybe<Array<ScoreScalarWhereInput>>,
+  updateMany?: Maybe<Array<ScoreUpdateManyWithWhereNestedInput>>,
+};
+
+export type ScoreUpdateManyWithWhereNestedInput = {
+  where: ScoreScalarWhereInput,
+  data: ScoreUpdateManyDataInput,
+};
+
+export type ScoreUpdateWithoutPlayerDataInput = {
+  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreUpdateWithoutSessionDataInput = {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutScoresInput>,
+  score?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type ScoreUpdateWithWhereUniqueWithoutPlayerInput = {
+  where: ScoreWhereUniqueInput,
+  data: ScoreUpdateWithoutPlayerDataInput,
+};
+
+export type ScoreUpdateWithWhereUniqueWithoutSessionInput = {
+  where: ScoreWhereUniqueInput,
+  data: ScoreUpdateWithoutSessionDataInput,
+};
+
+export type ScoreUpsertWithWhereUniqueWithoutPlayerInput = {
+  where: ScoreWhereUniqueInput,
+  update: ScoreUpdateWithoutPlayerDataInput,
+  create: ScoreCreateWithoutPlayerInput,
+};
+
+export type ScoreUpsertWithWhereUniqueWithoutSessionInput = {
+  where: ScoreWhereUniqueInput,
+  update: ScoreUpdateWithoutSessionDataInput,
+  create: ScoreCreateWithoutSessionInput,
+};
+
+export type ScoreWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  player?: Maybe<PlayerWhereInput>,
+  session?: Maybe<SessionWhereInput>,
+  score?: Maybe<Scalars['Int']>,
+  score_not?: Maybe<Scalars['Int']>,
+  score_in?: Maybe<Array<Scalars['Int']>>,
+  score_not_in?: Maybe<Array<Scalars['Int']>>,
+  score_lt?: Maybe<Scalars['Int']>,
+  score_lte?: Maybe<Scalars['Int']>,
+  score_gt?: Maybe<Scalars['Int']>,
+  score_gte?: Maybe<Scalars['Int']>,
+  notes?: Maybe<Scalars['String']>,
+  notes_not?: Maybe<Scalars['String']>,
+  notes_in?: Maybe<Array<Scalars['String']>>,
+  notes_not_in?: Maybe<Array<Scalars['String']>>,
+  notes_lt?: Maybe<Scalars['String']>,
+  notes_lte?: Maybe<Scalars['String']>,
+  notes_gt?: Maybe<Scalars['String']>,
+  notes_gte?: Maybe<Scalars['String']>,
+  notes_contains?: Maybe<Scalars['String']>,
+  notes_not_contains?: Maybe<Scalars['String']>,
+  notes_starts_with?: Maybe<Scalars['String']>,
+  notes_not_starts_with?: Maybe<Scalars['String']>,
+  notes_ends_with?: Maybe<Scalars['String']>,
+  notes_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<ScoreWhereInput>>,
+  OR?: Maybe<Array<ScoreWhereInput>>,
+  NOT?: Maybe<Array<ScoreWhereInput>>,
+};
+
+export type ScoreWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+export type Session = {
+   __typename?: 'Session',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  tournament: Tournament,
+  game: Game,
+  name: Scalars['String'],
+  scores?: Maybe<Array<Score>>,
+};
+
+
+export type SessionScoresArgs = {
+  where?: Maybe<ScoreWhereInput>,
+  orderBy?: Maybe<ScoreOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+export type SessionConnection = {
+   __typename?: 'SessionConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<SessionEdge>>,
+  aggregate: AggregateSession,
+};
+
+export type SessionCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  tournament: TournamentCreateOneWithoutSessionsInput,
+  game: GameCreateOneInput,
+  name: Scalars['String'],
+  scores?: Maybe<ScoreCreateManyWithoutSessionInput>,
+};
+
+export type SessionCreateManyWithoutTournamentInput = {
+  create?: Maybe<Array<SessionCreateWithoutTournamentInput>>,
+  connect?: Maybe<Array<SessionWhereUniqueInput>>,
+};
+
+export type SessionCreateOneWithoutScoresInput = {
+  create?: Maybe<SessionCreateWithoutScoresInput>,
+  connect?: Maybe<SessionWhereUniqueInput>,
+};
+
+export type SessionCreateWithoutScoresInput = {
+  id?: Maybe<Scalars['ID']>,
+  tournament: TournamentCreateOneWithoutSessionsInput,
+  game: GameCreateOneInput,
+  name: Scalars['String'],
+};
+
+export type SessionCreateWithoutTournamentInput = {
+  id?: Maybe<Scalars['ID']>,
+  game: GameCreateOneInput,
+  name: Scalars['String'],
+  scores?: Maybe<ScoreCreateManyWithoutSessionInput>,
+};
+
+export type SessionEdge = {
+   __typename?: 'SessionEdge',
+  node: Session,
+  cursor: Scalars['String'],
+};
+
+export enum SessionOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC'
+}
+
+export type SessionPreviousValues = {
+   __typename?: 'SessionPreviousValues',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  name: Scalars['String'],
+};
+
+export type SessionScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  createdAt?: Maybe<Scalars['DateTime']>,
+  createdAt_not?: Maybe<Scalars['DateTime']>,
+  createdAt_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_lt?: Maybe<Scalars['DateTime']>,
+  createdAt_lte?: Maybe<Scalars['DateTime']>,
+  createdAt_gt?: Maybe<Scalars['DateTime']>,
+  createdAt_gte?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<SessionScalarWhereInput>>,
+  OR?: Maybe<Array<SessionScalarWhereInput>>,
+  NOT?: Maybe<Array<SessionScalarWhereInput>>,
+};
+
+export type SessionSubscriptionPayload = {
+   __typename?: 'SessionSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Session>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SessionPreviousValues>,
+};
+
+export type SessionSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<SessionWhereInput>,
+  AND?: Maybe<Array<SessionSubscriptionWhereInput>>,
+  OR?: Maybe<Array<SessionSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<SessionSubscriptionWhereInput>>,
+};
+
+export type SessionUpdateInput = {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>,
+  game?: Maybe<GameUpdateOneRequiredInput>,
+  name?: Maybe<Scalars['String']>,
+  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>,
+};
+
+export type SessionUpdateManyDataInput = {
+  name?: Maybe<Scalars['String']>,
+};
+
+export type SessionUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+};
+
+export type SessionUpdateManyWithoutTournamentInput = {
+  create?: Maybe<Array<SessionCreateWithoutTournamentInput>>,
+  delete?: Maybe<Array<SessionWhereUniqueInput>>,
+  connect?: Maybe<Array<SessionWhereUniqueInput>>,
+  set?: Maybe<Array<SessionWhereUniqueInput>>,
+  disconnect?: Maybe<Array<SessionWhereUniqueInput>>,
+  update?: Maybe<Array<SessionUpdateWithWhereUniqueWithoutTournamentInput>>,
+  upsert?: Maybe<Array<SessionUpsertWithWhereUniqueWithoutTournamentInput>>,
+  deleteMany?: Maybe<Array<SessionScalarWhereInput>>,
+  updateMany?: Maybe<Array<SessionUpdateManyWithWhereNestedInput>>,
+};
+
+export type SessionUpdateManyWithWhereNestedInput = {
+  where: SessionScalarWhereInput,
+  data: SessionUpdateManyDataInput,
+};
+
+export type SessionUpdateOneRequiredWithoutScoresInput = {
+  create?: Maybe<SessionCreateWithoutScoresInput>,
+  update?: Maybe<SessionUpdateWithoutScoresDataInput>,
+  upsert?: Maybe<SessionUpsertWithoutScoresInput>,
+  connect?: Maybe<SessionWhereUniqueInput>,
+};
+
+export type SessionUpdateWithoutScoresDataInput = {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>,
+  game?: Maybe<GameUpdateOneRequiredInput>,
+  name?: Maybe<Scalars['String']>,
+};
+
+export type SessionUpdateWithoutTournamentDataInput = {
+  game?: Maybe<GameUpdateOneRequiredInput>,
+  name?: Maybe<Scalars['String']>,
+  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>,
+};
+
+export type SessionUpdateWithWhereUniqueWithoutTournamentInput = {
+  where: SessionWhereUniqueInput,
+  data: SessionUpdateWithoutTournamentDataInput,
+};
+
+export type SessionUpsertWithoutScoresInput = {
+  update: SessionUpdateWithoutScoresDataInput,
+  create: SessionCreateWithoutScoresInput,
+};
+
+export type SessionUpsertWithWhereUniqueWithoutTournamentInput = {
+  where: SessionWhereUniqueInput,
+  update: SessionUpdateWithoutTournamentDataInput,
+  create: SessionCreateWithoutTournamentInput,
+};
+
+export type SessionWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  createdAt?: Maybe<Scalars['DateTime']>,
+  createdAt_not?: Maybe<Scalars['DateTime']>,
+  createdAt_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_lt?: Maybe<Scalars['DateTime']>,
+  createdAt_lte?: Maybe<Scalars['DateTime']>,
+  createdAt_gt?: Maybe<Scalars['DateTime']>,
+  createdAt_gte?: Maybe<Scalars['DateTime']>,
+  tournament?: Maybe<TournamentWhereInput>,
+  game?: Maybe<GameWhereInput>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  scores_every?: Maybe<ScoreWhereInput>,
+  scores_some?: Maybe<ScoreWhereInput>,
+  scores_none?: Maybe<ScoreWhereInput>,
+  AND?: Maybe<Array<SessionWhereInput>>,
+  OR?: Maybe<Array<SessionWhereInput>>,
+  NOT?: Maybe<Array<SessionWhereInput>>,
+};
+
+export type SessionWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+export type Subscription = {
+   __typename?: 'Subscription',
+  game?: Maybe<GameSubscriptionPayload>,
+  player?: Maybe<PlayerSubscriptionPayload>,
+  score?: Maybe<ScoreSubscriptionPayload>,
+  session?: Maybe<SessionSubscriptionPayload>,
+  tournament?: Maybe<TournamentSubscriptionPayload>,
+  tournamentPlayer?: Maybe<TournamentPlayerSubscriptionPayload>,
+};
+
+
+export type SubscriptionGameArgs = {
+  where?: Maybe<GameSubscriptionWhereInput>
+};
+
+
+export type SubscriptionPlayerArgs = {
+  where?: Maybe<PlayerSubscriptionWhereInput>
+};
+
+
+export type SubscriptionScoreArgs = {
+  where?: Maybe<ScoreSubscriptionWhereInput>
+};
+
+
+export type SubscriptionSessionArgs = {
+  where?: Maybe<SessionSubscriptionWhereInput>
+};
+
+
+export type SubscriptionTournamentArgs = {
+  where?: Maybe<TournamentSubscriptionWhereInput>
+};
+
+
+export type SubscriptionTournamentPlayerArgs = {
+  where?: Maybe<TournamentPlayerSubscriptionWhereInput>
+};
+
+export type Tournament = {
+   __typename?: 'Tournament',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  name: Scalars['String'],
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  sessions?: Maybe<Array<Session>>,
+  players?: Maybe<Array<TournamentPlayer>>,
+};
+
+
+export type TournamentSessionsArgs = {
+  where?: Maybe<SessionWhereInput>,
+  orderBy?: Maybe<SessionOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type TournamentPlayersArgs = {
+  where?: Maybe<TournamentPlayerWhereInput>,
+  orderBy?: Maybe<TournamentPlayerOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+export type TournamentConnection = {
+   __typename?: 'TournamentConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<TournamentEdge>>,
+  aggregate: AggregateTournament,
+};
+
+export type TournamentCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>,
+  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>,
+};
+
+export type TournamentCreateOneWithoutPlayersInput = {
+  create?: Maybe<TournamentCreateWithoutPlayersInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
+};
+
+export type TournamentCreateOneWithoutSessionsInput = {
+  create?: Maybe<TournamentCreateWithoutSessionsInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
+};
+
+export type TournamentCreateWithoutPlayersInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>,
+};
+
+export type TournamentCreateWithoutSessionsInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>,
+};
+
+export type TournamentEdge = {
+   __typename?: 'TournamentEdge',
+  node: Tournament,
+  cursor: Scalars['String'],
+};
+
+export enum TournamentOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  StartDateAsc = 'startDate_ASC',
+  StartDateDesc = 'startDate_DESC',
+  EndDateAsc = 'endDate_ASC',
+  EndDateDesc = 'endDate_DESC',
+  RulesAsc = 'rules_ASC',
+  RulesDesc = 'rules_DESC',
+  NotesAsc = 'notes_ASC',
+  NotesDesc = 'notes_DESC'
+}
+
+export type TournamentPlayer = {
+   __typename?: 'TournamentPlayer',
+  id: Scalars['ID'],
+  player: Player,
+  tournament: Tournament,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerConnection = {
+   __typename?: 'TournamentPlayerConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<TournamentPlayerEdge>>,
+  aggregate: AggregateTournamentPlayer,
+};
+
+export type TournamentPlayerCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  player: PlayerCreateOneWithoutTournamentsInput,
+  tournament: TournamentCreateOneWithoutPlayersInput,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerCreateManyWithoutPlayerInput = {
+  create?: Maybe<Array<TournamentPlayerCreateWithoutPlayerInput>>,
+  connect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+};
+
+export type TournamentPlayerCreateManyWithoutTournamentInput = {
+  create?: Maybe<Array<TournamentPlayerCreateWithoutTournamentInput>>,
+  connect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+};
+
+export type TournamentPlayerCreateWithoutPlayerInput = {
+  id?: Maybe<Scalars['ID']>,
+  tournament: TournamentCreateOneWithoutPlayersInput,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerCreateWithoutTournamentInput = {
+  id?: Maybe<Scalars['ID']>,
+  player: PlayerCreateOneWithoutTournamentsInput,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerEdge = {
+   __typename?: 'TournamentPlayerEdge',
+  node: TournamentPlayer,
+  cursor: Scalars['String'],
+};
+
+export enum TournamentPlayerOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  RoleAsc = 'role_ASC',
+  RoleDesc = 'role_DESC',
+  NicknameAsc = 'nickname_ASC',
+  NicknameDesc = 'nickname_DESC'
+}
+
+export type TournamentPlayerPreviousValues = {
+   __typename?: 'TournamentPlayerPreviousValues',
+  id: Scalars['ID'],
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  role?: Maybe<Scalars['String']>,
+  role_not?: Maybe<Scalars['String']>,
+  role_in?: Maybe<Array<Scalars['String']>>,
+  role_not_in?: Maybe<Array<Scalars['String']>>,
+  role_lt?: Maybe<Scalars['String']>,
+  role_lte?: Maybe<Scalars['String']>,
+  role_gt?: Maybe<Scalars['String']>,
+  role_gte?: Maybe<Scalars['String']>,
+  role_contains?: Maybe<Scalars['String']>,
+  role_not_contains?: Maybe<Scalars['String']>,
+  role_starts_with?: Maybe<Scalars['String']>,
+  role_not_starts_with?: Maybe<Scalars['String']>,
+  role_ends_with?: Maybe<Scalars['String']>,
+  role_not_ends_with?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  nickname_not?: Maybe<Scalars['String']>,
+  nickname_in?: Maybe<Array<Scalars['String']>>,
+  nickname_not_in?: Maybe<Array<Scalars['String']>>,
+  nickname_lt?: Maybe<Scalars['String']>,
+  nickname_lte?: Maybe<Scalars['String']>,
+  nickname_gt?: Maybe<Scalars['String']>,
+  nickname_gte?: Maybe<Scalars['String']>,
+  nickname_contains?: Maybe<Scalars['String']>,
+  nickname_not_contains?: Maybe<Scalars['String']>,
+  nickname_starts_with?: Maybe<Scalars['String']>,
+  nickname_not_starts_with?: Maybe<Scalars['String']>,
+  nickname_ends_with?: Maybe<Scalars['String']>,
+  nickname_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<TournamentPlayerScalarWhereInput>>,
+  OR?: Maybe<Array<TournamentPlayerScalarWhereInput>>,
+  NOT?: Maybe<Array<TournamentPlayerScalarWhereInput>>,
+};
+
+export type TournamentPlayerSubscriptionPayload = {
+   __typename?: 'TournamentPlayerSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<TournamentPlayer>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<TournamentPlayerPreviousValues>,
+};
+
+export type TournamentPlayerSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<TournamentPlayerWhereInput>,
+  AND?: Maybe<Array<TournamentPlayerSubscriptionWhereInput>>,
+  OR?: Maybe<Array<TournamentPlayerSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<TournamentPlayerSubscriptionWhereInput>>,
+};
+
+export type TournamentPlayerUpdateInput = {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>,
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerUpdateManyDataInput = {
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerUpdateManyMutationInput = {
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerUpdateManyWithoutPlayerInput = {
+  create?: Maybe<Array<TournamentPlayerCreateWithoutPlayerInput>>,
+  delete?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  connect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  set?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  disconnect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  update?: Maybe<Array<TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput>>,
+  upsert?: Maybe<Array<TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput>>,
+  deleteMany?: Maybe<Array<TournamentPlayerScalarWhereInput>>,
+  updateMany?: Maybe<Array<TournamentPlayerUpdateManyWithWhereNestedInput>>,
+};
+
+export type TournamentPlayerUpdateManyWithoutTournamentInput = {
+  create?: Maybe<Array<TournamentPlayerCreateWithoutTournamentInput>>,
+  delete?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  connect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  set?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  disconnect?: Maybe<Array<TournamentPlayerWhereUniqueInput>>,
+  update?: Maybe<Array<TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput>>,
+  upsert?: Maybe<Array<TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput>>,
+  deleteMany?: Maybe<Array<TournamentPlayerScalarWhereInput>>,
+  updateMany?: Maybe<Array<TournamentPlayerUpdateManyWithWhereNestedInput>>,
+};
+
+export type TournamentPlayerUpdateManyWithWhereNestedInput = {
+  where: TournamentPlayerScalarWhereInput,
+  data: TournamentPlayerUpdateManyDataInput,
+};
+
+export type TournamentPlayerUpdateWithoutPlayerDataInput = {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerUpdateWithoutTournamentDataInput = {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>,
+  role?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+};
+
+export type TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput = {
+  where: TournamentPlayerWhereUniqueInput,
+  data: TournamentPlayerUpdateWithoutPlayerDataInput,
+};
+
+export type TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput = {
+  where: TournamentPlayerWhereUniqueInput,
+  data: TournamentPlayerUpdateWithoutTournamentDataInput,
+};
+
+export type TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput = {
+  where: TournamentPlayerWhereUniqueInput,
+  update: TournamentPlayerUpdateWithoutPlayerDataInput,
+  create: TournamentPlayerCreateWithoutPlayerInput,
+};
+
+export type TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput = {
+  where: TournamentPlayerWhereUniqueInput,
+  update: TournamentPlayerUpdateWithoutTournamentDataInput,
+  create: TournamentPlayerCreateWithoutTournamentInput,
+};
+
+export type TournamentPlayerWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  player?: Maybe<PlayerWhereInput>,
+  tournament?: Maybe<TournamentWhereInput>,
+  role?: Maybe<Scalars['String']>,
+  role_not?: Maybe<Scalars['String']>,
+  role_in?: Maybe<Array<Scalars['String']>>,
+  role_not_in?: Maybe<Array<Scalars['String']>>,
+  role_lt?: Maybe<Scalars['String']>,
+  role_lte?: Maybe<Scalars['String']>,
+  role_gt?: Maybe<Scalars['String']>,
+  role_gte?: Maybe<Scalars['String']>,
+  role_contains?: Maybe<Scalars['String']>,
+  role_not_contains?: Maybe<Scalars['String']>,
+  role_starts_with?: Maybe<Scalars['String']>,
+  role_not_starts_with?: Maybe<Scalars['String']>,
+  role_ends_with?: Maybe<Scalars['String']>,
+  role_not_ends_with?: Maybe<Scalars['String']>,
+  nickname?: Maybe<Scalars['String']>,
+  nickname_not?: Maybe<Scalars['String']>,
+  nickname_in?: Maybe<Array<Scalars['String']>>,
+  nickname_not_in?: Maybe<Array<Scalars['String']>>,
+  nickname_lt?: Maybe<Scalars['String']>,
+  nickname_lte?: Maybe<Scalars['String']>,
+  nickname_gt?: Maybe<Scalars['String']>,
+  nickname_gte?: Maybe<Scalars['String']>,
+  nickname_contains?: Maybe<Scalars['String']>,
+  nickname_not_contains?: Maybe<Scalars['String']>,
+  nickname_starts_with?: Maybe<Scalars['String']>,
+  nickname_not_starts_with?: Maybe<Scalars['String']>,
+  nickname_ends_with?: Maybe<Scalars['String']>,
+  nickname_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<TournamentPlayerWhereInput>>,
+  OR?: Maybe<Array<TournamentPlayerWhereInput>>,
+  NOT?: Maybe<Array<TournamentPlayerWhereInput>>,
+};
+
+export type TournamentPlayerWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+export type TournamentPreviousValues = {
+   __typename?: 'TournamentPreviousValues',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  name: Scalars['String'],
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type TournamentSubscriptionPayload = {
+   __typename?: 'TournamentSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Tournament>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<TournamentPreviousValues>,
+};
+
+export type TournamentSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<TournamentWhereInput>,
+  AND?: Maybe<Array<TournamentSubscriptionWhereInput>>,
+  OR?: Maybe<Array<TournamentSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<TournamentSubscriptionWhereInput>>,
+};
+
+export type TournamentUpdateInput = {
+  name?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>,
+  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>,
+};
+
+export type TournamentUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+};
+
+export type TournamentUpdateOneRequiredWithoutPlayersInput = {
+  create?: Maybe<TournamentCreateWithoutPlayersInput>,
+  update?: Maybe<TournamentUpdateWithoutPlayersDataInput>,
+  upsert?: Maybe<TournamentUpsertWithoutPlayersInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
+};
+
+export type TournamentUpdateOneRequiredWithoutSessionsInput = {
+  create?: Maybe<TournamentCreateWithoutSessionsInput>,
+  update?: Maybe<TournamentUpdateWithoutSessionsDataInput>,
+  upsert?: Maybe<TournamentUpsertWithoutSessionsInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
+};
+
+export type TournamentUpdateWithoutPlayersDataInput = {
+  name?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>,
+};
+
+export type TournamentUpdateWithoutSessionsDataInput = {
+  name?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>,
+};
+
+export type TournamentUpsertWithoutPlayersInput = {
+  update: TournamentUpdateWithoutPlayersDataInput,
+  create: TournamentCreateWithoutPlayersInput,
+};
+
+export type TournamentUpsertWithoutSessionsInput = {
+  update: TournamentUpdateWithoutSessionsDataInput,
+  create: TournamentCreateWithoutSessionsInput,
+};
+
+export type TournamentWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  createdAt?: Maybe<Scalars['DateTime']>,
+  createdAt_not?: Maybe<Scalars['DateTime']>,
+  createdAt_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  createdAt_lt?: Maybe<Scalars['DateTime']>,
+  createdAt_lte?: Maybe<Scalars['DateTime']>,
+  createdAt_gt?: Maybe<Scalars['DateTime']>,
+  createdAt_gte?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['DateTime']>,
+  startDate_not?: Maybe<Scalars['DateTime']>,
+  startDate_in?: Maybe<Array<Scalars['DateTime']>>,
+  startDate_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  startDate_lt?: Maybe<Scalars['DateTime']>,
+  startDate_lte?: Maybe<Scalars['DateTime']>,
+  startDate_gt?: Maybe<Scalars['DateTime']>,
+  startDate_gte?: Maybe<Scalars['DateTime']>,
+  endDate?: Maybe<Scalars['DateTime']>,
+  endDate_not?: Maybe<Scalars['DateTime']>,
+  endDate_in?: Maybe<Array<Scalars['DateTime']>>,
+  endDate_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  endDate_lt?: Maybe<Scalars['DateTime']>,
+  endDate_lte?: Maybe<Scalars['DateTime']>,
+  endDate_gt?: Maybe<Scalars['DateTime']>,
+  endDate_gte?: Maybe<Scalars['DateTime']>,
+  rules?: Maybe<Scalars['String']>,
+  rules_not?: Maybe<Scalars['String']>,
+  rules_in?: Maybe<Array<Scalars['String']>>,
+  rules_not_in?: Maybe<Array<Scalars['String']>>,
+  rules_lt?: Maybe<Scalars['String']>,
+  rules_lte?: Maybe<Scalars['String']>,
+  rules_gt?: Maybe<Scalars['String']>,
+  rules_gte?: Maybe<Scalars['String']>,
+  rules_contains?: Maybe<Scalars['String']>,
+  rules_not_contains?: Maybe<Scalars['String']>,
+  rules_starts_with?: Maybe<Scalars['String']>,
+  rules_not_starts_with?: Maybe<Scalars['String']>,
+  rules_ends_with?: Maybe<Scalars['String']>,
+  rules_not_ends_with?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  notes_not?: Maybe<Scalars['String']>,
+  notes_in?: Maybe<Array<Scalars['String']>>,
+  notes_not_in?: Maybe<Array<Scalars['String']>>,
+  notes_lt?: Maybe<Scalars['String']>,
+  notes_lte?: Maybe<Scalars['String']>,
+  notes_gt?: Maybe<Scalars['String']>,
+  notes_gte?: Maybe<Scalars['String']>,
+  notes_contains?: Maybe<Scalars['String']>,
+  notes_not_contains?: Maybe<Scalars['String']>,
+  notes_starts_with?: Maybe<Scalars['String']>,
+  notes_not_starts_with?: Maybe<Scalars['String']>,
+  notes_ends_with?: Maybe<Scalars['String']>,
+  notes_not_ends_with?: Maybe<Scalars['String']>,
+  sessions_every?: Maybe<SessionWhereInput>,
+  sessions_some?: Maybe<SessionWhereInput>,
+  sessions_none?: Maybe<SessionWhereInput>,
+  players_every?: Maybe<TournamentPlayerWhereInput>,
+  players_some?: Maybe<TournamentPlayerWhereInput>,
+  players_none?: Maybe<TournamentPlayerWhereInput>,
+  AND?: Maybe<Array<TournamentWhereInput>>,
+  OR?: Maybe<Array<TournamentWhereInput>>,
+  NOT?: Maybe<Array<TournamentWhereInput>>,
+};
+
+export type TournamentWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+

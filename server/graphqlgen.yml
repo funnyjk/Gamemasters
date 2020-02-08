@@ -1,0 +1,16 @@
+language: typescript
+
+schema: ./apollo/schema/Schema.graphql
+
+context: ./apollo/types/types.ts:Context
+
+models:
+  files:
+    - ./database/generated/prisma-client
+    - ./apollo/types/types.ts
+
+output: ./apollo/generated/graphqlgen.ts
+
+resolver-scaffolding:
+  output: ./apollo/generated/tmp-resolvers/
+  layout: file-per-t

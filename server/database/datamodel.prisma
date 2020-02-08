@@ -1,0 +1,52 @@
+type Player {
+    id: ID! @id
+    name: String!
+    pic: String
+    nickname: String
+    tournaments: [TournamentPlayer!]! @relation(name: "PlayerToTournament", onDelete: CASCADE)
+    scores: [Score!] @relation(onDelete: CASCADE)
+}
+
+type Score {
+    id: ID! @id
+    player: Player! @relation(onDelete: SET_NULL)
+    session: Session! @relation(onDelete: SET_NULL)
+    score: Int
+    notes: String
+}
+
+type Session {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    tournament: Tournament! @relation(onDelete: SET_NULL)
+    game: Game! @relation(onDelete: SET_NULL)
+    name: String!
+    scores: [Score!] @relation(onDelete: SET_NULL)
+}
+
+type TournamentPlayer {
+    id: ID! @id
+    player: Player! @relation(name: "PlayerToTournament", onDelete: SET_NULL)
+    tournament: Tournament! @relation(name: "TournamentToPlayer",  onDelete: SET_NULL)
+    role: String
+    nickname: String
+}
+
+type Tournament {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    name: String!
+    startDate: DateTime
+    endDate: DateTime
+    rules: String
+    notes: String
+    sessions: [Session!] @relation(onDelete: CASCADE)
+    players: [TournamentPlayer!] @relation(name: "TournamentToPlayer", onDelete: CASCADE)
+}
+
+type Game {
+    id: ID! @id
+    name: String!
+    bgg_id: String
+    notes: String
+}
