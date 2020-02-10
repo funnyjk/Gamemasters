@@ -1,0 +1,37 @@
+%c-card {
+  color: black;
+
+  display: inline-block;
+  width: 100%;
+  max-width: 350px;
+  margin: 20px 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  background: white;
+  box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+$profile-pic-size: 30px;
+
+.tournament-list--list-item {
+  @extend %c-card;
+  padding: 30px;
+}
+.tournament-list--list-item--tournament-players {
+  //display: grid;
+  //grid-template-columns: 50px auto;
+}
+.tournament-list--list-item--tournament-players--item {
+  display: grid;
+  grid-template-columns: $profile-pic-size auto;
+}
+
+.tournament-list--tournament-player {
+  grid-column: 2;
+}
+.tournament-list--profile-pic {
+  grid-column: 1;
+  max-height: $profile-pic-size;
+  max-width: $profile-pic-size;
+}

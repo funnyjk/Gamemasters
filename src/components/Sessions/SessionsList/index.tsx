@@ -20,7 +20,6 @@ const SessionsList = ({tournament}: ISessionsList) => {
 
   const sessions = data?.sessions;
   return <div>
-    SessionsList
     {sessions?.map((session: any, k: number) => {
       return <div key={k}>
         <SessionsListItem session={session}/>

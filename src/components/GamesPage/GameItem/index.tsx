@@ -4,6 +4,7 @@ import {useMutation, useQuery} from "@apollo/react-hooks";
 import {DELETE_GAME, GET_GAME, GET_GAMES, UPDATE_GAME} from "../../../graphql/Game";
 import {Game} from "../../../../server/database/generated/prisma";
 import _ from "lodash";
+import MutationInput from "../../MutationInput";
 
 const GameItem = () => {
   let history = useHistory();
@@ -29,11 +30,13 @@ const GameItem = () => {
         gameId: gameId
       }})
   }
-
-  const game = data?.game;
+  const updateOptions = {
+    variables: {gameId}
+  }
+  if(!data) return <div>No Game</div>;
+  const {game} = data;
   return <div>
-    <pre>{JSON.stringify(data, null, 2)}</pre>
-    <input name={"name"} defaultValue={game?.name} onBlur={setGame}/>
+    <MutationInput mutation={UPDATE_GAME} options={updateOptions} type={"text"} name={"name"} defaultValue={game.name} optionsData={"gameData"}/>
     <button onClick={()=>deleteGame({variables:{gameId}})}>Delete</button>
   </div>;
 };

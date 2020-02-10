@@ -8,13 +8,17 @@ interface ISessionsListItem {
 
 const SessionsListItem = ({session}: ISessionsListItem) => {
   const match = useRouteMatch();
+
+  if(!session) return <div>No Session</div>;
   return <div>
     <h3>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-      <Link to={`${match.url}/${session.id}`}>{session.name}</Link>
+      <Link to={{
+        pathname: `${match.url}/sessions`,
+        state: {session}
+      }}>{session.name}</Link>
     </h3>
-    {session.game.name}
-    <ScoresList scores={session.scores}/>
+    {session.game?.name}
+    {/*<ScoresList scores={session.scores}/>*/}
   </div>
 };
 

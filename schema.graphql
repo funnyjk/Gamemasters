@@ -1,0 +1,1598 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+interface Node {
+    id: ID!
+}
+
+type AggregateGame {
+    count: Int!
+}
+
+type AggregatePlayer {
+    count: Int!
+}
+
+type AggregateScore {
+    count: Int!
+}
+
+type AggregateSession {
+    count: Int!
+}
+
+type AggregateTournament {
+    count: Int!
+}
+
+type AggregateTournamentPlayer {
+    count: Int!
+}
+
+type BatchPayload {
+    count: Long!
+}
+
+type Game {
+    bgg_id: String
+    id: ID!
+    name: String!
+    notes: String
+    sessions(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): [Session!]
+}
+
+type GameConnection {
+    aggregate: AggregateGame!
+    edges: [GameEdge]!
+    pageInfo: PageInfo!
+}
+
+type GameEdge {
+    cursor: String!
+    node: Game!
+}
+
+type GamePreviousValues {
+    bgg_id: String
+    id: ID!
+    name: String!
+    notes: String
+}
+
+type GameSubscriptionPayload {
+    mutation: MutationType!
+    node: Game
+    previousValues: GamePreviousValues
+    updatedFields: [String!]
+}
+
+type Mutation {
+    createGame(data: GameCreateInput!): Game!
+    createPlayer(data: PlayerCreateInput!): Player!
+    createScore(data: ScoreCreateInput!): Score!
+    createSession(data: SessionCreateInput!): Session!
+    createTournament(data: TournamentCreateInput!): Tournament!
+    createTournamentPlayer(data: TournamentPlayerCreateInput!): TournamentPlayer!
+    deleteGame(where: GameWhereUniqueInput!): Game
+    deleteManyGames(where: GameWhereInput): BatchPayload!
+    deleteManyPlayers(where: PlayerWhereInput): BatchPayload!
+    deleteManyScores(where: ScoreWhereInput): BatchPayload!
+    deleteManySessions(where: SessionWhereInput): BatchPayload!
+    deleteManyTournamentPlayers(where: TournamentPlayerWhereInput): BatchPayload!
+    deleteManyTournaments(where: TournamentWhereInput): BatchPayload!
+    deletePlayer(where: PlayerWhereUniqueInput!): Player
+    deleteScore(where: ScoreWhereUniqueInput!): Score
+    deleteSession(where: SessionWhereUniqueInput!): Session
+    deleteTournament(where: TournamentWhereUniqueInput!): Tournament
+    deleteTournamentPlayer(where: TournamentPlayerWhereUniqueInput!): TournamentPlayer
+    updateGame(data: GameUpdateInput!, where: GameWhereUniqueInput!): Game
+    updateManyGames(data: GameUpdateManyMutationInput!, where: GameWhereInput): BatchPayload!
+    updateManyPlayers(data: PlayerUpdateManyMutationInput!, where: PlayerWhereInput): BatchPayload!
+    updateManyScores(data: ScoreUpdateManyMutationInput!, where: ScoreWhereInput): BatchPayload!
+    updateManySessions(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): BatchPayload!
+    updateManyTournamentPlayers(data: TournamentPlayerUpdateManyMutationInput!, where: TournamentPlayerWhereInput): BatchPayload!
+    updateManyTournaments(data: TournamentUpdateManyMutationInput!, where: TournamentWhereInput): BatchPayload!
+    updatePlayer(data: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player
+    updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
+    updateSession(data: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session
+    updateTournament(data: TournamentUpdateInput!, where: TournamentWhereUniqueInput!): Tournament
+    updateTournamentPlayer(data: TournamentPlayerUpdateInput!, where: TournamentPlayerWhereUniqueInput!): TournamentPlayer
+    upsertGame(create: GameCreateInput!, update: GameUpdateInput!, where: GameWhereUniqueInput!): Game!
+    upsertPlayer(create: PlayerCreateInput!, update: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player!
+    upsertScore(create: ScoreCreateInput!, update: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score!
+    upsertSession(create: SessionCreateInput!, update: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session!
+    upsertTournament(create: TournamentCreateInput!, update: TournamentUpdateInput!, where: TournamentWhereUniqueInput!): Tournament!
+    upsertTournamentPlayer(create: TournamentPlayerCreateInput!, update: TournamentPlayerUpdateInput!, where: TournamentPlayerWhereUniqueInput!): TournamentPlayer!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Player {
+    id: ID!
+    name: String!
+    nickname: String
+    pic: String
+    tournaments(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer!]
+}
+
+type PlayerConnection {
+    aggregate: AggregatePlayer!
+    edges: [PlayerEdge]!
+    pageInfo: PageInfo!
+}
+
+type PlayerEdge {
+    cursor: String!
+    node: Player!
+}
+
+type PlayerPreviousValues {
+    id: ID!
+    name: String!
+    nickname: String
+    pic: String
+}
+
+type PlayerSubscriptionPayload {
+    mutation: MutationType!
+    node: Player
+    previousValues: PlayerPreviousValues
+    updatedFields: [String!]
+}
+
+type Query {
+    game(where: GameWhereUniqueInput!): Game
+    games(after: String, before: String, first: Int, last: Int, orderBy: GameOrderByInput, skip: Int, where: GameWhereInput): [Game]!
+    gamesConnection(after: String, before: String, first: Int, last: Int, orderBy: GameOrderByInput, skip: Int, where: GameWhereInput): GameConnection!
+    node(id: ID!): Node
+    player(where: PlayerWhereUniqueInput!): Player
+    players(after: String, before: String, first: Int, last: Int, orderBy: PlayerOrderByInput, skip: Int, where: PlayerWhereInput): [Player]!
+    playersConnection(after: String, before: String, first: Int, last: Int, orderBy: PlayerOrderByInput, skip: Int, where: PlayerWhereInput): PlayerConnection!
+    score(where: ScoreWhereUniqueInput!): Score
+    scores(after: String, before: String, first: Int, last: Int, orderBy: ScoreOrderByInput, skip: Int, where: ScoreWhereInput): [Score]!
+    scoresConnection(after: String, before: String, first: Int, last: Int, orderBy: ScoreOrderByInput, skip: Int, where: ScoreWhereInput): ScoreConnection!
+    session(where: SessionWhereUniqueInput!): Session
+    sessions(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): [Session]!
+    sessionsConnection(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): SessionConnection!
+    tournament(where: TournamentWhereUniqueInput!): Tournament
+    tournamentPlayer(where: TournamentPlayerWhereUniqueInput!): TournamentPlayer
+    tournamentPlayers(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer]!
+    tournamentPlayersConnection(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): TournamentPlayerConnection!
+    tournaments(after: String, before: String, first: Int, last: Int, orderBy: TournamentOrderByInput, skip: Int, where: TournamentWhereInput): [Tournament]!
+    tournamentsConnection(after: String, before: String, first: Int, last: Int, orderBy: TournamentOrderByInput, skip: Int, where: TournamentWhereInput): TournamentConnection!
+}
+
+type Score {
+    id: ID!
+    notes: String
+    player: TournamentPlayer!
+    score: Int
+    session: Session!
+}
+
+type ScoreConnection {
+    aggregate: AggregateScore!
+    edges: [ScoreEdge]!
+    pageInfo: PageInfo!
+}
+
+type ScoreEdge {
+    cursor: String!
+    node: Score!
+}
+
+type ScorePreviousValues {
+    id: ID!
+    notes: String
+    score: Int
+}
+
+type ScoreSubscriptionPayload {
+    mutation: MutationType!
+    node: Score
+    previousValues: ScorePreviousValues
+    updatedFields: [String!]
+}
+
+type Session {
+    createdAt: DateTime!
+    game: Game!
+    id: ID!
+    name: String!
+    scores(after: String, before: String, first: Int, last: Int, orderBy: ScoreOrderByInput, skip: Int, where: ScoreWhereInput): [Score!]
+    tournament: Tournament!
+}
+
+type SessionConnection {
+    aggregate: AggregateSession!
+    edges: [SessionEdge]!
+    pageInfo: PageInfo!
+}
+
+type SessionEdge {
+    cursor: String!
+    node: Session!
+}
+
+type SessionPreviousValues {
+    createdAt: DateTime!
+    id: ID!
+    name: String!
+}
+
+type SessionSubscriptionPayload {
+    mutation: MutationType!
+    node: Session
+    previousValues: SessionPreviousValues
+    updatedFields: [String!]
+}
+
+type Subscription {
+    game(where: GameSubscriptionWhereInput): GameSubscriptionPayload
+    player(where: PlayerSubscriptionWhereInput): PlayerSubscriptionPayload
+    score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
+    session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
+    tournament(where: TournamentSubscriptionWhereInput): TournamentSubscriptionPayload
+    tournamentPlayer(where: TournamentPlayerSubscriptionWhereInput): TournamentPlayerSubscriptionPayload
+}
+
+type Tournament {
+    createdAt: DateTime!
+    endDate: DateTime
+    id: ID!
+    name: String!
+    notes: String
+    players(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer!]
+    rules: String
+    sessions(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): [Session!]
+    startDate: DateTime
+}
+
+type TournamentConnection {
+    aggregate: AggregateTournament!
+    edges: [TournamentEdge]!
+    pageInfo: PageInfo!
+}
+
+type TournamentEdge {
+    cursor: String!
+    node: Tournament!
+}
+
+type TournamentPlayer {
+    id: ID!
+    nickname: String
+    player: Player!
+    role: String
+    scores(after: String, before: String, first: Int, last: Int, orderBy: ScoreOrderByInput, skip: Int, where: ScoreWhereInput): [Score!]
+    tournament: Tournament!
+}
+
+type TournamentPlayerConnection {
+    aggregate: AggregateTournamentPlayer!
+    edges: [TournamentPlayerEdge]!
+    pageInfo: PageInfo!
+}
+
+type TournamentPlayerEdge {
+    cursor: String!
+    node: TournamentPlayer!
+}
+
+type TournamentPlayerPreviousValues {
+    id: ID!
+    nickname: String
+    role: String
+}
+
+type TournamentPlayerSubscriptionPayload {
+    mutation: MutationType!
+    node: TournamentPlayer
+    previousValues: TournamentPlayerPreviousValues
+    updatedFields: [String!]
+}
+
+type TournamentPreviousValues {
+    createdAt: DateTime!
+    endDate: DateTime
+    id: ID!
+    name: String!
+    notes: String
+    rules: String
+    startDate: DateTime
+}
+
+type TournamentSubscriptionPayload {
+    mutation: MutationType!
+    node: Tournament
+    previousValues: TournamentPreviousValues
+    updatedFields: [String!]
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+enum GameOrderByInput {
+    bgg_id_ASC
+    bgg_id_DESC
+    id_ASC
+    id_DESC
+    name_ASC
+    name_DESC
+    notes_ASC
+    notes_DESC
+}
+
+enum MutationType {
+    CREATED
+    DELETED
+    UPDATED
+}
+
+enum PlayerOrderByInput {
+    id_ASC
+    id_DESC
+    name_ASC
+    name_DESC
+    nickname_ASC
+    nickname_DESC
+    pic_ASC
+    pic_DESC
+}
+
+enum ScoreOrderByInput {
+    id_ASC
+    id_DESC
+    notes_ASC
+    notes_DESC
+    score_ASC
+    score_DESC
+}
+
+enum SessionOrderByInput {
+    createdAt_ASC
+    createdAt_DESC
+    id_ASC
+    id_DESC
+    name_ASC
+    name_DESC
+}
+
+enum TournamentOrderByInput {
+    createdAt_ASC
+    createdAt_DESC
+    endDate_ASC
+    endDate_DESC
+    id_ASC
+    id_DESC
+    name_ASC
+    name_DESC
+    notes_ASC
+    notes_DESC
+    rules_ASC
+    rules_DESC
+    startDate_ASC
+    startDate_DESC
+}
+
+enum TournamentPlayerOrderByInput {
+    id_ASC
+    id_DESC
+    nickname_ASC
+    nickname_DESC
+    role_ASC
+    role_DESC
+}
+
+input GameCreateInput {
+    bgg_id: String
+    id: ID
+    name: String!
+    notes: String
+    sessions: SessionCreateManyWithoutGameInput
+}
+
+input GameCreateOneWithoutSessionsInput {
+    connect: GameWhereUniqueInput
+    create: GameCreateWithoutSessionsInput
+}
+
+input GameCreateWithoutSessionsInput {
+    bgg_id: String
+    id: ID
+    name: String!
+    notes: String
+}
+
+input GameSubscriptionWhereInput {
+    AND: [GameSubscriptionWhereInput!]
+    NOT: [GameSubscriptionWhereInput!]
+    OR: [GameSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: GameWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input GameUpdateInput {
+    bgg_id: String
+    name: String
+    notes: String
+    sessions: SessionUpdateManyWithoutGameInput
+}
+
+input GameUpdateManyMutationInput {
+    bgg_id: String
+    name: String
+    notes: String
+}
+
+input GameUpdateOneRequiredWithoutSessionsInput {
+    connect: GameWhereUniqueInput
+    create: GameCreateWithoutSessionsInput
+    update: GameUpdateWithoutSessionsDataInput
+    upsert: GameUpsertWithoutSessionsInput
+}
+
+input GameUpdateWithoutSessionsDataInput {
+    bgg_id: String
+    name: String
+    notes: String
+}
+
+input GameUpsertWithoutSessionsInput {
+    create: GameCreateWithoutSessionsInput!
+    update: GameUpdateWithoutSessionsDataInput!
+}
+
+input GameWhereInput {
+    AND: [GameWhereInput!]
+    NOT: [GameWhereInput!]
+    OR: [GameWhereInput!]
+    bgg_id: String
+    bgg_id_contains: String
+    bgg_id_ends_with: String
+    bgg_id_gt: String
+    bgg_id_gte: String
+    bgg_id_in: [String!]
+    bgg_id_lt: String
+    bgg_id_lte: String
+    bgg_id_not: String
+    bgg_id_not_contains: String
+    bgg_id_not_ends_with: String
+    bgg_id_not_in: [String!]
+    bgg_id_not_starts_with: String
+    bgg_id_starts_with: String
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    notes: String
+    notes_contains: String
+    notes_ends_with: String
+    notes_gt: String
+    notes_gte: String
+    notes_in: [String!]
+    notes_lt: String
+    notes_lte: String
+    notes_not: String
+    notes_not_contains: String
+    notes_not_ends_with: String
+    notes_not_in: [String!]
+    notes_not_starts_with: String
+    notes_starts_with: String
+    sessions_every: SessionWhereInput
+    sessions_none: SessionWhereInput
+    sessions_some: SessionWhereInput
+}
+
+input GameWhereUniqueInput {
+    id: ID
+}
+
+input PlayerCreateInput {
+    id: ID
+    name: String!
+    nickname: String
+    pic: String
+    tournaments: TournamentPlayerCreateManyWithoutPlayerInput
+}
+
+input PlayerCreateOneWithoutTournamentsInput {
+    connect: PlayerWhereUniqueInput
+    create: PlayerCreateWithoutTournamentsInput
+}
+
+input PlayerCreateWithoutTournamentsInput {
+    id: ID
+    name: String!
+    nickname: String
+    pic: String
+}
+
+input PlayerSubscriptionWhereInput {
+    AND: [PlayerSubscriptionWhereInput!]
+    NOT: [PlayerSubscriptionWhereInput!]
+    OR: [PlayerSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: PlayerWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input PlayerUpdateInput {
+    name: String
+    nickname: String
+    pic: String
+    tournaments: TournamentPlayerUpdateManyWithoutPlayerInput
+}
+
+input PlayerUpdateManyMutationInput {
+    name: String
+    nickname: String
+    pic: String
+}
+
+input PlayerUpdateOneRequiredWithoutTournamentsInput {
+    connect: PlayerWhereUniqueInput
+    create: PlayerCreateWithoutTournamentsInput
+    update: PlayerUpdateWithoutTournamentsDataInput
+    upsert: PlayerUpsertWithoutTournamentsInput
+}
+
+input PlayerUpdateWithoutTournamentsDataInput {
+    name: String
+    nickname: String
+    pic: String
+}
+
+input PlayerUpsertWithoutTournamentsInput {
+    create: PlayerCreateWithoutTournamentsInput!
+    update: PlayerUpdateWithoutTournamentsDataInput!
+}
+
+input PlayerWhereInput {
+    AND: [PlayerWhereInput!]
+    NOT: [PlayerWhereInput!]
+    OR: [PlayerWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    nickname: String
+    nickname_contains: String
+    nickname_ends_with: String
+    nickname_gt: String
+    nickname_gte: String
+    nickname_in: [String!]
+    nickname_lt: String
+    nickname_lte: String
+    nickname_not: String
+    nickname_not_contains: String
+    nickname_not_ends_with: String
+    nickname_not_in: [String!]
+    nickname_not_starts_with: String
+    nickname_starts_with: String
+    pic: String
+    pic_contains: String
+    pic_ends_with: String
+    pic_gt: String
+    pic_gte: String
+    pic_in: [String!]
+    pic_lt: String
+    pic_lte: String
+    pic_not: String
+    pic_not_contains: String
+    pic_not_ends_with: String
+    pic_not_in: [String!]
+    pic_not_starts_with: String
+    pic_starts_with: String
+    tournaments_every: TournamentPlayerWhereInput
+    tournaments_none: TournamentPlayerWhereInput
+    tournaments_some: TournamentPlayerWhereInput
+}
+
+input PlayerWhereUniqueInput {
+    id: ID
+}
+
+input ScoreCreateInput {
+    id: ID
+    notes: String
+    player: TournamentPlayerCreateOneWithoutScoresInput!
+    score: Int
+    session: SessionCreateOneWithoutScoresInput!
+}
+
+input ScoreCreateManyWithoutPlayerInput {
+    connect: [ScoreWhereUniqueInput!]
+    create: [ScoreCreateWithoutPlayerInput!]
+}
+
+input ScoreCreateManyWithoutSessionInput {
+    connect: [ScoreWhereUniqueInput!]
+    create: [ScoreCreateWithoutSessionInput!]
+}
+
+input ScoreCreateWithoutPlayerInput {
+    id: ID
+    notes: String
+    score: Int
+    session: SessionCreateOneWithoutScoresInput!
+}
+
+input ScoreCreateWithoutSessionInput {
+    id: ID
+    notes: String
+    player: TournamentPlayerCreateOneWithoutScoresInput!
+    score: Int
+}
+
+input ScoreScalarWhereInput {
+    AND: [ScoreScalarWhereInput!]
+    NOT: [ScoreScalarWhereInput!]
+    OR: [ScoreScalarWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    notes: String
+    notes_contains: String
+    notes_ends_with: String
+    notes_gt: String
+    notes_gte: String
+    notes_in: [String!]
+    notes_lt: String
+    notes_lte: String
+    notes_not: String
+    notes_not_contains: String
+    notes_not_ends_with: String
+    notes_not_in: [String!]
+    notes_not_starts_with: String
+    notes_starts_with: String
+    score: Int
+    score_gt: Int
+    score_gte: Int
+    score_in: [Int!]
+    score_lt: Int
+    score_lte: Int
+    score_not: Int
+    score_not_in: [Int!]
+}
+
+input ScoreSubscriptionWhereInput {
+    AND: [ScoreSubscriptionWhereInput!]
+    NOT: [ScoreSubscriptionWhereInput!]
+    OR: [ScoreSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: ScoreWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input ScoreUpdateInput {
+    notes: String
+    player: TournamentPlayerUpdateOneRequiredWithoutScoresInput
+    score: Int
+    session: SessionUpdateOneRequiredWithoutScoresInput
+}
+
+input ScoreUpdateManyDataInput {
+    notes: String
+    score: Int
+}
+
+input ScoreUpdateManyMutationInput {
+    notes: String
+    score: Int
+}
+
+input ScoreUpdateManyWithWhereNestedInput {
+    data: ScoreUpdateManyDataInput!
+    where: ScoreScalarWhereInput!
+}
+
+input ScoreUpdateManyWithoutPlayerInput {
+    connect: [ScoreWhereUniqueInput!]
+    create: [ScoreCreateWithoutPlayerInput!]
+    delete: [ScoreWhereUniqueInput!]
+    deleteMany: [ScoreScalarWhereInput!]
+    disconnect: [ScoreWhereUniqueInput!]
+    set: [ScoreWhereUniqueInput!]
+    update: [ScoreUpdateWithWhereUniqueWithoutPlayerInput!]
+    updateMany: [ScoreUpdateManyWithWhereNestedInput!]
+    upsert: [ScoreUpsertWithWhereUniqueWithoutPlayerInput!]
+}
+
+input ScoreUpdateManyWithoutSessionInput {
+    connect: [ScoreWhereUniqueInput!]
+    create: [ScoreCreateWithoutSessionInput!]
+    delete: [ScoreWhereUniqueInput!]
+    deleteMany: [ScoreScalarWhereInput!]
+    disconnect: [ScoreWhereUniqueInput!]
+    set: [ScoreWhereUniqueInput!]
+    update: [ScoreUpdateWithWhereUniqueWithoutSessionInput!]
+    updateMany: [ScoreUpdateManyWithWhereNestedInput!]
+    upsert: [ScoreUpsertWithWhereUniqueWithoutSessionInput!]
+}
+
+input ScoreUpdateWithWhereUniqueWithoutPlayerInput {
+    data: ScoreUpdateWithoutPlayerDataInput!
+    where: ScoreWhereUniqueInput!
+}
+
+input ScoreUpdateWithWhereUniqueWithoutSessionInput {
+    data: ScoreUpdateWithoutSessionDataInput!
+    where: ScoreWhereUniqueInput!
+}
+
+input ScoreUpdateWithoutPlayerDataInput {
+    notes: String
+    score: Int
+    session: SessionUpdateOneRequiredWithoutScoresInput
+}
+
+input ScoreUpdateWithoutSessionDataInput {
+    notes: String
+    player: TournamentPlayerUpdateOneRequiredWithoutScoresInput
+    score: Int
+}
+
+input ScoreUpsertWithWhereUniqueWithoutPlayerInput {
+    create: ScoreCreateWithoutPlayerInput!
+    update: ScoreUpdateWithoutPlayerDataInput!
+    where: ScoreWhereUniqueInput!
+}
+
+input ScoreUpsertWithWhereUniqueWithoutSessionInput {
+    create: ScoreCreateWithoutSessionInput!
+    update: ScoreUpdateWithoutSessionDataInput!
+    where: ScoreWhereUniqueInput!
+}
+
+input ScoreWhereInput {
+    AND: [ScoreWhereInput!]
+    NOT: [ScoreWhereInput!]
+    OR: [ScoreWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    notes: String
+    notes_contains: String
+    notes_ends_with: String
+    notes_gt: String
+    notes_gte: String
+    notes_in: [String!]
+    notes_lt: String
+    notes_lte: String
+    notes_not: String
+    notes_not_contains: String
+    notes_not_ends_with: String
+    notes_not_in: [String!]
+    notes_not_starts_with: String
+    notes_starts_with: String
+    player: TournamentPlayerWhereInput
+    score: Int
+    score_gt: Int
+    score_gte: Int
+    score_in: [Int!]
+    score_lt: Int
+    score_lte: Int
+    score_not: Int
+    score_not_in: [Int!]
+    session: SessionWhereInput
+}
+
+input ScoreWhereUniqueInput {
+    id: ID
+}
+
+input SessionCreateInput {
+    game: GameCreateOneWithoutSessionsInput!
+    id: ID
+    name: String!
+    scores: ScoreCreateManyWithoutSessionInput
+    tournament: TournamentCreateOneWithoutSessionsInput!
+}
+
+input SessionCreateManyWithoutGameInput {
+    connect: [SessionWhereUniqueInput!]
+    create: [SessionCreateWithoutGameInput!]
+}
+
+input SessionCreateManyWithoutTournamentInput {
+    connect: [SessionWhereUniqueInput!]
+    create: [SessionCreateWithoutTournamentInput!]
+}
+
+input SessionCreateOneWithoutScoresInput {
+    connect: SessionWhereUniqueInput
+    create: SessionCreateWithoutScoresInput
+}
+
+input SessionCreateWithoutGameInput {
+    id: ID
+    name: String!
+    scores: ScoreCreateManyWithoutSessionInput
+    tournament: TournamentCreateOneWithoutSessionsInput!
+}
+
+input SessionCreateWithoutScoresInput {
+    game: GameCreateOneWithoutSessionsInput!
+    id: ID
+    name: String!
+    tournament: TournamentCreateOneWithoutSessionsInput!
+}
+
+input SessionCreateWithoutTournamentInput {
+    game: GameCreateOneWithoutSessionsInput!
+    id: ID
+    name: String!
+    scores: ScoreCreateManyWithoutSessionInput
+}
+
+input SessionScalarWhereInput {
+    AND: [SessionScalarWhereInput!]
+    NOT: [SessionScalarWhereInput!]
+    OR: [SessionScalarWhereInput!]
+    createdAt: DateTime
+    createdAt_gt: DateTime
+    createdAt_gte: DateTime
+    createdAt_in: [DateTime!]
+    createdAt_lt: DateTime
+    createdAt_lte: DateTime
+    createdAt_not: DateTime
+    createdAt_not_in: [DateTime!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+}
+
+input SessionSubscriptionWhereInput {
+    AND: [SessionSubscriptionWhereInput!]
+    NOT: [SessionSubscriptionWhereInput!]
+    OR: [SessionSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: SessionWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input SessionUpdateInput {
+    game: GameUpdateOneRequiredWithoutSessionsInput
+    name: String
+    scores: ScoreUpdateManyWithoutSessionInput
+    tournament: TournamentUpdateOneRequiredWithoutSessionsInput
+}
+
+input SessionUpdateManyDataInput {
+    name: String
+}
+
+input SessionUpdateManyMutationInput {
+    name: String
+}
+
+input SessionUpdateManyWithWhereNestedInput {
+    data: SessionUpdateManyDataInput!
+    where: SessionScalarWhereInput!
+}
+
+input SessionUpdateManyWithoutGameInput {
+    connect: [SessionWhereUniqueInput!]
+    create: [SessionCreateWithoutGameInput!]
+    delete: [SessionWhereUniqueInput!]
+    deleteMany: [SessionScalarWhereInput!]
+    disconnect: [SessionWhereUniqueInput!]
+    set: [SessionWhereUniqueInput!]
+    update: [SessionUpdateWithWhereUniqueWithoutGameInput!]
+    updateMany: [SessionUpdateManyWithWhereNestedInput!]
+    upsert: [SessionUpsertWithWhereUniqueWithoutGameInput!]
+}
+
+input SessionUpdateManyWithoutTournamentInput {
+    connect: [SessionWhereUniqueInput!]
+    create: [SessionCreateWithoutTournamentInput!]
+    delete: [SessionWhereUniqueInput!]
+    deleteMany: [SessionScalarWhereInput!]
+    disconnect: [SessionWhereUniqueInput!]
+    set: [SessionWhereUniqueInput!]
+    update: [SessionUpdateWithWhereUniqueWithoutTournamentInput!]
+    updateMany: [SessionUpdateManyWithWhereNestedInput!]
+    upsert: [SessionUpsertWithWhereUniqueWithoutTournamentInput!]
+}
+
+input SessionUpdateOneRequiredWithoutScoresInput {
+    connect: SessionWhereUniqueInput
+    create: SessionCreateWithoutScoresInput
+    update: SessionUpdateWithoutScoresDataInput
+    upsert: SessionUpsertWithoutScoresInput
+}
+
+input SessionUpdateWithWhereUniqueWithoutGameInput {
+    data: SessionUpdateWithoutGameDataInput!
+    where: SessionWhereUniqueInput!
+}
+
+input SessionUpdateWithWhereUniqueWithoutTournamentInput {
+    data: SessionUpdateWithoutTournamentDataInput!
+    where: SessionWhereUniqueInput!
+}
+
+input SessionUpdateWithoutGameDataInput {
+    name: String
+    scores: ScoreUpdateManyWithoutSessionInput
+    tournament: TournamentUpdateOneRequiredWithoutSessionsInput
+}
+
+input SessionUpdateWithoutScoresDataInput {
+    game: GameUpdateOneRequiredWithoutSessionsInput
+    name: String
+    tournament: TournamentUpdateOneRequiredWithoutSessionsInput
+}
+
+input SessionUpdateWithoutTournamentDataInput {
+    game: GameUpdateOneRequiredWithoutSessionsInput
+    name: String
+    scores: ScoreUpdateManyWithoutSessionInput
+}
+
+input SessionUpsertWithWhereUniqueWithoutGameInput {
+    create: SessionCreateWithoutGameInput!
+    update: SessionUpdateWithoutGameDataInput!
+    where: SessionWhereUniqueInput!
+}
+
+input SessionUpsertWithWhereUniqueWithoutTournamentInput {
+    create: SessionCreateWithoutTournamentInput!
+    update: SessionUpdateWithoutTournamentDataInput!
+    where: SessionWhereUniqueInput!
+}
+
+input SessionUpsertWithoutScoresInput {
+    create: SessionCreateWithoutScoresInput!
+    update: SessionUpdateWithoutScoresDataInput!
+}
+
+input SessionWhereInput {
+    AND: [SessionWhereInput!]
+    NOT: [SessionWhereInput!]
+    OR: [SessionWhereInput!]
+    createdAt: DateTime
+    createdAt_gt: DateTime
+    createdAt_gte: DateTime
+    createdAt_in: [DateTime!]
+    createdAt_lt: DateTime
+    createdAt_lte: DateTime
+    createdAt_not: DateTime
+    createdAt_not_in: [DateTime!]
+    game: GameWhereInput
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    scores_every: ScoreWhereInput
+    scores_none: ScoreWhereInput
+    scores_some: ScoreWhereInput
+    tournament: TournamentWhereInput
+}
+
+input SessionWhereUniqueInput {
+    id: ID
+}
+
+input TournamentCreateInput {
+    endDate: DateTime
+    id: ID
+    name: String!
+    notes: String
+    players: TournamentPlayerCreateManyWithoutTournamentInput
+    rules: String
+    sessions: SessionCreateManyWithoutTournamentInput
+    startDate: DateTime
+}
+
+input TournamentCreateOneWithoutPlayersInput {
+    connect: TournamentWhereUniqueInput
+    create: TournamentCreateWithoutPlayersInput
+}
+
+input TournamentCreateOneWithoutSessionsInput {
+    connect: TournamentWhereUniqueInput
+    create: TournamentCreateWithoutSessionsInput
+}
+
+input TournamentCreateWithoutPlayersInput {
+    endDate: DateTime
+    id: ID
+    name: String!
+    notes: String
+    rules: String
+    sessions: SessionCreateManyWithoutTournamentInput
+    startDate: DateTime
+}
+
+input TournamentCreateWithoutSessionsInput {
+    endDate: DateTime
+    id: ID
+    name: String!
+    notes: String
+    players: TournamentPlayerCreateManyWithoutTournamentInput
+    rules: String
+    startDate: DateTime
+}
+
+input TournamentPlayerCreateInput {
+    id: ID
+    nickname: String
+    player: PlayerCreateOneWithoutTournamentsInput!
+    role: String
+    scores: ScoreCreateManyWithoutPlayerInput
+    tournament: TournamentCreateOneWithoutPlayersInput!
+}
+
+input TournamentPlayerCreateManyWithoutPlayerInput {
+    connect: [TournamentPlayerWhereUniqueInput!]
+    create: [TournamentPlayerCreateWithoutPlayerInput!]
+}
+
+input TournamentPlayerCreateManyWithoutTournamentInput {
+    connect: [TournamentPlayerWhereUniqueInput!]
+    create: [TournamentPlayerCreateWithoutTournamentInput!]
+}
+
+input TournamentPlayerCreateOneWithoutScoresInput {
+    connect: TournamentPlayerWhereUniqueInput
+    create: TournamentPlayerCreateWithoutScoresInput
+}
+
+input TournamentPlayerCreateWithoutPlayerInput {
+    id: ID
+    nickname: String
+    role: String
+    scores: ScoreCreateManyWithoutPlayerInput
+    tournament: TournamentCreateOneWithoutPlayersInput!
+}
+
+input TournamentPlayerCreateWithoutScoresInput {
+    id: ID
+    nickname: String
+    player: PlayerCreateOneWithoutTournamentsInput!
+    role: String
+    tournament: TournamentCreateOneWithoutPlayersInput!
+}
+
+input TournamentPlayerCreateWithoutTournamentInput {
+    id: ID
+    nickname: String
+    player: PlayerCreateOneWithoutTournamentsInput!
+    role: String
+    scores: ScoreCreateManyWithoutPlayerInput
+}
+
+input TournamentPlayerScalarWhereInput {
+    AND: [TournamentPlayerScalarWhereInput!]
+    NOT: [TournamentPlayerScalarWhereInput!]
+    OR: [TournamentPlayerScalarWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    nickname: String
+    nickname_contains: String
+    nickname_ends_with: String
+    nickname_gt: String
+    nickname_gte: String
+    nickname_in: [String!]
+    nickname_lt: String
+    nickname_lte: String
+    nickname_not: String
+    nickname_not_contains: String
+    nickname_not_ends_with: String
+    nickname_not_in: [String!]
+    nickname_not_starts_with: String
+    nickname_starts_with: String
+    role: String
+    role_contains: String
+    role_ends_with: String
+    role_gt: String
+    role_gte: String
+    role_in: [String!]
+    role_lt: String
+    role_lte: String
+    role_not: String
+    role_not_contains: String
+    role_not_ends_with: String
+    role_not_in: [String!]
+    role_not_starts_with: String
+    role_starts_with: String
+}
+
+input TournamentPlayerSubscriptionWhereInput {
+    AND: [TournamentPlayerSubscriptionWhereInput!]
+    NOT: [TournamentPlayerSubscriptionWhereInput!]
+    OR: [TournamentPlayerSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: TournamentPlayerWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input TournamentPlayerUpdateInput {
+    nickname: String
+    player: PlayerUpdateOneRequiredWithoutTournamentsInput
+    role: String
+    scores: ScoreUpdateManyWithoutPlayerInput
+    tournament: TournamentUpdateOneRequiredWithoutPlayersInput
+}
+
+input TournamentPlayerUpdateManyDataInput {
+    nickname: String
+    role: String
+}
+
+input TournamentPlayerUpdateManyMutationInput {
+    nickname: String
+    role: String
+}
+
+input TournamentPlayerUpdateManyWithWhereNestedInput {
+    data: TournamentPlayerUpdateManyDataInput!
+    where: TournamentPlayerScalarWhereInput!
+}
+
+input TournamentPlayerUpdateManyWithoutPlayerInput {
+    connect: [TournamentPlayerWhereUniqueInput!]
+    create: [TournamentPlayerCreateWithoutPlayerInput!]
+    delete: [TournamentPlayerWhereUniqueInput!]
+    deleteMany: [TournamentPlayerScalarWhereInput!]
+    disconnect: [TournamentPlayerWhereUniqueInput!]
+    set: [TournamentPlayerWhereUniqueInput!]
+    update: [TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput!]
+    updateMany: [TournamentPlayerUpdateManyWithWhereNestedInput!]
+    upsert: [TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput!]
+}
+
+input TournamentPlayerUpdateManyWithoutTournamentInput {
+    connect: [TournamentPlayerWhereUniqueInput!]
+    create: [TournamentPlayerCreateWithoutTournamentInput!]
+    delete: [TournamentPlayerWhereUniqueInput!]
+    deleteMany: [TournamentPlayerScalarWhereInput!]
+    disconnect: [TournamentPlayerWhereUniqueInput!]
+    set: [TournamentPlayerWhereUniqueInput!]
+    update: [TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput!]
+    updateMany: [TournamentPlayerUpdateManyWithWhereNestedInput!]
+    upsert: [TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput!]
+}
+
+input TournamentPlayerUpdateOneRequiredWithoutScoresInput {
+    connect: TournamentPlayerWhereUniqueInput
+    create: TournamentPlayerCreateWithoutScoresInput
+    update: TournamentPlayerUpdateWithoutScoresDataInput
+    upsert: TournamentPlayerUpsertWithoutScoresInput
+}
+
+input TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput {
+    data: TournamentPlayerUpdateWithoutPlayerDataInput!
+    where: TournamentPlayerWhereUniqueInput!
+}
+
+input TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput {
+    data: TournamentPlayerUpdateWithoutTournamentDataInput!
+    where: TournamentPlayerWhereUniqueInput!
+}
+
+input TournamentPlayerUpdateWithoutPlayerDataInput {
+    nickname: String
+    role: String
+    scores: ScoreUpdateManyWithoutPlayerInput
+    tournament: TournamentUpdateOneRequiredWithoutPlayersInput
+}
+
+input TournamentPlayerUpdateWithoutScoresDataInput {
+    nickname: String
+    player: PlayerUpdateOneRequiredWithoutTournamentsInput
+    role: String
+    tournament: TournamentUpdateOneRequiredWithoutPlayersInput
+}
+
+input TournamentPlayerUpdateWithoutTournamentDataInput {
+    nickname: String
+    player: PlayerUpdateOneRequiredWithoutTournamentsInput
+    role: String
+    scores: ScoreUpdateManyWithoutPlayerInput
+}
+
+input TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput {
+    create: TournamentPlayerCreateWithoutPlayerInput!
+    update: TournamentPlayerUpdateWithoutPlayerDataInput!
+    where: TournamentPlayerWhereUniqueInput!
+}
+
+input TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput {
+    create: TournamentPlayerCreateWithoutTournamentInput!
+    update: TournamentPlayerUpdateWithoutTournamentDataInput!
+    where: TournamentPlayerWhereUniqueInput!
+}
+
+input TournamentPlayerUpsertWithoutScoresInput {
+    create: TournamentPlayerCreateWithoutScoresInput!
+    update: TournamentPlayerUpdateWithoutScoresDataInput!
+}
+
+input TournamentPlayerWhereInput {
+    AND: [TournamentPlayerWhereInput!]
+    NOT: [TournamentPlayerWhereInput!]
+    OR: [TournamentPlayerWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    nickname: String
+    nickname_contains: String
+    nickname_ends_with: String
+    nickname_gt: String
+    nickname_gte: String
+    nickname_in: [String!]
+    nickname_lt: String
+    nickname_lte: String
+    nickname_not: String
+    nickname_not_contains: String
+    nickname_not_ends_with: String
+    nickname_not_in: [String!]
+    nickname_not_starts_with: String
+    nickname_starts_with: String
+    player: PlayerWhereInput
+    role: String
+    role_contains: String
+    role_ends_with: String
+    role_gt: String
+    role_gte: String
+    role_in: [String!]
+    role_lt: String
+    role_lte: String
+    role_not: String
+    role_not_contains: String
+    role_not_ends_with: String
+    role_not_in: [String!]
+    role_not_starts_with: String
+    role_starts_with: String
+    scores_every: ScoreWhereInput
+    scores_none: ScoreWhereInput
+    scores_some: ScoreWhereInput
+    tournament: TournamentWhereInput
+}
+
+input TournamentPlayerWhereUniqueInput {
+    id: ID
+}
+
+input TournamentSubscriptionWhereInput {
+    AND: [TournamentSubscriptionWhereInput!]
+    NOT: [TournamentSubscriptionWhereInput!]
+    OR: [TournamentSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: TournamentWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input TournamentUpdateInput {
+    endDate: DateTime
+    name: String
+    notes: String
+    players: TournamentPlayerUpdateManyWithoutTournamentInput
+    rules: String
+    sessions: SessionUpdateManyWithoutTournamentInput
+    startDate: DateTime
+}
+
+input TournamentUpdateManyMutationInput {
+    endDate: DateTime
+    name: String
+    notes: String
+    rules: String
+    startDate: DateTime
+}
+
+input TournamentUpdateOneRequiredWithoutPlayersInput {
+    connect: TournamentWhereUniqueInput
+    create: TournamentCreateWithoutPlayersInput
+    update: TournamentUpdateWithoutPlayersDataInput
+    upsert: TournamentUpsertWithoutPlayersInput
+}
+
+input TournamentUpdateOneRequiredWithoutSessionsInput {
+    connect: TournamentWhereUniqueInput
+    create: TournamentCreateWithoutSessionsInput
+    update: TournamentUpdateWithoutSessionsDataInput
+    upsert: TournamentUpsertWithoutSessionsInput
+}
+
+input TournamentUpdateWithoutPlayersDataInput {
+    endDate: DateTime
+    name: String
+    notes: String
+    rules: String
+    sessions: SessionUpdateManyWithoutTournamentInput
+    startDate: DateTime
+}
+
+input TournamentUpdateWithoutSessionsDataInput {
+    endDate: DateTime
+    name: String
+    notes: String
+    players: TournamentPlayerUpdateManyWithoutTournamentInput
+    rules: String
+    startDate: DateTime
+}
+
+input TournamentUpsertWithoutPlayersInput {
+    create: TournamentCreateWithoutPlayersInput!
+    update: TournamentUpdateWithoutPlayersDataInput!
+}
+
+input TournamentUpsertWithoutSessionsInput {
+    create: TournamentCreateWithoutSessionsInput!
+    update: TournamentUpdateWithoutSessionsDataInput!
+}
+
+input TournamentWhereInput {
+    AND: [TournamentWhereInput!]
+    NOT: [TournamentWhereInput!]
+    OR: [TournamentWhereInput!]
+    createdAt: DateTime
+    createdAt_gt: DateTime
+    createdAt_gte: DateTime
+    createdAt_in: [DateTime!]
+    createdAt_lt: DateTime
+    createdAt_lte: DateTime
+    createdAt_not: DateTime
+    createdAt_not_in: [DateTime!]
+    endDate: DateTime
+    endDate_gt: DateTime
+    endDate_gte: DateTime
+    endDate_in: [DateTime!]
+    endDate_lt: DateTime
+    endDate_lte: DateTime
+    endDate_not: DateTime
+    endDate_not_in: [DateTime!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    notes: String
+    notes_contains: String
+    notes_ends_with: String
+    notes_gt: String
+    notes_gte: String
+    notes_in: [String!]
+    notes_lt: String
+    notes_lte: String
+    notes_not: String
+    notes_not_contains: String
+    notes_not_ends_with: String
+    notes_not_in: [String!]
+    notes_not_starts_with: String
+    notes_starts_with: String
+    players_every: TournamentPlayerWhereInput
+    players_none: TournamentPlayerWhereInput
+    players_some: TournamentPlayerWhereInput
+    rules: String
+    rules_contains: String
+    rules_ends_with: String
+    rules_gt: String
+    rules_gte: String
+    rules_in: [String!]
+    rules_lt: String
+    rules_lte: String
+    rules_not: String
+    rules_not_contains: String
+    rules_not_ends_with: String
+    rules_not_in: [String!]
+    rules_not_starts_with: String
+    rules_starts_with: String
+    sessions_every: SessionWhereInput
+    sessions_none: SessionWhereInput
+    sessions_some: SessionWhereInput
+    startDate: DateTime
+    startDate_gt: DateTime
+    startDate_gte: DateTime
+    startDate_in: [DateTime!]
+    startDate_lt: DateTime
+    startDate_lte: DateTime
+    startDate_not: DateTime
+    startDate_not_in: [DateTime!]
+}
+
+input TournamentWhereUniqueInput {
+    id: ID
+}
+
+
+scalar DateTime
+
+scalar Long
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

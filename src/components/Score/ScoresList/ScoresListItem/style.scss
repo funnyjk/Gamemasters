@@ -1,0 +1,6 @@
+.score-list--item {
+  display: grid;
+  grid-template-columns: 50px auto;
+}
+.score-list--item--score {grid-column: 1}
+.score-list--item--name {grid-column: 2}

@@ -1,0 +1,59 @@
+{
+  "name": "gamemasters",
+  "version": "1.0.0",
+  "description": "Game tracker",
+  "main": "index.js",
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "apollo-cache-inmemory": "^1.6.5",
+    "graphql.macro": "^1.4.2",
+    "lodash": "^4.17.15",
+    "prisma": "^1.34.10",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
+    "typescript": "^3.7.5",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@apollo/react-hooks": "^3.1.3",
+    "@graphql-codegen/cli": "^1.12.1",
+    "@graphql-codegen/introspection": "1.12.1",
+    "@graphql-codegen/typescript": "^1.12.1",
+    "@graphql-codegen/typescript-graphql-files-modules": "^1.12.1",
+    "@graphql-codegen/typescript-operations": "1.12.1",
+    "@graphql-codegen/typescript-react-apollo": "1.12.1",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "@types/react-router-dom": "^5.1.3",
+    "apollo-boost": "^0.4.7",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.13.1",
+    "path": "^0.12.7",
+    "sass-loader": "^8.0.2",
+    "ts-loader": "^6.2.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack:dev": "webpack-dev-server --config webpack.config.js",
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funnyjk/Gamemasters.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/funnyjk/Gamemasters/issues"
+  },
+  "homepage": "https://github.com/funnyjk/Gamemasters#readme"
+}

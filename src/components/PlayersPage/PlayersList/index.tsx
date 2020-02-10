@@ -3,13 +3,12 @@ import {useMutation, useQuery} from '@apollo/react-hooks';
 import Card from "../Player/Card";
 
 
-import {getPlayers, createPlayer} from '../../../graphql/Players.graphql';
+import {getPlayers} from '../../../graphql/Players.graphql';
 import {Link, useHistory, useRouteMatch} from "react-router-dom";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
+import {CREATE_PLAYER} from "../../../graphql/Players";
 
 export const GET_PLAYERS = getPlayers;
-
-const CREATE_PLAYER = createPlayer;
 
 interface IPlayerQuery {
   loading: any;

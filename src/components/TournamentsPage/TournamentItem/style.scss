@@ -1,0 +1,9 @@
+.tournament-item--tournament-player-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tournament-item--tournament-player-list--item {
+  display: inline-flex;
+}

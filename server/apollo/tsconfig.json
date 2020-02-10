@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "module": "commonjs",
+    "baseUrl": "."
+  },
+  "include": [
+    "index.ts"
+  ],
+  "exclude": [
+    "generator"
+  ]
+}

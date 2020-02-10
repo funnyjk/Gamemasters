@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "baseUrl": "."
+  },
+  "include": [
+    "src",
+    "src/**/*"
+  ],
+  "files": [
+    "@types/graphql.d.ts"
+  ],
+  "exclude": [
+    "generator"
+  ]
+}

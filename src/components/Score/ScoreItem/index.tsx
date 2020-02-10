@@ -11,7 +11,10 @@ interface IScoreItem {
 const ScoreItem = ({}: IScoreItem) => {
   const [score, setScore] = useState({
     id: "",
-    player:{name:""},
+    player: {
+      id: "",
+      player: {name:""}
+    },
     score: 0
   });
 
@@ -28,11 +31,11 @@ const ScoreItem = ({}: IScoreItem) => {
   }, [data]);
 
   if(!data) return <div>Not Found</div>;
+  const {player} = score.player;
   return <div>
-    {score?.player.name}:
+    {player.name}
     <UpdateScore score={score}/>
     <DeleteScore/>
-    <pre>{JSON.stringify(score, null, 2)}</pre>
   </div>
 };
 

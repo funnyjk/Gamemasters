@@ -1,0 +1,6 @@
+query TournamentsNames {
+    tournaments {
+        id
+        name
+    }
+}

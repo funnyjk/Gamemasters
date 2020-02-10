@@ -1,0 +1,41 @@
+query  getPlayers {
+    players {
+        id
+        name
+        pic
+        tournaments {
+            tournament {
+                id
+                name
+            }
+        }
+    }
+}
+
+query getPlayersName {
+    players {
+        id
+        name
+        nickname
+    }
+}
+
+
+query getPlayer($playerId: ID) {
+    player(where:{id: $playerId}) {
+        id
+        name
+        pic
+    }
+}
+
+mutation setPlayer($playerData: PlayerUpdateInput!, $playerID: ID) {
+updatePlayer(
+    data: $playerData
+    where: {id: $playerID}
+    ) {
+    id
+    name
+    pic
+    }
+}

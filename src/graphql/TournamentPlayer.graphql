@@ -1,0 +1,24 @@
+mutation createTournamentPlayer($playerId: ID!, $tournamentId: ID!) {
+    createTournamentPlayer(
+        data: {
+            player: {connect: {id: $playerId}},
+            tournament: {connect: {id: $tournamentId}}
+        }
+    ) {
+        id
+        player {
+            id
+            name
+        }
+    }
+}
+
+mutation deleteTournamentPlayer($tournamentPlayerId: ID!) {
+    deleteTournamentPlayer(
+        where: {
+            id: $tournamentPlayerId
+        }
+    ) {
+        id
+    }
+}

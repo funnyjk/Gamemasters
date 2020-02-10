@@ -5,6 +5,7 @@ import {Player} from "../../../../server/database/generated/prisma";
 import {getPlayers} from "../../../graphql/Players.graphql";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import _ from "lodash";
+import {GET_SESSION} from "../../../graphql/Session";
 
 interface ICreateTournamentPlayer {
   tournament: any;
@@ -31,17 +32,23 @@ const CreateTournamentPlayer = ({tournament, playerList}: ICreateTournamentPlaye
           data
         });
       },
-      refetchQueries: [{query: getPlayers}]
+      refetchQueries: [{query: getPlayers}, {query: GET_TOURNAMENTS}]
     });
-  const addPlayerToTournament = () => tournamentPlayer({variables: {playerId: player.id, tournamentId: tournament.id}});
 
   const [player, setPlayer] = useState({} as Player);
+
+  const addPlayerToTournament = () => {
+    tournamentPlayer({variables: {playerId: player.id, tournamentId: tournament.id}});
+    setPlayer({} as Player)
+  }
+
   const SetPlayerId = ({target}: any) => {
     const {value} = target;
     setPlayer(playerList[value]);
   };
   return <div>
-    <select onChange={SetPlayerId} defaultValue={""}>
+    <pre>{JSON.stringify(playerList, null, 2)}</pre>
+    <select onChange={SetPlayerId} value={""}>
       <option disabled={true} value={""}>Select Player</option>
       {playerList?.map((playerFromList: any, key: any) => {
         return <option value={key} key={playerFromList.id}>{playerFromList.name}</option>
