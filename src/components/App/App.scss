@@ -1,7 +1,8 @@
+@import 'muicss/lib/sass/mui';
+
 //.App {
 //  //text-align: center;
-//  background: #282c34;
-//  color: white;
+//  background: #E0E5EC;
 //}
 
 .App-logo {
@@ -40,69 +41,74 @@
 }
 
 
-.app--container {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-.app--grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
-  grid-template-rows: auto auto;
-  flex-grow: 1;
-  overflow-y: auto;
-
-}
+//.app--container {
+//  display: flex;
+//  flex-flow: column;
+//  height: 100%;
+//}
+//.app--grid {
+//  display: grid;
+//  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+//  grid-template-rows: auto auto;
+//  flex-grow: 1;
+//  overflow-y: auto;
+//
+//}
 .app--nav {
   display: flex;
   flex-direction: row;
-  list-style-type:none
+  list-style-type:none;
+  align-items: center;
 }
-
-.component--list {
-  grid-row: 2;
-  grid-column: auto;
+.component {
+  display: grid;
+  grid-template-columns: 300px auto;
+  //grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-rows: auto;
+}
+.component__list {
+  grid-row: 1;
+  grid-column: 1/end;
   overflow-y: auto;
   margin: 0 10px;
 }
-.component--nav {
+
+.component__list--sidebar {
+  @extend .component__list;
+  grid-column: 1;
+}
+
+.component__item {
   grid-row: 1;
-}
-
-.component--item {
-  grid-row: 2;
   grid-column: 2;
-}
-
-button, li > a{
-  display: inline-block;
-  background: inherit;
-  padding: 0.35em 1.2em;
-  border: 0.1em solid #FFFFFF;
-  margin: 0 0.3em 0.3em 0;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  color: black;
-  text-align: center;
-  transition: all 0.2s;
-}
-button:hover, li> a:hover {
- color: #000000;
- background-color: #FFFFFF;
 }
 
 a {
   &.active {
-  background: #61dafb;
-}
+      @extend .mui-btn--dark;
+  }
 }
 
-@media all and (max-width: 30em) {
-  button, li> a {
-  display: block;
-    margin: 0.4em auto;
-  }
+.item_page {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: auto;
+}
+.item_page__controls {
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+}
+.item_page_controls__item {
+  grid-column: 1;
+  align-self: center;
+}
+
+.item_page__controls__item--right {
+  @extend .item_page_controls__item;
+  grid-column: end;
+}
+
+.item_page__item {
+  grid-row: 2;
 }

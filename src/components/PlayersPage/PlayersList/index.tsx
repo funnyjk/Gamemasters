@@ -4,9 +4,11 @@ import Card from "../Player/Card";
 
 
 import {getPlayers} from '../../../graphql/Players.graphql';
-import {Link, useHistory, useRouteMatch} from "react-router-dom";
+import {Link, useHistory, useRouteMatch, useParams, useLocation} from "react-router-dom";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import {CREATE_PLAYER} from "../../../graphql/Players";
+import { Button } from 'muicss/react';
+import PlayerListItem from "./PlayerListItem";
 
 export const GET_PLAYERS = getPlayers;
 
@@ -18,7 +20,8 @@ interface IPlayerQuery {
 
 const PlayersList = () => {
   let history = useHistory();
-
+  const match = useRouteMatch();
+  const playerId = "";
   const {loading, error, data} = useQuery(GET_PLAYERS);
   const [createPlayer, createPlayerData] = useMutation(CREATE_PLAYER,
     {
@@ -36,15 +39,9 @@ const PlayersList = () => {
 
   return <React.Fragment>
     {data?.players.map((player: any, k: any) => {
-      return <Card key={player.id} player={player}>
-          {((player.tournaments.length)? <h4>Member of:</h4> : "")}
-          {player?.tournaments?.map(({tournament}: any, key: any) => {
-            return <button onClick={()=>history.push(`/tournaments/${tournament.id}`)} key={key}>{tournament.name}</button>
-            })
-          }
-
-
-        </Card>
+      return <Link key={k} to={`${match.path}/${player.id}`}>
+        <PlayerListItem  player={player}/>
+      </Link>
     })}
 
   </React.Fragment>;

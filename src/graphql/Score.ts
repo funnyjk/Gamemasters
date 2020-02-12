@@ -1,6 +1,31 @@
 import {gql} from "apollo-boost";
 import {ScoreUpdateInput, SessionUpdateInput} from "../../server/database/generated/prisma";
 
+const fragments = {
+    score: gql`
+        fragment ScoresListScore on Score {
+            id
+            score
+            player {
+                id
+                player {
+                    id
+                    name
+                }
+            }
+        }
+    `
+};
+
+export const GET_SCORES_SESSION = gql`
+    query getScoresSession($sessionId: ID!) {
+        scores(where: {session: {id: $sessionId}}) {
+            ...ScoresListScore
+        }
+    }
+    ${fragments.score}
+`;
+
 export interface GET_SCORE_VARS {
   scoreId: string;
 }
@@ -19,6 +44,7 @@ export const GET_SCORE = gql`
             player {
                 id
                 player {
+                    id
                     name
                 }
             }
@@ -37,10 +63,10 @@ export const UPDATE_SCORE = gql`
             data: $scoreData
             where: {id: $scoreId}
         ) {
-            id
-            score
+            ...ScoresListScore
         }
     }
+    ${fragments.score}
 `;
 
 export interface CREATE_SCORE_VARS {
@@ -55,10 +81,10 @@ export const CREATE_SCORE = gql`
                 session: {connect: {id: $sessionId}}
             }
         ) {
-            id
-            score
+            ...ScoresListScore
         }
     }
+    ${fragments.score}
 `;
 
 export interface DELETE_SCORE_VARS {

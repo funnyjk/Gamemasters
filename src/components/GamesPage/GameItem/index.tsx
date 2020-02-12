@@ -36,6 +36,7 @@ const GameItem = () => {
   if(!data) return <div>No Game</div>;
   const {game} = data;
   return <div>
+    <h3>{game.name}</h3>
     <MutationInput mutation={UPDATE_GAME} options={updateOptions} type={"text"} name={"name"} defaultValue={game.name} optionsData={"gameData"}/>
     <button onClick={()=>deleteGame({variables:{gameId}})}>Delete</button>
   </div>;

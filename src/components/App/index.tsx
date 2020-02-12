@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useReducer} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,31 +7,32 @@ import {
 } from "react-router-dom";
 // import logo from './logo.svg';
 import './App.scss';
+
+import 'muicss/lib/sass/mui';
+
 import HomePage from "../HomePage";
 import GamesPage from "../GamesPage";
 import TournamentsPage from "../TournamentsPage";
 import PlayersPage from "../PlayersPage";
 import Scores from "../Score";
 
+import {Button, Container, Appbar} from 'muicss/react';
+import AppTabs from "../AppTabs";
+
+import Context from '../../context/pageContext/context.ts';
+import reducer from '../../context/pageContext/reducer.ts';
+
 const App = () => {
+  const pageInitState = useContext(Context);
+  const [state, dispatch] = useReducer(reducer, pageInitState);
+
   return (
+    <Context.Provider value={{state, dispatch}}>
+
     <Router>
       <div className="app--container">
-        <nav className={"app--nav"}>
-          <li>
-            <NavLink exact={true} to={'/'}>Home</NavLink>
-          </li>
-          <li>
-            <NavLink to={'/players'}>Players</NavLink>
-          </li>
-          <li>
-            <NavLink to={'/tournaments'}>Tournaments</NavLink>
-          </li>
-          <li>
-            <NavLink to={'/games'}>Games</NavLink>
-          </li>
-        </nav>
-        <div className={"app--grid"}>
+          <AppTabs/>
+        <Container fluid={true} className={"app--grid"}>
         <Switch>
           <Route exact path="/" >
             <HomePage/>
@@ -46,9 +47,10 @@ const App = () => {
             <GamesPage/>
           </Route>
         </Switch>
-        </div>
+        </Container>
     </div>
     </Router>
+  </Context.Provider>
   );
 }
 

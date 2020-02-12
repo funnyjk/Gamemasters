@@ -13,8 +13,7 @@ const SessionsListItem = ({session}: ISessionsListItem) => {
   return <div>
     <h3>
       <Link to={{
-        pathname: `${match.url}/sessions`,
-        state: {session}
+        pathname: `${match.url}/${session.id}`
       }}>{session.name}</Link>
     </h3>
     {session.game?.name}

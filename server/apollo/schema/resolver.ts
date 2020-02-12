@@ -11,7 +11,7 @@ import {
   PlayerWhereInput,
   GameWhereUniqueInput,
   TournamentWhereUniqueInput,
-  SessionWhereInput, SessionWhereUniqueInput, ScoreWhereUniqueInput
+  SessionWhereInput, SessionWhereUniqueInput, ScoreWhereUniqueInput, TournamentPlayerWhereInput
 } from "../../database/generated/prisma";
 import {mutations} from "./mutations";
 import {Simulate} from "react-dom/test-utils";
@@ -27,7 +27,7 @@ export const resolvers = {
         const {id} = where;
         return prisma.player({id})
       },
-      tournamentPlayers: ()=> prisma.tournamentPlayers(),
+      tournamentPlayers: (_: any, {where}: {where: TournamentPlayerWhereInput})=> prisma.tournamentPlayers({where}),
       tournamentPlayer: (_: any, {where}: { where: TournamentWhereUniqueInput }) => prisma.tournamentPlayer(where),
       tournaments: () => prisma.tournaments(),
       tournament: (_: any, {where}: { where: TournamentWhereUniqueInput }) => prisma.tournament(where),

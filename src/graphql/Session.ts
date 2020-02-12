@@ -97,3 +97,11 @@ export const DELETE_SESSION = gql`
         }
     }
 `;
+
+export const SUBSCRIBE_SESSIONS = gql`
+  subscription sessionsChanged {
+      session(where: {mutation_in: [CREATED, DELETED, UPDATED]}) {
+          updatedFields
+      }
+  } 
+`;

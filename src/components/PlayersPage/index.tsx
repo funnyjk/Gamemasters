@@ -1,57 +1,43 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useRouteMatch,
-  useParams,
-  useHistory
+  useRouteMatch, useLocation,
 } from "react-router-dom";
 import Player from "./Player";
 import PlayersList, {GET_PLAYERS} from "./PlayersList";
-import {CREATE_PLAYER} from "../../graphql/Players";
-import {useMutation} from "@apollo/react-hooks";
-import {GET_TOURNAMENTS} from "../../graphql/Tournament";
+
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import CreatePlayer from "./CreatePlayer";
+import {setPage} from "../../context/pageContext/actions";
+import Context from "../../context/pageContext/context";
 
 
 const PlayersPage = () => {
-  const history = useHistory();
+  const {state} = useLocation();
+  const {dispatch} = useContext(Context);
+  useEffect(()=> {
+    dispatch(setPage("players"))
+  }, []);
 
   const match = useRouteMatch();
 
-  const [createPlayer] = useMutation(CREATE_PLAYER,
-    {
-      update(cache, {data: {createPlayer}}) {
-        const {players} = cache.readQuery({query: GET_PLAYERS});
-        cache.writeQuery({
-          query: GET_PLAYERS,
-          data: {players: players.concat([createPlayer])},
-        });
-        history.push(`/players/${createPlayer.id}`)
-      },
-      refetchQueries: [{query: GET_TOURNAMENTS}]
-    });
-  return <React.Fragment>
+  useDocumentTitle("Players");
+  const list_class = (state) ? "component__list" : "component__list--sidebar";
 
-    <div className={"component--nav"}>
-      <button onClick={() => createPlayer({variables: {playerName: "New Player"}})}>Add new player</button>
-    </div>
-
-    <div className={"component--list"}>
+  return <div className={"component"}>
+    <div className={`${list_class}`}>
       <PlayersList/>
     </div>
 
     <Switch>
   <Route path={`${match.path}/:playerId`}>
-    <div className={"component--item"}>
+    <div className={"component__item"}>
       <Player/>
     </div>
   </Route>
-  <Route path={match.path}>
-  </Route>
 </Switch>
-    </React.Fragment>;
+    </div>;
 };
 
 export default PlayersPage;

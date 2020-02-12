@@ -10,9 +10,10 @@ interface IMutationInput {
   defaultValue: any;
   label?: string;
   optionsData: string;
+  disabled?: boolean
 }
 
-const MutationInput = ({mutation, options, optionsData, type, name, defaultValue, label}: IMutationInput) => {
+const MutationInput = ({mutation, options, optionsData, type, name, defaultValue, label, disabled = false}: IMutationInput) => {
   const [inputValue, setInputValue] = useState("");
   const [doMutation] = useMutation(mutation, options);
   const onBlur = ({target}: any) => {
@@ -34,9 +35,7 @@ const MutationInput = ({mutation, options, optionsData, type, name, defaultValue
     setInputValue(defaultValue);
   }, [defaultValue]);
 
-  return <div>
-    <input name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} />
-  </div>
+  return <input name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} disabled={disabled}/>
 };
 
 export default MutationInput;

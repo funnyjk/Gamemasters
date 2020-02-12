@@ -14,7 +14,9 @@ interface IScores {
 const Scores = ({scores, tournament, session}: IScores) => {
   const [playersInTourn, setPlayersInTourn] = useState([]);
   const [playersInSession, setPlayersInSession] = useState([]);
+
   const match = useRouteMatch();
+
   useEffect(() => {
     const players_in_tournament = _.flatMap(tournament?.players).map((tournamentPlayer: any) => {
       return tournamentPlayer;
@@ -34,7 +36,6 @@ const Scores = ({scores, tournament, session}: IScores) => {
     <div className={"component--nav"}>
     </div>
     <CreateScore tournamentPlayers={playersInTourn} sessionPlayers={playersInSession}/>
-
     <Switch>
       <Route path={`${match.path}/:scoreId`}>
         <div className={"component--item"}>

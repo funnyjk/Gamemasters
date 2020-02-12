@@ -9,14 +9,14 @@ export const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-client.query({
-    fetchPolicy: "no-cache",
-    query: gql`
-        {
-            players {
-                name
-            }
-        }
-    `
-})
+// client.query({
+//     fetchPolicy: "no-cache",
+//     query: gql`
+//         {
+//             players {
+//                 name
+//             }
+//         }
+//     `
+// })
 // .then(result => console.log(result));

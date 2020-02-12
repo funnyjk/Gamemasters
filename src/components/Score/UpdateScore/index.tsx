@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import './styles';
 import {useMutation} from "@apollo/react-hooks";
-import {GET_SCORE, UPDATE_SCORE, UPDATE_SCORE_VARS} from "../../../graphql/Score";
+import {GET_SCORE, GET_SCORES_SESSION, UPDATE_SCORE, UPDATE_SCORE_VARS} from "../../../graphql/Score";
 import { useParams } from 'react-router-dom';
 
 interface IUpdateScore {
@@ -8,11 +9,9 @@ interface IUpdateScore {
 }
 
 const UpdateScore = ({score}: IUpdateScore) => {
-  const {scoreId} = useParams();
-
   const [scoreValue, setScoreValue] = useState(score.score || 0);
   const [updateScore] = useMutation<any, UPDATE_SCORE_VARS>(UPDATE_SCORE, {
-    // refetchQueries: [{query: GET_SCORE, variables:{scoreId}}]
+    refetchQueries: [{query: GET_SCORE, variables:{scoreId: score.id}}]
   });
 
   const changeScore = ({target}: any) => {
@@ -36,9 +35,7 @@ const UpdateScore = ({score}: IUpdateScore) => {
     setScoreValue(score.score);
   }, [score]);
 
-  return <div>
-    <input name="score" type={"number"} value={scoreValue || 0} onChange={inputScore} onBlur={changeScore}/>
-  </div>
+  return <input className={"update-score"} name="score" type={"number"} value={scoreValue || 0} onChange={inputScore} onBlur={changeScore}/>
 };
 
 export default UpdateScore;

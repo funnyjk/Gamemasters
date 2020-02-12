@@ -18,6 +18,10 @@ export const GET_GAME = gql`
     }
 `;
 
+
+export interface CREATE_GAME_VARS {
+    gameName: string;
+}
 export const CREATE_GAME = gql`
     mutation createGame($gameName: String!) {
         createGame(data: {name: $gameName}) {

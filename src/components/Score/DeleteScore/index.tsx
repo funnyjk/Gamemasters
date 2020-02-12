@@ -1,5 +1,5 @@
 import React from 'react';
-import {DELETE_SCORE} from "../../../graphql/Score";
+import {DELETE_SCORE, GET_SCORES_SESSION} from "../../../graphql/Score";
 import {useHistory, useParams} from "react-router-dom";
 import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
 import MutationButton from "../../MutationButton";
@@ -18,10 +18,10 @@ const DeleteScore = ({}: IDeleteScore) => {
       history.push(`/tournaments/${tournamentId}/${sessionId}`);
     },
     refetchQueries: [{
-      query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}
-    }, {
-      query: GET_SESSION, variables: {sessionId}, fetchPolicy: 'no-cache'
-    }],
+      query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}},
+      {query: GET_SESSION, variables: {sessionId}},
+      {query: GET_SCORES_SESSION, variables: {sessionId}}
+      ],
     variables: { scoreId }
   };
 

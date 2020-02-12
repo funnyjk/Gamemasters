@@ -4,7 +4,6 @@ import SessionsList from "./SessionsList";
 import SessionItem from "./SessionItem";
 import {Tournament} from "../../../server/database/generated/prisma";
 import CreateSession from "./CreateSession";
-import SessionSwitch from "./SessionSwitch";
 
 interface ISessions {
   tournament: Tournament;
@@ -13,37 +12,26 @@ interface ISessions {
 const Sessions = ({tournament}: ISessions) => {
   const match = useRouteMatch();
   const params = useParams();
-  return <React.Fragment>
+  return <div className={"component"}>
 
-    <div className={"component--nav"}>
+    <div className={"component__list"}>
+      <SessionsList tournament={tournament}/>
     </div>
 
     <Switch>
-      {/*<Route path={`${match.path}/:sessionId`}>*/}
-      {/*  <div className={"component--item"}>*/}
-      {/*    <Link to={`${match.url}`}>Sessions</Link>*/}
-      {/*    <SessionItem tournament={tournament}/>*/}
-      {/*  </div>*/}
-      {/*</Route>*/}
-      {/*<Route path={`${match.path}/sessions`}>*/}
-      {/*  <div className={"component--item"}>*/}
-      {/*    <Link to={`${match.url}`}>Sessions</Link>*/}
-      {/*    <SessionItem tournament={tournament}/>*/}
-      {/*  </div>*/}
-      {/*</Route>*/}
-      {/*<Route path={match.path}>*/}
-      {/*  <CreateSession tournament={tournament}/>*/}
-      {/*  <SessionsList tournament={tournament}/>*/}
-      {/*</Route>      */}
-
-
-      <Route path={`${match.path}`}>
-        <SessionSwitch tournament={tournament}/>
+      <Route path={`${match.path}/:sessionId`}>
+        <div className={"component__item"}>
+          <Link to={`${match.url}`}>Sessions</Link>
+          <SessionItem tournament={tournament}/>
+        </div>
       </Route>
-
-
+      <Route path={match.path}>
+        <div className={"component__item"}>
+          <CreateSession tournament={tournament}/>
+        </div>
+      </Route>
     </Switch>
-  </React.Fragment>;
+  </div>
 }
 
 export default Sessions;

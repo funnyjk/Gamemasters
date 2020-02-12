@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './style.scss';
 import {gql} from "apollo-boost";
 import {Link, useRouteMatch} from "react-router-dom";
+import { Panel } from 'muicss/react';
 
 const SET_PLAYER_NAME = gql`
     mutation SetPlayerName($playerName: String, $playerID: ID) {
@@ -39,7 +40,7 @@ const Card = ({player, children}:ICard) => {
   });
   const match = useRouteMatch();
 
-  return <article className="c-card c-card--wide">
+  return <Panel className="">
 
     <header className="c-card__header">
       {/*<img src={player?.pic || altPic } className="c-card__image" alt="Card Image"/>*/}
@@ -61,7 +62,7 @@ const Card = ({player, children}:ICard) => {
       Footer
     </footer>
 
-  </article>
+  </Panel>
 };
 
 export default React.memo(Card);

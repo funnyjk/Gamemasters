@@ -47,7 +47,6 @@ const CreateTournamentPlayer = ({tournament, playerList}: ICreateTournamentPlaye
     setPlayer(playerList[value]);
   };
   return <div>
-    <pre>{JSON.stringify(playerList, null, 2)}</pre>
     <select onChange={SetPlayerId} value={""}>
       <option disabled={true} value={""}>Select Player</option>
       {playerList?.map((playerFromList: any, key: any) => {

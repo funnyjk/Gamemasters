@@ -1,44 +1,39 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import TournamentsList from "./TournamentsList";
-import {Route, Switch, useRouteMatch} from "react-router-dom";
+import {Route, Switch, useRouteMatch, useParams, useLocation} from "react-router-dom";
 import TournamentItem from "./TournamentItem";
 import {useMutation} from "@apollo/react-hooks";
-import {CREATE_TOURNAMENT, CREATE_TOURNAMENT_VARS, GET_TOURNAMENTS} from "../../graphql/Tournament";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import CreateTournament from "./CreateTournament";
+import Context from "../../context/pageContext/context";
+import {setPage} from "../../context/pageContext/actions";
 
 const TournamentsPage = () => {
   const match = useRouteMatch();
+  const location = useLocation();
+  const locationState = location.state;
+  const {dispatch} = useContext(Context);
+  const title = "Tournaments";
+  useDocumentTitle(title);
 
-  const [createTournament] = useMutation<any, CREATE_TOURNAMENT_VARS>(CREATE_TOURNAMENT, {
-      update(cache, {data: {createTournament}}) {
-        const {tournaments} = cache.readQuery({query: GET_TOURNAMENTS});
-        cache.writeQuery({
-          query: GET_TOURNAMENTS,
-          data: {
-            tournaments: tournaments.concat([createTournament])
-          }
-        })
-      },
-      variables: {tournamentName: "New Tournament"}
-    }
-  );
-  return <React.Fragment>
-    <div className={"component--nav"}>
-      <button onClick={() => createTournament()}>Add Tournament</button>
-    </div>
+  useEffect(()=>{
+    dispatch(setPage("tournaments"))
+  }, []);
 
-    <div className={"component--list tournament--list"}>
+  const list_class = (locationState)? "component__list" : "component__list--sidebar";
+  return <div className={"component"}>
+    <div className={`tournament__list ${list_class}`}>
       <TournamentsList/>
     </div>
+
     <Switch>
       <Route path={`${match.path}/:tournamentId`}>
-        <div className={"component--item tournament--item"}>
+        <div className={"component__item tournament__item"}>
           <TournamentItem/>
         </div>
       </Route>
-      <Route path={match.path}>
-      </Route>
     </Switch>
-  </React.Fragment>;
+  </div>;
 };
 
 export default TournamentsPage;

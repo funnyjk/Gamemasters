@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useMutation} from "@apollo/react-hooks";
-import {CREATE_SCORE, CREATE_SCORE_VARS} from "../../../graphql/Score";
+import {CREATE_SCORE, CREATE_SCORE_VARS, GET_SCORES_SESSION} from "../../../graphql/Score";
 import { useParams } from 'react-router-dom';
 import _ from "lodash";
 import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
@@ -24,7 +24,7 @@ const CreateScore = ({tournamentPlayers, sessionPlayers}: ICreateScore) => {
       },
       refetchQueries: [{
         query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}}, {
-        query: GET_SESSION, variables: {sessionId}
+        query: GET_SCORES_SESSION, variables: {sessionId}
       }]
     })
 

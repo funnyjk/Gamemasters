@@ -1,20 +1,25 @@
 import React from 'react';
 import {useQuery} from "@apollo/react-hooks";
-import {useHistory, useParams} from "react-router-dom";
-import {DELETE_TOURNAMENT, GET_TOURNAMENT, GET_TOURNAMENTS, UPDATE_TOURNAMENT} from "../../../graphql/Tournament";
+import {NavLink, Route, useHistory, useParams, useRouteMatch, Switch} from "react-router-dom";
+import {GET_TOURNAMENT, GET_TOURNAMENTS, UPDATE_TOURNAMENT} from "../../../graphql/Tournament";
 import CreateTournamentPlayer from "../../TournamentPlayer/createTournamentPlayer";
 import _ from "lodash";
 import {GET_PLAYERS} from "../../PlayersPage/PlayersList";
 import DeleteTournamentPlayer from "../../TournamentPlayer/deleteTournamentPlayer";
-import TournamentPlayer from "../../TournamentPlayer";
+import TournamentPlayers from "../../TournamentPlayer";
 
 import './style';
 import Sessions from "../../Sessions";
 import MutationInput from "../../MutationInput";
-import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
-import MutationButton from "../../MutationButton";
+import {useToggle} from "../../../hooks/useToggle";
+import DeleteTournament from "../DeleteTournament";
+
+import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from '@material-ui/core'
 
 const TournamentItem = () => {
+    const match = useRouteMatch();
+    const [isEdit, toggleEdit] = useToggle(false);
+
     const {tournamentId} = useParams();
     const getTournament = useQuery(GET_TOURNAMENT, {variables: {tournamentId}});
     const getPlayers = useQuery(GET_PLAYERS);
@@ -34,28 +39,69 @@ const TournamentItem = () => {
     };
 
     if(!tournament) return <div>No Tournament</div>;
-    const deleteOptions = {
-        variables: {
-            tournamentId
-        },
-        refetchQueries: [{query: GET_TOURNAMENTS}]
-    }
-    return <div>
-        <h3>{tournament?.name}</h3>
-        <MutationButton mutation={DELETE_TOURNAMENT} options={deleteOptions} text={"Delete"}/>
-        <MutationInput mutation={UPDATE_TOURNAMENT} optionsData="tournamentData" options={options} type={"text"} name={"name"} defaultValue={tournament.name}/>
 
-        <div className={"tournament-item--tournament-player-list"}>
-        {tournament?.players.map((tournamentPlayer:any, k: any) => {
-            return <div className={"tournament-item--tournament-player-list--item"} key={k}>
-                <TournamentPlayer value={tournamentPlayer}/>
-                <DeleteTournamentPlayer tournamentPlayer={tournamentPlayer} tournament={tournament}/>
+    return <div className={"item_page"}>
+        {/*<button onClick={toggleEdit}>toggle</button>*/}
+        <div className={"item_page__controls"}>
+            <div className={"item_page_controls__item"}>
+                {(isEdit)? <div>
+                      <MutationInput mutation={UPDATE_TOURNAMENT} optionsData="tournamentData" options={options}
+                                          type={"text"} name={"name"} defaultValue={tournament.name}
+                                          disabled={!isEdit}/>
+                  < DeleteTournament isEdit = {isEdit} tournamentId={tournamentId}/>
+                  </div>
+                    : <h3>{tournament.name}</h3> }
             </div>
-        })}
+        <FormGroup className={"item_page__controls__item--right"}>
+            <FormControlLabel label={"Edit"} control={
+                <ToggleSwitch checked={isEdit} onChange={toggleEdit}/>
+            }/>
+        </FormGroup>
         </div>
-        <CreateTournamentPlayer playerList={players_not_in_tournament} tournament={tournament}/>
 
-        <Sessions tournament={tournament}/>
+        <div className={"item_page__item"}>
+
+            <div aria-disabled={!isEdit}>
+            </div>
+            {/*<div className={"tournament-item--tournament-player-list"}>*/}
+            {/*{tournament?.players.map((tournamentPlayer:any, k: any) => {*/}
+            {/*    // return <div className={"tournament-item--tournament-player-list--item"} key={k}>*/}
+                    {/*// <DeleteTournamentPlayer tournamentPlayer={tournamentPlayer} tournament={tournament} disabled={!isEdit}/>*/}
+                {/*// </div>*/}
+            {/*})}*/}
+            {/*</div>*/}
+            <div className={"mui-list--inline"}>
+                <li>
+                    <NavLink to={`${match.url}/players`} className={"mui-btn mui-btn--primary"}>Players</NavLink>
+                </li>
+                <li className={"nav__item"}>
+                    <NavLink to={`${match.url}/sessions`} className={"mui-btn mui-btn--primary"}>Sessions</NavLink>
+                </li>
+            </div>
+            <div className={"component"}>
+            <Switch>
+                <Route path={`${match.path}/sessions`}>
+                    <div className={"component__list"}>
+                        <Sessions tournament={tournament}/>
+                    </div>
+                </Route>
+                <Route exact path={`${match.path}/players`}>
+                    <div className={"component__list"}>
+                        <TournamentPlayers tournamentId={tournamentId}/>
+                    </div>
+
+                    <div className={"component__item"}>
+                      <CreateTournamentPlayer playerList={players_not_in_tournament} tournament={tournament}/>
+                    </div>
+                </Route>
+                <Route path={`${match.path}/players`}>
+                    <div className={"component__list"}>
+                        <TournamentPlayers tournamentId={tournamentId}/>
+                    </div>
+                </Route>
+            </Switch>
+            </div>
+        </div>
     </div>
 };
 

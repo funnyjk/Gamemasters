@@ -1,6 +1,18 @@
 .score-list--item {
   display: grid;
-  grid-template-columns: 50px auto;
+  grid-template-rows: auto;
+  grid-template-columns: auto 100px 50px;
 }
-.score-list--item--score {grid-column: 1}
-.score-list--item--name {grid-column: 2}
+.score-list--item--score {
+  grid-column: 2;
+  grid-row: 1;
+}
+.score-list--item--name {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.score-list--item--link {
+  grid-column: 3;
+  grid-row: 1;
+}
