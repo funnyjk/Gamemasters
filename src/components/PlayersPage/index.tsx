@@ -8,7 +8,6 @@ import Player from "./Player";
 import PlayersList, {GET_PLAYERS} from "./PlayersList";
 
 import useDocumentTitle from "../../hooks/useDocumentTitle";
-import CreatePlayer from "./CreatePlayer";
 import {setPage} from "../../context/pageContext/actions";
 import Context from "../../context/pageContext/context";
 
@@ -24,7 +23,6 @@ const PlayersPage = () => {
 
   useDocumentTitle("Players");
   const list_class = (state) ? "component__list" : "component__list--sidebar";
-
   return <div className={"component"}>
     <div className={`${list_class}`}>
       <PlayersList/>

@@ -91,9 +91,9 @@ const TournamentItem = () => {
             <Switch>
                 <Route exact path={`${match.path}/sessions`}>
                     <Sessions tournament={tournament}/>
-                    <div className={"component__item"}>
-                        <CreateSession tournament={tournament}/>
-                    </div>
+                    {/*<div className={"component__item"}>*/}
+                    <CreateSession tournament={tournament}/>
+                    {/*</div>*/}
                 </Route>
 
                 <Route exact path={`${match.path}/players`}>
