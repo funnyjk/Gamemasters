@@ -1,7 +1,14 @@
 import {createContext} from "react";
 
-const initState = {
+export interface pageContextState {
+  page: string;
+  isEdit: boolean;
+  dispatch: VoidFunction;
+}
+
+const initState: pageContextState = {
   page: "",
+  isEdit: false,
   dispatch: ()=>{}
 };
 

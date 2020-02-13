@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useMutation} from "@apollo/react-hooks";
 import {UPDATE_SESSION, UPDATE_SESSION_VARS} from "../../graphql/Session";
+import {Input} from "muicss/react";
 
 interface IMutationInput {
   mutation: any;
@@ -35,7 +36,9 @@ const MutationInput = ({mutation, options, optionsData, type, name, defaultValue
     setInputValue(defaultValue);
   }, [defaultValue]);
 
-  return <input name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} disabled={disabled}/>
+  if(disabled) return <span>{inputValue}</span>;
+  return <Input label={label} name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} disabled={disabled}
+                floatingLabel={true}/>
 };
 
 export default MutationInput;
