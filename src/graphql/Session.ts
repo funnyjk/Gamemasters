@@ -10,6 +10,7 @@ export const GET_TOURNAMENT_SESSIONS = gql`
             id
             name
             game {
+                id
                 name
             }
             scores {
@@ -36,6 +37,7 @@ export const GET_SESSION = gql`
             id
             name
             game {
+                id
                 name
             }
             scores {
@@ -67,6 +69,10 @@ export const CREATE_SESSION = gql`
         }) {
             id
             name
+            game {
+                id
+                name
+            }
         }
     }
 `;

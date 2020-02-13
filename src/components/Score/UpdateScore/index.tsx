@@ -3,15 +3,21 @@ import './styles';
 import {useMutation} from "@apollo/react-hooks";
 import {GET_SCORE, GET_SCORES_SESSION, UPDATE_SCORE, UPDATE_SCORE_VARS} from "../../../graphql/Score";
 import { useParams } from 'react-router-dom';
+import {GET_TOURNAMENT_SCORES} from "../../../graphql/Tournament";
+import {Input} from "@material-ui/core";
 
 interface IUpdateScore {
   score: any;
 }
 
 const UpdateScore = ({score}: IUpdateScore) => {
-  const [scoreValue, setScoreValue] = useState(score.score || 0);
+  const {tournamentId} = useParams();
+  const [scoreValue, setScoreValue] = useState(+score.score || 0);
   const [updateScore] = useMutation<any, UPDATE_SCORE_VARS>(UPDATE_SCORE, {
-    refetchQueries: [{query: GET_SCORE, variables:{scoreId: score.id}}]
+    refetchQueries: [
+      {query: GET_SCORE, variables:{scoreId: score.id}},
+      {query: GET_TOURNAMENT_SCORES, variables:{tournamentId}}
+      ]
   });
 
   const changeScore = ({target}: any) => {
@@ -21,7 +27,7 @@ const UpdateScore = ({score}: IUpdateScore) => {
       value = parseInt(target.value);
     }
     updateScore({variables:{
-        scoreData: {[name]: value},
+        scoreData: {[name]: +value || 0},
         scoreId: score.id
       }})
   };
@@ -32,10 +38,10 @@ const UpdateScore = ({score}: IUpdateScore) => {
   };
 
   useEffect(()=> {
-    setScoreValue(score.score);
+    setScoreValue(+score.score || 0);
   }, [score]);
 
-  return <input className={"update-score"} name="score" type={"number"} value={scoreValue || 0} onChange={inputScore} onBlur={changeScore}/>
+  return <Input className={"update-score"} name="score" type={"number"} value={scoreValue} onChange={inputScore} onBlur={changeScore}/>
 };
 
 export default UpdateScore;

@@ -60,9 +60,14 @@ export const CREATE_TOURNAMENTPLAYER = gql`
         }
     ) {
         id
+        tournament {
+            id
+            name
+        }
         player {
             id
             name
+            pic
         }
     }
 }`;

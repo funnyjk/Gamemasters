@@ -12,26 +12,21 @@ interface ISessions {
 const Sessions = ({tournament}: ISessions) => {
   const match = useRouteMatch();
   const params = useParams();
-  return <div className={"component"}>
+  return <React.Fragment>
 
-    <div className={"component__list"}>
+    <div className={"component__list--sidebar"}>
       <SessionsList tournament={tournament}/>
     </div>
 
     <Switch>
       <Route path={`${match.path}/:sessionId`}>
         <div className={"component__item"}>
-          <Link to={`${match.url}`}>Sessions</Link>
+          {/*<Link to={`${match.url}`}>Add Session</Link>*/}
           <SessionItem tournament={tournament}/>
         </div>
       </Route>
-      <Route path={match.path}>
-        <div className={"component__item"}>
-          <CreateSession tournament={tournament}/>
-        </div>
-      </Route>
     </Switch>
-  </div>
+  </React.Fragment>
 }
 
 export default Sessions;

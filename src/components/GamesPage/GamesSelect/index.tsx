@@ -25,6 +25,8 @@ const GamesSelect = ({value, onChange}: IGamesSelect) => {
         {games?.map((game: any, key: any) => {
           return <MenuItem value={game.id} key={key}>{game.name}</MenuItem>
         })}
+
+        {!games?.length && <MenuItem disabled={true}>No Games</MenuItem>}
       </Select>
     </FormControl>
 };

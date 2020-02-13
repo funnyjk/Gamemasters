@@ -25,7 +25,7 @@ const TournamentPlayer = ({tournamentId}: ITournamentPlayer) => {
   if(!data) return <div>No Tournament Players</div>;
   const {tournamentPlayers} = data;
 
-  return <div className={"component"}>
+  return <React.Fragment>
     <div className={`${list_class}`}>
       <TournamentPlayerList tournamentPlayers={tournamentPlayers}/>
     </div>
@@ -36,13 +36,11 @@ const TournamentPlayer = ({tournamentId}: ITournamentPlayer) => {
           <TournamentPlayerItem/>
         </div>
       </Route>
-      <Route path={`${match.path}`}>
-        {/*<div className={"component__item"}>*/}
-        {/*  <CreateTournamentPlayer playerList={players_not_in_tournament} tournament={tournament}/>*/}
-        {/*</div>*/}
-      </Route>
+      {/*<Route path={`${match.path}`}>*/}
+      {/*  */}
+      {/*</Route>*/}
     </Switch>
-  </div>;
+  </React.Fragment>;
 };
 
 export default TournamentPlayer;

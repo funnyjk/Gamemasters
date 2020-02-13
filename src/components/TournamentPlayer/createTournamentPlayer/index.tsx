@@ -1,21 +1,26 @@
 import React, {useState} from 'react';
 import {useMutation} from "@apollo/react-hooks";
-import {createTournamentPlayer} from "../../../graphql/TournamentPlayer.graphql";
 import {Player} from "../../../../server/database/generated/prisma";
 import {getPlayers} from "../../../graphql/Players.graphql";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import _ from "lodash";
 import {GET_SESSION} from "../../../graphql/Session";
-
+import {CREATE_TOURNAMENTPLAYER, GET_TOURNAMENTPLAYERS} from "../../../graphql/TournamentPlayer";
+import {Select, MenuItem, InputLabel, FormControl} from '@material-ui/core';
+import './styles';
+import {Button} from "muicss/react";
+import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
+import {Add} from "@material-ui/icons";
 interface ICreateTournamentPlayer {
   tournament: any;
   playerList: any;
 }
 
-const CREATE_TOURNAMENT_PLAYER = createTournamentPlayer;
 
 const CreateTournamentPlayer = ({tournament, playerList}: ICreateTournamentPlayer) => {
-  const [tournamentPlayer, createTournamentPlayerData] = useMutation(CREATE_TOURNAMENT_PLAYER,
+  const [isEdit] = useToggleIsEdit();
+
+  const [tournamentPlayer, createTournamentPlayerData] = useMutation(CREATE_TOURNAMENTPLAYER,
     {
       update(cache, {data: {createTournamentPlayer}}) {
         const {tournaments} = cache.readQuery({query: GET_TOURNAMENTS});
@@ -32,30 +37,43 @@ const CreateTournamentPlayer = ({tournament, playerList}: ICreateTournamentPlaye
           data
         });
       },
-      refetchQueries: [{query: getPlayers}, {query: GET_TOURNAMENTS}]
+      refetchQueries: [{query: getPlayers}, {query: GET_TOURNAMENTS}, {
+        query: GET_TOURNAMENTPLAYERS, variables:{
+          tournamentId: tournament.id
+        }
+      }]
     });
 
-  const [player, setPlayer] = useState({} as Player);
+  const [player, setPlayer]: any = useState('');
 
   const addPlayerToTournament = () => {
     tournamentPlayer({variables: {playerId: player.id, tournamentId: tournament.id}});
-    setPlayer({} as Player)
+    setPlayer('')
   }
 
-  const SetPlayerId = ({target}: any) => {
+  const handleChange = ({target}: any) => {
     const {value} = target;
-    setPlayer(playerList[value]);
+    setPlayer(value);
   };
-  return <div>
-    <select onChange={SetPlayerId} value={""}>
-      <option disabled={true} value={""}>Select Player</option>
-      {playerList?.map((playerFromList: any, key: any) => {
-        return <option value={key} key={playerFromList.id}>{playerFromList.name}</option>
-      })}
-    </select>
+  return <React.Fragment>
+    <FormControl className={"player_list flex-inline"}>
+      <InputLabel id="select-player-label">Select Player</InputLabel>
 
-    <button hidden={!player.id} onClick={()=>addPlayerToTournament()}>Add {player.name} to {tournament?.name}</button>
-  </div>
+      <Select labelId="select-player-label" onChange={handleChange} value={player}>
+        {/*<MenuItem disabled={true} value={""} >Select Player</MenuItem>*/}
+        {playerList?.map((playerFromList: any, key: any) => {
+          return <MenuItem value={playerFromList} key={key}>{playerFromList.name}</MenuItem>
+        }) }
+        {!playerList?.length && <MenuItem disabled={true}>No Players</MenuItem>}
+    </Select>
+      {<Button color="primary" disabled={!player}
+               onClick={() => addPlayerToTournament()}>
+        <Add/>
+      </Button>}
+
+    </FormControl>
+
+  </React.Fragment>
 };
 
 export default CreateTournamentPlayer;

@@ -20,7 +20,7 @@ const DeleteTournament = ({tournamentId, isEdit}: IDeleteTournament) => {
     refetchQueries: [{query: GET_TOURNAMENTS}]
   };
 
-  return <MutationButton mutation={DELETE_TOURNAMENT} options={deleteOptions} text={"Delete"} disabled={!isEdit}/>
+  return <MutationButton mutation={DELETE_TOURNAMENT} options={deleteOptions} text={"Delete"} disabled={!isEdit} color={"danger"}/>
 
 };
 

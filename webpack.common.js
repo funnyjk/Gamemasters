@@ -1,22 +1,10 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-
 module.exports = {
-    mode: 'development',
     entry: './src/index.tsx',
-    devtool: 'inline-source-map',
-    devServer: {
-        publicPath: '/',
-        // contentBase: path.join(__dirname, 'dist'),
-        historyApiFallback: true,
-        compress: true,
-        port: 8000,
-        hot: true
-    },
     module: {
         rules: [
             {
@@ -43,26 +31,19 @@ module.exports = {
             }
         ]
     },
-    output: {
-        filename: 'main.js',
-        publicPath: "/",
-        path: path.resolve(__dirname, 'dist'),
-    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.scss']
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css",
-            path: path.join(__dirname, './templates')
+            // path: path.join(__dirname, './templates')
         }),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            publicPath: '/',
-            title: 'Development',
+            title: 'GameMasters',
             template: path.resolve(__dirname, 'src/index.html')
         }),
-    ],
+    ]
 };

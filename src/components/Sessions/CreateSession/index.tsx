@@ -3,6 +3,10 @@ import {useMutation, useQuery} from "@apollo/react-hooks";
 import {CREATE_SESSION, CREATE_SESSION_VARS, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import {GET_GAMES} from "../../../graphql/Game";
+import GamesSelect from "../../GamesPage/GamesSelect";
+import {Button} from "muicss/react";
+import {FormControl, FormGroup} from "@material-ui/core";
+import {Add} from "@material-ui/icons";
 
 interface ICreateSession {
   tournament: any;
@@ -21,19 +25,14 @@ const CreateSession = ({tournament}: ICreateSession) => {
   if(!data) return <div>NO DATA</div>;
   
   const {games} = data;
-  return <div>
-    <h4>CreateSession</h4>
-    <pre>{JSON.stringify(gameId, null, 2)}</pre>
-    <select defaultValue={""} onChange={selectedGameId}>
-      <option disabled={true} value={""}>Select Game</option>
-      {games.map((game: any, k: any) => {
-        return <option key={k} value={game.id}>{game.name}</option>
-      })}
-    </select>
-    <button disabled={(gameId.length == 0)} onClick={() => createSession({variables: {tournamentId: tournament.id, gameId, name: "New Session"}})}>Add New Session</button>
+  return <FormGroup>
+    <GamesSelect value={gameId} onChange={selectedGameId}/>
 
-
-  </div>
+    <Button variant={"primary"} disabled={(gameId.length == 0)}
+            onClick={() => createSession({variables: {tournamentId: tournament.id, gameId, name: "New Session"}})}>
+        <Add/>
+    </Button>
+    </FormGroup>
 };
 
 export default CreateSession;

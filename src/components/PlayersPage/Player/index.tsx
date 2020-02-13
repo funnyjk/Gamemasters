@@ -6,6 +6,9 @@ import {GET_PLAYERS} from "../PlayersList";
 import { useParams, useHistory } from 'react-router-dom';
 import {getPlayer, setPlayer} from "../../../graphql/Players.graphql";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
+import {Button} from "muicss/react";
+import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
+import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from "@material-ui/core";
 
 const SET_PLAYER = setPlayer;
 
@@ -32,6 +35,8 @@ interface IScore {
 const Player = () => {
   let history = useHistory();
   const [setPlayer] = useMutation(SET_PLAYER);
+  const [isEdit, toggleEdit] = useToggleIsEdit();
+
   const SetPlayerName = ({target}: any) => {
     const key = target.name;
     const value = target.value;
@@ -61,10 +66,17 @@ const Player = () => {
 
   const byTourn = _.groupBy(player?.scores, 'session.tournament.name');
 
-  return <div>
-    <h3>{player?.name}</h3>
-    <input name="name" defaultValue={player?.name} onBlur={SetPlayerName}/>
-    <button onClick={()=>deletePlayer({variables:{playerID:player.id}}) }>DELETE</button>
+  return <div className={"item_page"}>
+    <div className={"item_page__controls"}>
+
+    <FormGroup className={"item_page__controls__item--right"}>
+      <FormControlLabel label={"Edit"} control={
+        <ToggleSwitch checked={isEdit} onChange={toggleEdit}/>
+      }/>
+    </FormGroup>
+    </div>
+    <h3>{!isEdit? <span>{player?.name}</span> : <input name="name" defaultValue={player?.name} onBlur={SetPlayerName}/>}</h3>
+    {isEdit && <Button color={"danger"} onClick={()=>deletePlayer({variables:{playerID:player.id}}) }>DELETE</Button>}
 
 
     {Object.entries(byTourn).map(([tournamentName, value]) => {

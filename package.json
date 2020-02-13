@@ -33,6 +33,7 @@
     "apollo-boost": "^0.4.7",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.2",
+    "express": "^4.17.1",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "html-webpack-plugin": "^3.2.0",
@@ -43,12 +44,15 @@
     "ts-loader": "^6.2.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.10.1",
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack:dev": "webpack-dev-server --config webpack.config.js",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "webpack:prod": "webpack --config webpack.prod.js",
+    "webpack:dev": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",

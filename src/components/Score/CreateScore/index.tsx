@@ -4,6 +4,10 @@ import {CREATE_SCORE, CREATE_SCORE_VARS, GET_SCORES_SESSION} from "../../../grap
 import { useParams } from 'react-router-dom';
 import _ from "lodash";
 import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
+import {Fab, FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {Add} from "@material-ui/icons";
+import {Button} from "muicss/react";
+
 
 interface ICreateScore {
   tournamentPlayers: any
@@ -24,7 +28,7 @@ const CreateScore = ({tournamentPlayers, sessionPlayers}: ICreateScore) => {
       },
       refetchQueries: [{
         query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}}, {
-        query: GET_SCORES_SESSION, variables: {sessionId}
+        query: GET_SESSION, variables: {sessionId}
       }]
     })
 
@@ -37,15 +41,18 @@ const CreateScore = ({tournamentPlayers, sessionPlayers}: ICreateScore) => {
     setPlayersNotInTournSession(_.differenceBy(tournamentPlayers, sessionPlayers, 'id'));
   }, [tournamentPlayers, sessionPlayers]);
 
-  return <div>
-    <select onChange={({target}: any) => setPlayerId(target.value)} value={playerId}>
-      <option disabled={true} value={""}>Select Player</option>
+  return <div style={{display: "grid"}}>
+    <FormControl className={"player_list"}>
+      <InputLabel id="select-player-label">Select Player</InputLabel>
+    <Select labelId="select-player-label" onChange={({target}: any) => setPlayerId(target.value)} value={playerId}>
+      <MenuItem disabled={true} value={""}>Select Player</MenuItem>
       {playersNotInTournSession?.map((tournamentPlayer: any, key: any) => {
         const {player} = tournamentPlayer;
-        return <option value={tournamentPlayer.id} key={player.id}>{player.name}</option>
+        return <MenuItem value={tournamentPlayer.id} key={player.id}>{player.name}</MenuItem>
       })}
-    </select>
-    <button disabled={!playerId} onClick={()=>addNewScore()}>Add New Player to Session</button>
+    </Select>
+  </FormControl>
+    <Button size="small" color={"primary"} disabled={!playerId} onClick={()=>addNewScore()}><Add/></Button>
   </div>
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useQuery} from "@apollo/react-hooks";
 import {NavLink, Route, useHistory, useParams, useRouteMatch, Switch} from "react-router-dom";
 import {GET_TOURNAMENT, GET_TOURNAMENTS, UPDATE_TOURNAMENT} from "../../../graphql/Tournament";
@@ -15,10 +15,16 @@ import {useToggle} from "../../../hooks/useToggle";
 import DeleteTournament from "../DeleteTournament";
 
 import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from '@material-ui/core'
+import Context from "../../../context/pageContext/context";
+import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
+import {Form} from "muicss/react";
+import CreateSession from "../../Sessions/CreateSession";
+import TournamentTable from "../TournamentTable";
 
 const TournamentItem = () => {
+    // const {state, dispatch} = useContext(Context);
     const match = useRouteMatch();
-    const [isEdit, toggleEdit] = useToggle(false);
+    const [isEdit, toggleEdit] = useToggleIsEdit();
 
     const {tournamentId} = useParams();
     const getTournament = useQuery(GET_TOURNAMENT, {variables: {tournamentId}});
@@ -33,36 +39,36 @@ const TournamentItem = () => {
 
     const options = {
         variables:{tournamentId},
-        refetchQueries: [{
-            query: GET_TOURNAMENT, variables: {tournamentId}
-        }]
+        refetchQueries: [
+            {query: GET_TOURNAMENT, variables: {tournamentId}},
+            {query: GET_TOURNAMENTS}
+        ]
     };
 
+    if(getTournament.error) return <pre>{JSON.stringify(getTournament.error, null, 2)}</pre>;
+    if(getTournament.loading) return <div>Loading</div>;
     if(!tournament) return <div>No Tournament</div>;
 
     return <div className={"item_page"}>
-        {/*<button onClick={toggleEdit}>toggle</button>*/}
         <div className={"item_page__controls"}>
             <div className={"item_page_controls__item"}>
-                {(isEdit)? <div>
+                {(isEdit)?
+                  <div className={"flex-inline"}>
                       <MutationInput mutation={UPDATE_TOURNAMENT} optionsData="tournamentData" options={options}
                                           type={"text"} name={"name"} defaultValue={tournament.name}
-                                          disabled={!isEdit}/>
-                  < DeleteTournament isEdit = {isEdit} tournamentId={tournamentId}/>
+                                          disabled={!isEdit} label={"Tournament Name"}/>
+                      <DeleteTournament isEdit={isEdit} tournamentId={tournamentId}/>
                   </div>
                     : <h3>{tournament.name}</h3> }
             </div>
+
         <FormGroup className={"item_page__controls__item--right"}>
             <FormControlLabel label={"Edit"} control={
                 <ToggleSwitch checked={isEdit} onChange={toggleEdit}/>
             }/>
         </FormGroup>
-        </div>
 
         <div className={"item_page__item"}>
-
-            <div aria-disabled={!isEdit}>
-            </div>
             {/*<div className={"tournament-item--tournament-player-list"}>*/}
             {/*{tournament?.players.map((tournamentPlayer:any, k: any) => {*/}
             {/*    // return <div className={"tournament-item--tournament-player-list--item"} key={k}>*/}
@@ -78,30 +84,36 @@ const TournamentItem = () => {
                     <NavLink to={`${match.url}/sessions`} className={"mui-btn mui-btn--primary"}>Sessions</NavLink>
                 </li>
             </div>
+        </div>
+        </div>
+
             <div className={"component"}>
             <Switch>
-                <Route path={`${match.path}/sessions`}>
-                    <div className={"component__list"}>
-                        <Sessions tournament={tournament}/>
+                <Route exact path={`${match.path}/sessions`}>
+                    <Sessions tournament={tournament}/>
+                    <div className={"component__item"}>
+                        <CreateSession tournament={tournament}/>
                     </div>
                 </Route>
-                <Route exact path={`${match.path}/players`}>
-                    <div className={"component__list"}>
-                        <TournamentPlayers tournamentId={tournamentId}/>
-                    </div>
 
+                <Route exact path={`${match.path}/players`}>
+                    <TournamentPlayers tournamentId={tournamentId}/>
                     <div className={"component__item"}>
                       <CreateTournamentPlayer playerList={players_not_in_tournament} tournament={tournament}/>
                     </div>
                 </Route>
+                <Route path={`${match.path}/sessions`}>
+                    <Sessions tournament={tournament}/>
+                </Route>
                 <Route path={`${match.path}/players`}>
-                    <div className={"component__list"}>
-                        <TournamentPlayers tournamentId={tournamentId}/>
-                    </div>
+                    <TournamentPlayers tournamentId={tournamentId}/>
+                </Route>
+
+                <Route path={`${match.path}`}>
+                    <TournamentTable tournamentId={tournamentId}/>
                 </Route>
             </Switch>
             </div>
-        </div>
     </div>
 };
 

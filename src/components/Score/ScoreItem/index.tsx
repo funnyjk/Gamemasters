@@ -31,7 +31,7 @@ const ScoreItem = ({}: IScoreItem) => {
   return <div>
     {player.name}
     <UpdateScore score={score}/>
-    <DeleteScore/>
+    <DeleteScore scoreId={scoreId}/>
   </div>
 };
 

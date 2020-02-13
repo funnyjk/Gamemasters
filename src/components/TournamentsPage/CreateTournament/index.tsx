@@ -14,16 +14,17 @@ export const useCreateTournament = (tournamentName: string) => {
 
   const [createTournament] = useMutation<any, CREATE_TOURNAMENT_VARS>(CREATE_TOURNAMENT, {
       update(cache, {data: {createTournament}}) {
-        const {tournaments} = cache.readQuery({query: GET_TOURNAMENTS});
-        cache.writeQuery({
-          query: GET_TOURNAMENTS,
-          data: {
-            tournaments: tournaments.concat([createTournament])
-          }
-        })
+        // const {tournaments} = cache.readQuery({query: GET_TOURNAMENTS});
+        // cache.writeQuery({
+        //   query: GET_TOURNAMENTS,
+        //   data: {
+        //     tournaments: tournaments.concat([createTournament])
+        //   }
+        // })
         history.push(`/tournaments/${createTournament.id}`)
       },
-      variables: {tournamentName}
+      variables: {tournamentName},
+      refetchQueries: [{query: GET_TOURNAMENTS}]
     }
   );
   return createTournament;

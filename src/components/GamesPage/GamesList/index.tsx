@@ -10,14 +10,14 @@ const GamesList = () => {
   const match = useRouteMatch();
   const {loading, error, data} = useQuery(GET_GAMES);
   const games = data?.games;
-  return <div>
+  return <React.Fragment>
     {games?.map((game: Game, k: any) => {
-      return <div key={k} className={"component__list"}>
+      return <div key={k}>
         <Link to={`${match.path}/${game.id}`}>
           <GameListItem game={game}/>
         </Link>
       </div>
     })}
-  </div>;
+  </React.Fragment>;
 };
 export default GamesList;

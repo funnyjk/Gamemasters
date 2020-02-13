@@ -56,17 +56,6 @@ export const CREATE_TOURNAMENT  = gql`
         createTournament(data: {name: $tournamentName}) {
             id
             name
-            sessions {
-                id
-                name
-            }
-            players {
-                id
-                player {
-                    id
-                    name
-                }
-            }
         }
     }
 `;
@@ -99,3 +88,72 @@ export const DELETE_TOURNAMENT = gql`
         }
     } 
 `;
+
+
+
+export interface GET_TOURNAMENT_SCORES_VARS {
+    tournamentId: string;
+}
+export const GET_TOURNAMENT_SCORES = gql`
+    query getTournScores($tournamentId: ID!) {
+        tournament(where: {id: $tournamentId}) {
+            id
+            players {
+                player {
+                    name
+                }
+                scores {
+                    score
+                    session {
+                        game {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export interface GET_TOURNAMENT_GAMES_VARS {
+    tournamentId: string;
+}
+export const GET_TOURNAMENT_GAMES = gql`
+    query getTournGames($tournamentId: ID!) {
+        tournament(where: {id: $tournamentId}) {
+            id
+            sessions {
+                game {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;
+// export const GET_TOURNAMENT_SCORES = gql`
+//     query getTourn($tournamentId: ID!) {
+//         tournament(where: {id: $tournamentId})
+//         {
+//             id
+//             name
+//             players {
+//                 id
+//                 player {
+//                     id
+//                     name
+//                 }
+//                 scores {
+//                     id
+//                     score
+//                     session {
+//                         id
+//                         game {
+//                             id
+//                             name
+//                         }
+//                     }
+//                 }
+//             }
+//         }}
+// `;

@@ -82,6 +82,12 @@ export const CREATE_SCORE = gql`
             }
         ) {
             ...ScoresListScore
+            session {
+                id
+                game {
+                    id
+                }
+            }
         }
     }
     ${fragments.score}
