@@ -22,6 +22,7 @@ export interface Exists {
   session: (where?: SessionWhereInput) => Promise<boolean>;
   tournament: (where?: TournamentWhereInput) => Promise<boolean>;
   tournamentPlayer: (where?: TournamentPlayerWhereInput) => Promise<boolean>;
+  user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -159,6 +160,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => TournamentPlayerConnectionPromise;
+  user: (where: UserWhereUniqueInput) => UserNullablePromise;
+  users: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<User>;
+  usersConnection: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -267,6 +287,22 @@ export interface Prisma {
   deleteManyTournamentPlayers: (
     where?: TournamentPlayerWhereInput
   ) => BatchPayloadPromise;
+  createUser: (data: UserCreateInput) => UserPromise;
+  updateUser: (args: {
+    data: UserUpdateInput;
+    where: UserWhereUniqueInput;
+  }) => UserPromise;
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput;
+    where?: UserWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUser: (args: {
+    where: UserWhereUniqueInput;
+    create: UserCreateInput;
+    update: UserUpdateInput;
+  }) => UserPromise;
+  deleteUser: (where: UserWhereUniqueInput) => UserPromise;
+  deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -294,6 +330,9 @@ export interface Subscription {
   tournamentPlayer: (
     where?: TournamentPlayerSubscriptionWhereInput
   ) => TournamentPlayerSubscriptionPayloadSubscription;
+  user: (
+    where?: UserSubscriptionWhereInput
+  ) => UserSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -304,13 +343,15 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type SessionOrderByInput =
+export type PlayerOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "pic_ASC"
+  | "pic_DESC"
+  | "nickname_ASC"
+  | "nickname_DESC";
 
 export type TournamentPlayerOrderByInput =
   | "id_ASC"
@@ -319,6 +360,14 @@ export type TournamentPlayerOrderByInput =
   | "role_DESC"
   | "nickname_ASC"
   | "nickname_DESC";
+
+export type SessionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "name_ASC"
+  | "name_DESC";
 
 export type ScoreOrderByInput =
   | "id_ASC"
@@ -338,16 +387,6 @@ export type GameOrderByInput =
   | "notes_ASC"
   | "notes_DESC";
 
-export type PlayerOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "pic_ASC"
-  | "pic_DESC"
-  | "nickname_ASC"
-  | "nickname_DESC";
-
 export type TournamentOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -364,219 +403,44 @@ export type TournamentOrderByInput =
   | "notes_ASC"
   | "notes_DESC";
 
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "username_ASC"
+  | "username_DESC"
+  | "password_ASC"
+  | "password_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface PlayerUpdateOneRequiredWithoutTournamentsInput {
-  create?: Maybe<PlayerCreateWithoutTournamentsInput>;
-  update?: Maybe<PlayerUpdateWithoutTournamentsDataInput>;
-  upsert?: Maybe<PlayerUpsertWithoutTournamentsInput>;
-  connect?: Maybe<PlayerWhereUniqueInput>;
+export interface GameUpdateManyWithoutOwnerInput {
+  create?: Maybe<GameCreateWithoutOwnerInput[] | GameCreateWithoutOwnerInput>;
+  delete?: Maybe<GameWhereUniqueInput[] | GameWhereUniqueInput>;
+  connect?: Maybe<GameWhereUniqueInput[] | GameWhereUniqueInput>;
+  set?: Maybe<GameWhereUniqueInput[] | GameWhereUniqueInput>;
+  disconnect?: Maybe<GameWhereUniqueInput[] | GameWhereUniqueInput>;
+  update?: Maybe<
+    | GameUpdateWithWhereUniqueWithoutOwnerInput[]
+    | GameUpdateWithWhereUniqueWithoutOwnerInput
+  >;
+  upsert?: Maybe<
+    | GameUpsertWithWhereUniqueWithoutOwnerInput[]
+    | GameUpsertWithWhereUniqueWithoutOwnerInput
+  >;
+  deleteMany?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
+  updateMany?: Maybe<
+    GameUpdateManyWithWhereNestedInput[] | GameUpdateManyWithWhereNestedInput
+  >;
 }
 
 export type GameWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ScoreUpdateWithoutPlayerDataInput {
-  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>;
-  score?: Maybe<Int>;
-  notes?: Maybe<String>;
-}
-
-export interface ScoreWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  player?: Maybe<TournamentPlayerWhereInput>;
-  session?: Maybe<SessionWhereInput>;
-  score?: Maybe<Int>;
-  score_not?: Maybe<Int>;
-  score_in?: Maybe<Int[] | Int>;
-  score_not_in?: Maybe<Int[] | Int>;
-  score_lt?: Maybe<Int>;
-  score_lte?: Maybe<Int>;
-  score_gt?: Maybe<Int>;
-  score_gte?: Maybe<Int>;
-  notes?: Maybe<String>;
-  notes_not?: Maybe<String>;
-  notes_in?: Maybe<String[] | String>;
-  notes_not_in?: Maybe<String[] | String>;
-  notes_lt?: Maybe<String>;
-  notes_lte?: Maybe<String>;
-  notes_gt?: Maybe<String>;
-  notes_gte?: Maybe<String>;
-  notes_contains?: Maybe<String>;
-  notes_not_contains?: Maybe<String>;
-  notes_starts_with?: Maybe<String>;
-  notes_not_starts_with?: Maybe<String>;
-  notes_ends_with?: Maybe<String>;
-  notes_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
-  OR?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
-  NOT?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
-}
-
-export interface SessionUpdateOneRequiredWithoutScoresInput {
-  create?: Maybe<SessionCreateWithoutScoresInput>;
-  update?: Maybe<SessionUpdateWithoutScoresDataInput>;
-  upsert?: Maybe<SessionUpsertWithoutScoresInput>;
-  connect?: Maybe<SessionWhereUniqueInput>;
-}
-
-export interface GameWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  sessions_every?: Maybe<SessionWhereInput>;
-  sessions_some?: Maybe<SessionWhereInput>;
-  sessions_none?: Maybe<SessionWhereInput>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  bgg_id?: Maybe<String>;
-  bgg_id_not?: Maybe<String>;
-  bgg_id_in?: Maybe<String[] | String>;
-  bgg_id_not_in?: Maybe<String[] | String>;
-  bgg_id_lt?: Maybe<String>;
-  bgg_id_lte?: Maybe<String>;
-  bgg_id_gt?: Maybe<String>;
-  bgg_id_gte?: Maybe<String>;
-  bgg_id_contains?: Maybe<String>;
-  bgg_id_not_contains?: Maybe<String>;
-  bgg_id_starts_with?: Maybe<String>;
-  bgg_id_not_starts_with?: Maybe<String>;
-  bgg_id_ends_with?: Maybe<String>;
-  bgg_id_not_ends_with?: Maybe<String>;
-  notes?: Maybe<String>;
-  notes_not?: Maybe<String>;
-  notes_in?: Maybe<String[] | String>;
-  notes_not_in?: Maybe<String[] | String>;
-  notes_lt?: Maybe<String>;
-  notes_lte?: Maybe<String>;
-  notes_gt?: Maybe<String>;
-  notes_gte?: Maybe<String>;
-  notes_contains?: Maybe<String>;
-  notes_not_contains?: Maybe<String>;
-  notes_starts_with?: Maybe<String>;
-  notes_not_starts_with?: Maybe<String>;
-  notes_ends_with?: Maybe<String>;
-  notes_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GameWhereInput[] | GameWhereInput>;
-  OR?: Maybe<GameWhereInput[] | GameWhereInput>;
-  NOT?: Maybe<GameWhereInput[] | GameWhereInput>;
-}
-
-export interface TournamentPlayerCreateWithoutScoresInput {
-  id?: Maybe<ID_Input>;
-  player: PlayerCreateOneWithoutTournamentsInput;
-  tournament: TournamentCreateOneWithoutPlayersInput;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-}
-
-export interface SessionUpsertWithWhereUniqueWithoutGameInput {
-  where: SessionWhereUniqueInput;
-  update: SessionUpdateWithoutGameDataInput;
-  create: SessionCreateWithoutGameInput;
-}
-
-export interface TournamentCreateOneWithoutPlayersInput {
-  create?: Maybe<TournamentCreateWithoutPlayersInput>;
-  connect?: Maybe<TournamentWhereUniqueInput>;
-}
-
-export interface SessionUpdateWithoutScoresDataInput {
+export interface SessionUpdateWithoutGameDataInput {
   tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>;
-  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
   name?: Maybe<String>;
-}
-
-export interface TournamentCreateWithoutPlayersInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
-  notes?: Maybe<String>;
-  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>;
-}
-
-export interface TournamentPlayerSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TournamentPlayerWhereInput>;
-  AND?: Maybe<
-    | TournamentPlayerSubscriptionWhereInput[]
-    | TournamentPlayerSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | TournamentPlayerSubscriptionWhereInput[]
-    | TournamentPlayerSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | TournamentPlayerSubscriptionWhereInput[]
-    | TournamentPlayerSubscriptionWhereInput
-  >;
-}
-
-export interface SessionCreateManyWithoutTournamentInput {
-  create?: Maybe<
-    SessionCreateWithoutTournamentInput[] | SessionCreateWithoutTournamentInput
-  >;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-}
-
-export interface SessionSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<SessionWhereInput>;
-  AND?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
-  OR?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
-  NOT?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
-}
-
-export interface SessionCreateWithoutTournamentInput {
-  id?: Maybe<ID_Input>;
-  game: GameCreateOneWithoutSessionsInput;
-  name: String;
-  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
+  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
 }
 
 export interface TournamentWhereInput {
@@ -594,6 +458,7 @@ export interface TournamentWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  owner?: Maybe<UserWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -671,80 +536,6 @@ export interface TournamentWhereInput {
   NOT?: Maybe<TournamentWhereInput[] | TournamentWhereInput>;
 }
 
-export interface GameUpdateInput {
-  sessions?: Maybe<SessionUpdateManyWithoutGameInput>;
-  name?: Maybe<String>;
-  bgg_id?: Maybe<String>;
-  notes?: Maybe<String>;
-}
-
-export interface GameSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<GameWhereInput>;
-  AND?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
-  OR?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
-  NOT?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
-}
-
-export interface SessionUpdateManyWithoutGameInput {
-  create?: Maybe<
-    SessionCreateWithoutGameInput[] | SessionCreateWithoutGameInput
-  >;
-  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  update?: Maybe<
-    | SessionUpdateWithWhereUniqueWithoutGameInput[]
-    | SessionUpdateWithWhereUniqueWithoutGameInput
-  >;
-  upsert?: Maybe<
-    | SessionUpsertWithWhereUniqueWithoutGameInput[]
-    | SessionUpsertWithWhereUniqueWithoutGameInput
-  >;
-  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-  updateMany?: Maybe<
-    | SessionUpdateManyWithWhereNestedInput[]
-    | SessionUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TournamentPlayerUpdateInput {
-  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>;
-  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
-}
-
-export interface SessionUpdateWithWhereUniqueWithoutGameInput {
-  where: SessionWhereUniqueInput;
-  data: SessionUpdateWithoutGameDataInput;
-}
-
-export type PlayerWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface SessionUpdateWithoutGameDataInput {
-  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>;
-  name?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
-}
-
-export interface TournamentUpdateInput {
-  name?: Maybe<String>;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
-  notes?: Maybe<String>;
-  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>;
-  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>;
-}
-
 export interface TournamentUpdateOneRequiredWithoutSessionsInput {
   create?: Maybe<TournamentCreateWithoutSessionsInput>;
   update?: Maybe<TournamentUpdateWithoutSessionsDataInput>;
@@ -752,101 +543,7 @@ export interface TournamentUpdateOneRequiredWithoutSessionsInput {
   connect?: Maybe<TournamentWhereUniqueInput>;
 }
 
-export interface SessionUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface TournamentUpdateWithoutSessionsDataInput {
-  name?: Maybe<String>;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
-  notes?: Maybe<String>;
-  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>;
-}
-
-export interface SessionUpdateInput {
-  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>;
-  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
-  name?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
-}
-
-export interface TournamentPlayerUpdateManyWithoutTournamentInput {
-  create?: Maybe<
-    | TournamentPlayerCreateWithoutTournamentInput[]
-    | TournamentPlayerCreateWithoutTournamentInput
-  >;
-  delete?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  connect?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  set?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  update?: Maybe<
-    | TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput[]
-    | TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput
-  >;
-  upsert?: Maybe<
-    | TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput[]
-    | TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput
-  >;
-  deleteMany?: Maybe<
-    TournamentPlayerScalarWhereInput[] | TournamentPlayerScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | TournamentPlayerUpdateManyWithWhereNestedInput[]
-    | TournamentPlayerUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ScoreUpdateManyMutationInput {
-  score?: Maybe<Int>;
-  notes?: Maybe<String>;
-}
-
-export interface TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput {
-  where: TournamentPlayerWhereUniqueInput;
-  data: TournamentPlayerUpdateWithoutTournamentDataInput;
-}
-
-export interface ScoreUpdateInput {
-  player?: Maybe<TournamentPlayerUpdateOneRequiredWithoutScoresInput>;
-  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>;
-  score?: Maybe<Int>;
-  notes?: Maybe<String>;
-}
-
-export interface TournamentPlayerUpdateWithoutTournamentDataInput {
-  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
-}
-
-export interface PlayerUpdateManyMutationInput {
-  name?: Maybe<String>;
-  pic?: Maybe<String>;
-  nickname?: Maybe<String>;
-}
-
-export interface TournamentPlayerCreateManyWithoutPlayerInput {
-  create?: Maybe<
-    | TournamentPlayerCreateWithoutPlayerInput[]
-    | TournamentPlayerCreateWithoutPlayerInput
-  >;
-  connect?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-}
-
-export interface SessionWhereInput {
+export interface ScoreWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -861,16 +558,108 @@ export interface SessionWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  tournament?: Maybe<TournamentWhereInput>;
-  game?: Maybe<GameWhereInput>;
+  player?: Maybe<TournamentPlayerWhereInput>;
+  session?: Maybe<SessionWhereInput>;
+  score?: Maybe<Int>;
+  score_not?: Maybe<Int>;
+  score_in?: Maybe<Int[] | Int>;
+  score_not_in?: Maybe<Int[] | Int>;
+  score_lt?: Maybe<Int>;
+  score_lte?: Maybe<Int>;
+  score_gt?: Maybe<Int>;
+  score_gte?: Maybe<Int>;
+  notes?: Maybe<String>;
+  notes_not?: Maybe<String>;
+  notes_in?: Maybe<String[] | String>;
+  notes_not_in?: Maybe<String[] | String>;
+  notes_lt?: Maybe<String>;
+  notes_lte?: Maybe<String>;
+  notes_gt?: Maybe<String>;
+  notes_gte?: Maybe<String>;
+  notes_contains?: Maybe<String>;
+  notes_not_contains?: Maybe<String>;
+  notes_starts_with?: Maybe<String>;
+  notes_not_starts_with?: Maybe<String>;
+  notes_ends_with?: Maybe<String>;
+  notes_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
+  OR?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
+  NOT?: Maybe<ScoreWhereInput[] | ScoreWhereInput>;
+}
+
+export interface TournamentPlayerCreateOneWithoutScoresInput {
+  create?: Maybe<TournamentPlayerCreateWithoutScoresInput>;
+  connect?: Maybe<TournamentPlayerWhereUniqueInput>;
+}
+
+export interface SessionUpsertWithWhereUniqueWithoutTournamentInput {
+  where: SessionWhereUniqueInput;
+  update: SessionUpdateWithoutTournamentDataInput;
+  create: SessionCreateWithoutTournamentInput;
+}
+
+export interface TournamentPlayerCreateWithoutScoresInput {
+  id?: Maybe<ID_Input>;
+  player: PlayerCreateOneWithoutTournamentsInput;
+  tournament: TournamentCreateOneWithoutPlayersInput;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+}
+
+export interface TournamentUpdateWithoutSessionsDataInput {
+  owner?: Maybe<UserUpdateOneInput>;
+  name?: Maybe<String>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>;
+}
+
+export interface SessionCreateManyWithoutTournamentInput {
+  create?: Maybe<
+    SessionCreateWithoutTournamentInput[] | SessionCreateWithoutTournamentInput
+  >;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface SessionCreateWithoutTournamentInput {
+  id?: Maybe<ID_Input>;
+  game: GameCreateOneWithoutSessionsInput;
+  name: String;
+  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
+}
+
+export interface GameWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  owner?: Maybe<UserWhereInput>;
+  sessions_every?: Maybe<SessionWhereInput>;
+  sessions_some?: Maybe<SessionWhereInput>;
+  sessions_none?: Maybe<SessionWhereInput>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -885,88 +674,108 @@ export interface SessionWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  scores_every?: Maybe<ScoreWhereInput>;
-  scores_some?: Maybe<ScoreWhereInput>;
-  scores_none?: Maybe<ScoreWhereInput>;
-  AND?: Maybe<SessionWhereInput[] | SessionWhereInput>;
-  OR?: Maybe<SessionWhereInput[] | SessionWhereInput>;
-  NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+  bgg_id?: Maybe<String>;
+  bgg_id_not?: Maybe<String>;
+  bgg_id_in?: Maybe<String[] | String>;
+  bgg_id_not_in?: Maybe<String[] | String>;
+  bgg_id_lt?: Maybe<String>;
+  bgg_id_lte?: Maybe<String>;
+  bgg_id_gt?: Maybe<String>;
+  bgg_id_gte?: Maybe<String>;
+  bgg_id_contains?: Maybe<String>;
+  bgg_id_not_contains?: Maybe<String>;
+  bgg_id_starts_with?: Maybe<String>;
+  bgg_id_not_starts_with?: Maybe<String>;
+  bgg_id_ends_with?: Maybe<String>;
+  bgg_id_not_ends_with?: Maybe<String>;
+  notes?: Maybe<String>;
+  notes_not?: Maybe<String>;
+  notes_in?: Maybe<String[] | String>;
+  notes_not_in?: Maybe<String[] | String>;
+  notes_lt?: Maybe<String>;
+  notes_lte?: Maybe<String>;
+  notes_gt?: Maybe<String>;
+  notes_gte?: Maybe<String>;
+  notes_contains?: Maybe<String>;
+  notes_not_contains?: Maybe<String>;
+  notes_starts_with?: Maybe<String>;
+  notes_not_starts_with?: Maybe<String>;
+  notes_ends_with?: Maybe<String>;
+  notes_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GameWhereInput[] | GameWhereInput>;
+  OR?: Maybe<GameWhereInput[] | GameWhereInput>;
+  NOT?: Maybe<GameWhereInput[] | GameWhereInput>;
 }
 
-export interface PlayerUpdateWithoutTournamentsDataInput {
+export interface GameUpdateInput {
+  owner?: Maybe<UserUpdateOneWithoutGamesInput>;
+  sessions?: Maybe<SessionUpdateManyWithoutGameInput>;
   name?: Maybe<String>;
-  pic?: Maybe<String>;
-  nickname?: Maybe<String>;
+  bgg_id?: Maybe<String>;
+  notes?: Maybe<String>;
 }
 
-export interface TournamentPlayerUpdateWithoutPlayerDataInput {
-  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
-}
-
-export interface PlayerUpsertWithoutTournamentsInput {
-  update: PlayerUpdateWithoutTournamentsDataInput;
-  create: PlayerCreateWithoutTournamentsInput;
-}
-
-export type TournamentPlayerWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ScoreUpdateManyWithoutPlayerInput {
-  create?: Maybe<
-    ScoreCreateWithoutPlayerInput[] | ScoreCreateWithoutPlayerInput
-  >;
-  delete?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
-  connect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
-  set?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
-  disconnect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
-  update?: Maybe<
-    | ScoreUpdateWithWhereUniqueWithoutPlayerInput[]
-    | ScoreUpdateWithWhereUniqueWithoutPlayerInput
-  >;
-  upsert?: Maybe<
-    | ScoreUpsertWithWhereUniqueWithoutPlayerInput[]
-    | ScoreUpsertWithWhereUniqueWithoutPlayerInput
-  >;
-  deleteMany?: Maybe<ScoreScalarWhereInput[] | ScoreScalarWhereInput>;
-  updateMany?: Maybe<
-    ScoreUpdateManyWithWhereNestedInput[] | ScoreUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface PlayerUpdateInput {
-  name?: Maybe<String>;
-  pic?: Maybe<String>;
-  nickname?: Maybe<String>;
-  tournaments?: Maybe<TournamentPlayerUpdateManyWithoutPlayerInput>;
-}
-
-export interface ScoreUpdateWithWhereUniqueWithoutPlayerInput {
-  where: ScoreWhereUniqueInput;
-  data: ScoreUpdateWithoutPlayerDataInput;
-}
-
-export interface SessionCreateManyWithoutGameInput {
-  create?: Maybe<
-    SessionCreateWithoutGameInput[] | SessionCreateWithoutGameInput
-  >;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-}
-
-export interface PlayerCreateInput {
+export interface UserWhereInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  pic?: Maybe<String>;
-  nickname?: Maybe<String>;
-  tournaments?: Maybe<TournamentPlayerCreateManyWithoutPlayerInput>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  username_not?: Maybe<String>;
+  username_in?: Maybe<String[] | String>;
+  username_not_in?: Maybe<String[] | String>;
+  username_lt?: Maybe<String>;
+  username_lte?: Maybe<String>;
+  username_gt?: Maybe<String>;
+  username_gte?: Maybe<String>;
+  username_contains?: Maybe<String>;
+  username_not_contains?: Maybe<String>;
+  username_starts_with?: Maybe<String>;
+  username_not_starts_with?: Maybe<String>;
+  username_ends_with?: Maybe<String>;
+  username_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  players_every?: Maybe<PlayerWhereInput>;
+  players_some?: Maybe<PlayerWhereInput>;
+  players_none?: Maybe<PlayerWhereInput>;
+  games_every?: Maybe<GameWhereInput>;
+  games_some?: Maybe<GameWhereInput>;
+  games_none?: Maybe<GameWhereInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface TournamentCreateOneWithoutSessionsInput {
-  create?: Maybe<TournamentCreateWithoutSessionsInput>;
-  connect?: Maybe<TournamentWhereUniqueInput>;
+export interface UserUpdateOneWithoutGamesInput {
+  create?: Maybe<UserCreateWithoutGamesInput>;
+  update?: Maybe<UserUpdateWithoutGamesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutGamesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface PlayerWhereInput {
@@ -984,6 +793,7 @@ export interface PlayerWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  owner?: Maybe<UserWhereInput>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -1034,6 +844,440 @@ export interface PlayerWhereInput {
   NOT?: Maybe<PlayerWhereInput[] | PlayerWhereInput>;
 }
 
+export interface UserUpdateWithoutGamesDataInput {
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
+}
+
+export interface PlayerSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PlayerWhereInput>;
+  AND?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
+  OR?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
+  NOT?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
+}
+
+export interface PlayerUpdateManyWithoutOwnerInput {
+  create?: Maybe<
+    PlayerCreateWithoutOwnerInput[] | PlayerCreateWithoutOwnerInput
+  >;
+  delete?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+  connect?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+  set?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+  disconnect?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+  update?: Maybe<
+    | PlayerUpdateWithWhereUniqueWithoutOwnerInput[]
+    | PlayerUpdateWithWhereUniqueWithoutOwnerInput
+  >;
+  upsert?: Maybe<
+    | PlayerUpsertWithWhereUniqueWithoutOwnerInput[]
+    | PlayerUpsertWithWhereUniqueWithoutOwnerInput
+  >;
+  deleteMany?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+  updateMany?: Maybe<
+    | PlayerUpdateManyWithWhereNestedInput[]
+    | PlayerUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateManyMutationInput {
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface PlayerUpdateWithWhereUniqueWithoutOwnerInput {
+  where: PlayerWhereUniqueInput;
+  data: PlayerUpdateWithoutOwnerDataInput;
+}
+
+export type PlayerWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface PlayerUpdateWithoutOwnerDataInput {
+  name?: Maybe<String>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+  tournaments?: Maybe<TournamentPlayerUpdateManyWithoutPlayerInput>;
+}
+
+export interface TournamentPlayerUpdateInput {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>;
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
+}
+
+export interface TournamentPlayerUpdateManyWithoutPlayerInput {
+  create?: Maybe<
+    | TournamentPlayerCreateWithoutPlayerInput[]
+    | TournamentPlayerCreateWithoutPlayerInput
+  >;
+  delete?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  connect?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  set?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  update?: Maybe<
+    | TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput[]
+    | TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput
+  >;
+  upsert?: Maybe<
+    | TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput[]
+    | TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput
+  >;
+  deleteMany?: Maybe<
+    TournamentPlayerScalarWhereInput[] | TournamentPlayerScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | TournamentPlayerUpdateManyWithWhereNestedInput[]
+    | TournamentPlayerUpdateManyWithWhereNestedInput
+  >;
+}
+
+export type ScoreWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput {
+  where: TournamentPlayerWhereUniqueInput;
+  data: TournamentPlayerUpdateWithoutPlayerDataInput;
+}
+
+export interface TournamentUpdateInput {
+  owner?: Maybe<UserUpdateOneInput>;
+  name?: Maybe<String>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>;
+  players?: Maybe<TournamentPlayerUpdateManyWithoutTournamentInput>;
+}
+
+export interface TournamentPlayerUpdateWithoutPlayerDataInput {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
+}
+
+export type SessionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface TournamentUpdateOneRequiredWithoutPlayersInput {
+  create?: Maybe<TournamentCreateWithoutPlayersInput>;
+  update?: Maybe<TournamentUpdateWithoutPlayersDataInput>;
+  upsert?: Maybe<TournamentUpsertWithoutPlayersInput>;
+  connect?: Maybe<TournamentWhereUniqueInput>;
+}
+
+export interface SessionUpdateInput {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>;
+  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
+  name?: Maybe<String>;
+  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
+}
+
+export interface TournamentUpdateWithoutPlayersDataInput {
+  owner?: Maybe<UserUpdateOneInput>;
+  name?: Maybe<String>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>;
+}
+
+export type TournamentWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface ScoreUpdateInput {
+  player?: Maybe<TournamentPlayerUpdateOneRequiredWithoutScoresInput>;
+  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>;
+  score?: Maybe<Int>;
+  notes?: Maybe<String>;
+}
+
+export interface UserUpdateDataInput {
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
+  games?: Maybe<GameUpdateManyWithoutOwnerInput>;
+}
+
+export interface PlayerUpdateManyMutationInput {
+  name?: Maybe<String>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+}
+
+export interface PlayerUpsertWithWhereUniqueWithoutOwnerInput {
+  where: PlayerWhereUniqueInput;
+  update: PlayerUpdateWithoutOwnerDataInput;
+  create: PlayerCreateWithoutOwnerInput;
+}
+
+export interface PlayerUpdateInput {
+  owner?: Maybe<UserUpdateOneRequiredWithoutPlayersInput>;
+  name?: Maybe<String>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+  tournaments?: Maybe<TournamentPlayerUpdateManyWithoutPlayerInput>;
+}
+
+export interface GameUpdateWithWhereUniqueWithoutOwnerInput {
+  where: GameWhereUniqueInput;
+  data: GameUpdateWithoutOwnerDataInput;
+}
+
+export interface GameUpdateManyMutationInput {
+  name?: Maybe<String>;
+  bgg_id?: Maybe<String>;
+  notes?: Maybe<String>;
+}
+
+export interface GameUpdateWithoutOwnerDataInput {
+  sessions?: Maybe<SessionUpdateManyWithoutGameInput>;
+  name?: Maybe<String>;
+  bgg_id?: Maybe<String>;
+  notes?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutGamesInput {
+  update: UserUpdateWithoutGamesDataInput;
+  create: UserCreateWithoutGamesInput;
+}
+
+export interface SessionUpdateManyWithoutGameInput {
+  create?: Maybe<
+    SessionCreateWithoutGameInput[] | SessionCreateWithoutGameInput
+  >;
+  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  update?: Maybe<
+    | SessionUpdateWithWhereUniqueWithoutGameInput[]
+    | SessionUpdateWithWhereUniqueWithoutGameInput
+  >;
+  upsert?: Maybe<
+    | SessionUpsertWithWhereUniqueWithoutGameInput[]
+    | SessionUpsertWithWhereUniqueWithoutGameInput
+  >;
+  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
+  updateMany?: Maybe<
+    | SessionUpdateManyWithWhereNestedInput[]
+    | SessionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PlayerUpdateManyWithWhereNestedInput {
+  where: PlayerScalarWhereInput;
+  data: PlayerUpdateManyDataInput;
+}
+
+export interface SessionUpdateWithWhereUniqueWithoutGameInput {
+  where: SessionWhereUniqueInput;
+  data: SessionUpdateWithoutGameDataInput;
+}
+
+export interface UserCreateOneWithoutGamesInput {
+  create?: Maybe<UserCreateWithoutGamesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface TournamentPlayerWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  player?: Maybe<PlayerWhereInput>;
+  tournament?: Maybe<TournamentWhereInput>;
+  role?: Maybe<String>;
+  role_not?: Maybe<String>;
+  role_in?: Maybe<String[] | String>;
+  role_not_in?: Maybe<String[] | String>;
+  role_lt?: Maybe<String>;
+  role_lte?: Maybe<String>;
+  role_gt?: Maybe<String>;
+  role_gte?: Maybe<String>;
+  role_contains?: Maybe<String>;
+  role_not_contains?: Maybe<String>;
+  role_starts_with?: Maybe<String>;
+  role_not_starts_with?: Maybe<String>;
+  role_ends_with?: Maybe<String>;
+  role_not_ends_with?: Maybe<String>;
+  nickname?: Maybe<String>;
+  nickname_not?: Maybe<String>;
+  nickname_in?: Maybe<String[] | String>;
+  nickname_not_in?: Maybe<String[] | String>;
+  nickname_lt?: Maybe<String>;
+  nickname_lte?: Maybe<String>;
+  nickname_gt?: Maybe<String>;
+  nickname_gte?: Maybe<String>;
+  nickname_contains?: Maybe<String>;
+  nickname_not_contains?: Maybe<String>;
+  nickname_starts_with?: Maybe<String>;
+  nickname_not_starts_with?: Maybe<String>;
+  nickname_ends_with?: Maybe<String>;
+  nickname_not_ends_with?: Maybe<String>;
+  scores_every?: Maybe<ScoreWhereInput>;
+  scores_some?: Maybe<ScoreWhereInput>;
+  scores_none?: Maybe<ScoreWhereInput>;
+  AND?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
+  OR?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
+  NOT?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
+}
+
+export interface PlayerCreateManyWithoutOwnerInput {
+  create?: Maybe<
+    PlayerCreateWithoutOwnerInput[] | PlayerCreateWithoutOwnerInput
+  >;
+  connect?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+}
+
+export interface TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput {
+  where: TournamentPlayerWhereUniqueInput;
+  update: TournamentPlayerUpdateWithoutPlayerDataInput;
+  create: TournamentPlayerCreateWithoutPlayerInput;
+}
+
+export interface TournamentPlayerCreateManyWithoutPlayerInput {
+  create?: Maybe<
+    | TournamentPlayerCreateWithoutPlayerInput[]
+    | TournamentPlayerCreateWithoutPlayerInput
+  >;
+  connect?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+}
+
+export interface TournamentUpsertWithoutPlayersInput {
+  update: TournamentUpdateWithoutPlayersDataInput;
+  create: TournamentCreateWithoutPlayersInput;
+}
+
+export interface TournamentCreateOneWithoutPlayersInput {
+  create?: Maybe<TournamentCreateWithoutPlayersInput>;
+  connect?: Maybe<TournamentWhereUniqueInput>;
+}
+
+export interface TournamentPlayerUpdateManyWithoutTournamentInput {
+  create?: Maybe<
+    | TournamentPlayerCreateWithoutTournamentInput[]
+    | TournamentPlayerCreateWithoutTournamentInput
+  >;
+  delete?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  connect?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  set?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
+  >;
+  update?: Maybe<
+    | TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput[]
+    | TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput
+  >;
+  upsert?: Maybe<
+    | TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput[]
+    | TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput
+  >;
+  deleteMany?: Maybe<
+    TournamentPlayerScalarWhereInput[] | TournamentPlayerScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | TournamentPlayerUpdateManyWithWhereNestedInput[]
+    | TournamentPlayerUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface TournamentPlayerUpdateWithWhereUniqueWithoutTournamentInput {
+  where: TournamentPlayerWhereUniqueInput;
+  data: TournamentPlayerUpdateWithoutTournamentDataInput;
+}
+
+export interface GameCreateManyWithoutOwnerInput {
+  create?: Maybe<GameCreateWithoutOwnerInput[] | GameCreateWithoutOwnerInput>;
+  connect?: Maybe<GameWhereUniqueInput[] | GameWhereUniqueInput>;
+}
+
+export interface TournamentPlayerUpdateWithoutTournamentDataInput {
+  player?: Maybe<PlayerUpdateOneRequiredWithoutTournamentsInput>;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+  scores?: Maybe<ScoreUpdateManyWithoutPlayerInput>;
+}
+
+export interface SessionCreateManyWithoutGameInput {
+  create?: Maybe<
+    SessionCreateWithoutGameInput[] | SessionCreateWithoutGameInput
+  >;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+}
+
+export interface PlayerUpdateOneRequiredWithoutTournamentsInput {
+  create?: Maybe<PlayerCreateWithoutTournamentsInput>;
+  update?: Maybe<PlayerUpdateWithoutTournamentsDataInput>;
+  upsert?: Maybe<PlayerUpsertWithoutTournamentsInput>;
+  connect?: Maybe<PlayerWhereUniqueInput>;
+}
+
+export interface TournamentCreateOneWithoutSessionsInput {
+  create?: Maybe<TournamentCreateWithoutSessionsInput>;
+  connect?: Maybe<TournamentWhereUniqueInput>;
+}
+
+export interface PlayerUpdateWithoutTournamentsDataInput {
+  owner?: Maybe<UserUpdateOneRequiredWithoutPlayersInput>;
+  name?: Maybe<String>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+}
+
 export interface TournamentPlayerCreateManyWithoutTournamentInput {
   create?: Maybe<
     | TournamentPlayerCreateWithoutTournamentInput[]
@@ -1044,10 +1288,11 @@ export interface TournamentPlayerCreateManyWithoutTournamentInput {
   >;
 }
 
-export interface GameUpdateManyMutationInput {
-  name?: Maybe<String>;
-  bgg_id?: Maybe<String>;
-  notes?: Maybe<String>;
+export interface UserUpdateOneRequiredWithoutPlayersInput {
+  create?: Maybe<UserCreateWithoutPlayersInput>;
+  update?: Maybe<UserUpdateWithoutPlayersDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPlayersInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface PlayerCreateOneWithoutTournamentsInput {
@@ -1055,11 +1300,20 @@ export interface PlayerCreateOneWithoutTournamentsInput {
   connect?: Maybe<PlayerWhereUniqueInput>;
 }
 
-export interface GameUpdateOneRequiredWithoutSessionsInput {
-  create?: Maybe<GameCreateWithoutSessionsInput>;
-  update?: Maybe<GameUpdateWithoutSessionsDataInput>;
-  upsert?: Maybe<GameUpsertWithoutSessionsInput>;
-  connect?: Maybe<GameWhereUniqueInput>;
+export interface UserUpdateWithoutPlayersDataInput {
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  games?: Maybe<GameUpdateManyWithoutOwnerInput>;
+}
+
+export interface UserCreateOneWithoutPlayersInput {
+  create?: Maybe<UserCreateWithoutPlayersInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpsertWithoutPlayersInput {
+  update: UserUpdateWithoutPlayersDataInput;
+  create: UserCreateWithoutPlayersInput;
 }
 
 export interface ScoreCreateManyWithoutPlayerInput {
@@ -1069,10 +1323,9 @@ export interface ScoreCreateManyWithoutPlayerInput {
   connect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
 }
 
-export interface GameUpdateWithoutSessionsDataInput {
-  name?: Maybe<String>;
-  bgg_id?: Maybe<String>;
-  notes?: Maybe<String>;
+export interface PlayerUpsertWithoutTournamentsInput {
+  update: PlayerUpdateWithoutTournamentsDataInput;
+  create: PlayerCreateWithoutTournamentsInput;
 }
 
 export interface SessionCreateOneWithoutScoresInput {
@@ -1080,9 +1333,26 @@ export interface SessionCreateOneWithoutScoresInput {
   connect?: Maybe<SessionWhereUniqueInput>;
 }
 
-export interface GameUpsertWithoutSessionsInput {
-  update: GameUpdateWithoutSessionsDataInput;
-  create: GameCreateWithoutSessionsInput;
+export interface ScoreUpdateManyWithoutPlayerInput {
+  create?: Maybe<
+    ScoreCreateWithoutPlayerInput[] | ScoreCreateWithoutPlayerInput
+  >;
+  delete?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
+  connect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
+  set?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
+  disconnect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
+  update?: Maybe<
+    | ScoreUpdateWithWhereUniqueWithoutPlayerInput[]
+    | ScoreUpdateWithWhereUniqueWithoutPlayerInput
+  >;
+  upsert?: Maybe<
+    | ScoreUpsertWithWhereUniqueWithoutPlayerInput[]
+    | ScoreUpsertWithWhereUniqueWithoutPlayerInput
+  >;
+  deleteMany?: Maybe<ScoreScalarWhereInput[] | ScoreScalarWhereInput>;
+  updateMany?: Maybe<
+    ScoreUpdateManyWithWhereNestedInput[] | ScoreUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface GameCreateOneWithoutSessionsInput {
@@ -1090,9 +1360,9 @@ export interface GameCreateOneWithoutSessionsInput {
   connect?: Maybe<GameWhereUniqueInput>;
 }
 
-export interface SessionUpsertWithoutScoresInput {
-  update: SessionUpdateWithoutScoresDataInput;
-  create: SessionCreateWithoutScoresInput;
+export interface ScoreUpdateWithWhereUniqueWithoutPlayerInput {
+  where: ScoreWhereUniqueInput;
+  data: ScoreUpdateWithoutPlayerDataInput;
 }
 
 export interface ScoreCreateManyWithoutSessionInput {
@@ -1102,15 +1372,172 @@ export interface ScoreCreateManyWithoutSessionInput {
   connect?: Maybe<ScoreWhereUniqueInput[] | ScoreWhereUniqueInput>;
 }
 
+export interface ScoreUpdateWithoutPlayerDataInput {
+  session?: Maybe<SessionUpdateOneRequiredWithoutScoresInput>;
+  score?: Maybe<Int>;
+  notes?: Maybe<String>;
+}
+
+export interface SessionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  tournament?: Maybe<TournamentWhereInput>;
+  game?: Maybe<GameWhereInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  scores_every?: Maybe<ScoreWhereInput>;
+  scores_some?: Maybe<ScoreWhereInput>;
+  scores_none?: Maybe<ScoreWhereInput>;
+  AND?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+  OR?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+  NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+}
+
+export interface SessionUpdateOneRequiredWithoutScoresInput {
+  create?: Maybe<SessionCreateWithoutScoresInput>;
+  update?: Maybe<SessionUpdateWithoutScoresDataInput>;
+  upsert?: Maybe<SessionUpsertWithoutScoresInput>;
+  connect?: Maybe<SessionWhereUniqueInput>;
+}
+
+export interface TournamentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TournamentWhereInput>;
+  AND?: Maybe<
+    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
+  >;
+}
+
+export interface SessionUpdateWithoutScoresDataInput {
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSessionsInput>;
+  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
+  name?: Maybe<String>;
+}
+
+export interface ScoreSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ScoreWhereInput>;
+  AND?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
+  OR?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
+  NOT?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
+}
+
+export interface GameUpdateOneRequiredWithoutSessionsInput {
+  create?: Maybe<GameCreateWithoutSessionsInput>;
+  update?: Maybe<GameUpdateWithoutSessionsDataInput>;
+  upsert?: Maybe<GameUpsertWithoutSessionsInput>;
+  connect?: Maybe<GameWhereUniqueInput>;
+}
+
+export interface UserUpdateInput {
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
+  games?: Maybe<GameUpdateManyWithoutOwnerInput>;
+}
+
+export interface GameUpdateWithoutSessionsDataInput {
+  owner?: Maybe<UserUpdateOneWithoutGamesInput>;
+  name?: Maybe<String>;
+  bgg_id?: Maybe<String>;
+  notes?: Maybe<String>;
+}
+
+export interface TournamentPlayerCreateInput {
+  id?: Maybe<ID_Input>;
+  player: PlayerCreateOneWithoutTournamentsInput;
+  tournament: TournamentCreateOneWithoutPlayersInput;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>;
+}
+
+export interface GameUpsertWithoutSessionsInput {
+  update: GameUpdateWithoutSessionsDataInput;
+  create: GameCreateWithoutSessionsInput;
+}
+
+export interface TournamentCreateInput {
+  id?: Maybe<ID_Input>;
+  owner?: Maybe<UserCreateOneInput>;
+  name: String;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>;
+  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>;
+}
+
+export interface SessionUpsertWithoutScoresInput {
+  update: SessionUpdateWithoutScoresDataInput;
+  create: SessionCreateWithoutScoresInput;
+}
+
+export interface SessionCreateInput {
+  id?: Maybe<ID_Input>;
+  tournament: TournamentCreateOneWithoutSessionsInput;
+  game: GameCreateOneWithoutSessionsInput;
+  name: String;
+  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
+}
+
 export interface ScoreUpsertWithWhereUniqueWithoutPlayerInput {
   where: ScoreWhereUniqueInput;
   update: ScoreUpdateWithoutPlayerDataInput;
   create: ScoreCreateWithoutPlayerInput;
 }
 
-export interface TournamentPlayerCreateOneWithoutScoresInput {
-  create?: Maybe<TournamentPlayerCreateWithoutScoresInput>;
-  connect?: Maybe<TournamentPlayerWhereUniqueInput>;
+export interface ScoreCreateInput {
+  id?: Maybe<ID_Input>;
+  player: TournamentPlayerCreateOneWithoutScoresInput;
+  session: SessionCreateOneWithoutScoresInput;
+  score?: Maybe<Int>;
+  notes?: Maybe<String>;
 }
 
 export interface ScoreScalarWhereInput {
@@ -1155,21 +1582,13 @@ export interface ScoreScalarWhereInput {
   NOT?: Maybe<ScoreScalarWhereInput[] | ScoreScalarWhereInput>;
 }
 
-export interface TournamentSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TournamentWhereInput>;
-  AND?: Maybe<
-    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    TournamentSubscriptionWhereInput[] | TournamentSubscriptionWhereInput
-  >;
+export interface PlayerCreateInput {
+  id?: Maybe<ID_Input>;
+  owner: UserCreateOneWithoutPlayersInput;
+  name: String;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+  tournaments?: Maybe<TournamentPlayerCreateManyWithoutPlayerInput>;
 }
 
 export interface ScoreUpdateManyWithWhereNestedInput {
@@ -1177,15 +1596,10 @@ export interface ScoreUpdateManyWithWhereNestedInput {
   data: ScoreUpdateManyDataInput;
 }
 
-export interface PlayerSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PlayerWhereInput>;
-  AND?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
-  OR?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
-  NOT?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
+export interface PlayerUpdateManyDataInput {
+  name?: Maybe<String>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
 }
 
 export interface ScoreUpdateManyDataInput {
@@ -1193,13 +1607,13 @@ export interface ScoreUpdateManyDataInput {
   notes?: Maybe<String>;
 }
 
-export interface TournamentPlayerCreateInput {
+export interface GameCreateInput {
   id?: Maybe<ID_Input>;
-  player: PlayerCreateOneWithoutTournamentsInput;
-  tournament: TournamentCreateOneWithoutPlayersInput;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>;
+  owner?: Maybe<UserCreateOneWithoutGamesInput>;
+  sessions?: Maybe<SessionCreateManyWithoutGameInput>;
+  name: String;
+  bgg_id?: Maybe<String>;
+  notes?: Maybe<String>;
 }
 
 export interface TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput {
@@ -1208,15 +1622,12 @@ export interface TournamentPlayerUpsertWithWhereUniqueWithoutTournamentInput {
   create: TournamentPlayerCreateWithoutTournamentInput;
 }
 
-export interface TournamentCreateInput {
+export interface PlayerCreateWithoutOwnerInput {
   id?: Maybe<ID_Input>;
   name: String;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
-  notes?: Maybe<String>;
-  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>;
-  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
+  tournaments?: Maybe<TournamentPlayerCreateManyWithoutPlayerInput>;
 }
 
 export interface TournamentPlayerScalarWhereInput {
@@ -1273,12 +1684,15 @@ export interface TournamentPlayerScalarWhereInput {
   >;
 }
 
-export interface SessionCreateInput {
+export interface TournamentCreateWithoutPlayersInput {
   id?: Maybe<ID_Input>;
-  tournament: TournamentCreateOneWithoutSessionsInput;
-  game: GameCreateOneWithoutSessionsInput;
+  owner?: Maybe<UserCreateOneInput>;
   name: String;
-  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  sessions?: Maybe<SessionCreateManyWithoutTournamentInput>;
 }
 
 export interface TournamentPlayerUpdateManyWithWhereNestedInput {
@@ -1286,11 +1700,11 @@ export interface TournamentPlayerUpdateManyWithWhereNestedInput {
   data: TournamentPlayerUpdateManyDataInput;
 }
 
-export interface ScoreCreateInput {
+export interface GameCreateWithoutOwnerInput {
   id?: Maybe<ID_Input>;
-  player: TournamentPlayerCreateOneWithoutScoresInput;
-  session: SessionCreateOneWithoutScoresInput;
-  score?: Maybe<Int>;
+  sessions?: Maybe<SessionCreateManyWithoutGameInput>;
+  name: String;
+  bgg_id?: Maybe<String>;
   notes?: Maybe<String>;
 }
 
@@ -1299,10 +1713,15 @@ export interface TournamentPlayerUpdateManyDataInput {
   nickname?: Maybe<String>;
 }
 
-export interface TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput {
-  where: TournamentPlayerWhereUniqueInput;
-  update: TournamentPlayerUpdateWithoutPlayerDataInput;
-  create: TournamentPlayerCreateWithoutPlayerInput;
+export interface TournamentCreateWithoutSessionsInput {
+  id?: Maybe<ID_Input>;
+  owner?: Maybe<UserCreateOneInput>;
+  name: String;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  rules?: Maybe<String>;
+  notes?: Maybe<String>;
+  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>;
 }
 
 export interface TournamentUpsertWithoutSessionsInput {
@@ -1310,38 +1729,12 @@ export interface TournamentUpsertWithoutSessionsInput {
   create: TournamentCreateWithoutSessionsInput;
 }
 
-export interface TournamentPlayerUpdateManyWithoutPlayerInput {
-  create?: Maybe<
-    | TournamentPlayerCreateWithoutPlayerInput[]
-    | TournamentPlayerCreateWithoutPlayerInput
-  >;
-  delete?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  connect?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  set?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    TournamentPlayerWhereUniqueInput[] | TournamentPlayerWhereUniqueInput
-  >;
-  update?: Maybe<
-    | TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput[]
-    | TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput
-  >;
-  upsert?: Maybe<
-    | TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput[]
-    | TournamentPlayerUpsertWithWhereUniqueWithoutPlayerInput
-  >;
-  deleteMany?: Maybe<
-    TournamentPlayerScalarWhereInput[] | TournamentPlayerScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | TournamentPlayerUpdateManyWithWhereNestedInput[]
-    | TournamentPlayerUpdateManyWithWhereNestedInput
-  >;
+export interface PlayerCreateWithoutTournamentsInput {
+  id?: Maybe<ID_Input>;
+  owner: UserCreateOneWithoutPlayersInput;
+  name: String;
+  pic?: Maybe<String>;
+  nickname?: Maybe<String>;
 }
 
 export interface ScoreUpdateManyWithoutSessionInput {
@@ -1366,11 +1759,10 @@ export interface ScoreUpdateManyWithoutSessionInput {
   >;
 }
 
-export interface GameCreateInput {
+export interface ScoreCreateWithoutPlayerInput {
   id?: Maybe<ID_Input>;
-  sessions?: Maybe<SessionCreateManyWithoutGameInput>;
-  name: String;
-  bgg_id?: Maybe<String>;
+  session: SessionCreateOneWithoutScoresInput;
+  score?: Maybe<Int>;
   notes?: Maybe<String>;
 }
 
@@ -1379,14 +1771,12 @@ export interface ScoreUpdateWithWhereUniqueWithoutSessionInput {
   data: ScoreUpdateWithoutSessionDataInput;
 }
 
-export interface TournamentCreateWithoutSessionsInput {
+export interface GameCreateWithoutSessionsInput {
   id?: Maybe<ID_Input>;
+  owner?: Maybe<UserCreateOneWithoutGamesInput>;
   name: String;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
+  bgg_id?: Maybe<String>;
   notes?: Maybe<String>;
-  players?: Maybe<TournamentPlayerCreateManyWithoutTournamentInput>;
 }
 
 export interface ScoreUpdateWithoutSessionDataInput {
@@ -1395,11 +1785,24 @@ export interface ScoreUpdateWithoutSessionDataInput {
   notes?: Maybe<String>;
 }
 
-export interface PlayerCreateWithoutTournamentsInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  pic?: Maybe<String>;
-  nickname?: Maybe<String>;
+export interface TournamentPlayerSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TournamentPlayerWhereInput>;
+  AND?: Maybe<
+    | TournamentPlayerSubscriptionWhereInput[]
+    | TournamentPlayerSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | TournamentPlayerSubscriptionWhereInput[]
+    | TournamentPlayerSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | TournamentPlayerSubscriptionWhereInput[]
+    | TournamentPlayerSubscriptionWhereInput
+  >;
 }
 
 export interface TournamentPlayerUpdateOneRequiredWithoutScoresInput {
@@ -1409,11 +1812,15 @@ export interface TournamentPlayerUpdateOneRequiredWithoutScoresInput {
   connect?: Maybe<TournamentPlayerWhereUniqueInput>;
 }
 
-export interface SessionCreateWithoutScoresInput {
-  id?: Maybe<ID_Input>;
-  tournament: TournamentCreateOneWithoutSessionsInput;
-  game: GameCreateOneWithoutSessionsInput;
-  name: String;
+export interface GameSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GameWhereInput>;
+  AND?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
+  OR?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
+  NOT?: Maybe<GameSubscriptionWhereInput[] | GameSubscriptionWhereInput>;
 }
 
 export interface TournamentPlayerUpdateWithoutScoresDataInput {
@@ -1421,40 +1828,6 @@ export interface TournamentPlayerUpdateWithoutScoresDataInput {
   tournament?: Maybe<TournamentUpdateOneRequiredWithoutPlayersInput>;
   role?: Maybe<String>;
   nickname?: Maybe<String>;
-}
-
-export interface ScoreCreateWithoutSessionInput {
-  id?: Maybe<ID_Input>;
-  player: TournamentPlayerCreateOneWithoutScoresInput;
-  score?: Maybe<Int>;
-  notes?: Maybe<String>;
-}
-
-export interface TournamentUpdateOneRequiredWithoutPlayersInput {
-  create?: Maybe<TournamentCreateWithoutPlayersInput>;
-  update?: Maybe<TournamentUpdateWithoutPlayersDataInput>;
-  upsert?: Maybe<TournamentUpsertWithoutPlayersInput>;
-  connect?: Maybe<TournamentWhereUniqueInput>;
-}
-
-export interface ScoreSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ScoreWhereInput>;
-  AND?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
-  OR?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
-  NOT?: Maybe<ScoreSubscriptionWhereInput[] | ScoreSubscriptionWhereInput>;
-}
-
-export interface TournamentUpdateWithoutPlayersDataInput {
-  name?: Maybe<String>;
-  startDate?: Maybe<DateTimeInput>;
-  endDate?: Maybe<DateTimeInput>;
-  rules?: Maybe<String>;
-  notes?: Maybe<String>;
-  sessions?: Maybe<SessionUpdateManyWithoutTournamentInput>;
 }
 
 export interface TournamentUpdateManyMutationInput {
@@ -1465,67 +1838,38 @@ export interface TournamentUpdateManyMutationInput {
   notes?: Maybe<String>;
 }
 
-export interface SessionUpdateManyWithoutTournamentInput {
-  create?: Maybe<
-    SessionCreateWithoutTournamentInput[] | SessionCreateWithoutTournamentInput
-  >;
-  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  update?: Maybe<
-    | SessionUpdateWithWhereUniqueWithoutTournamentInput[]
-    | SessionUpdateWithWhereUniqueWithoutTournamentInput
-  >;
-  upsert?: Maybe<
-    | SessionUpsertWithWhereUniqueWithoutTournamentInput[]
-    | SessionUpsertWithWhereUniqueWithoutTournamentInput
-  >;
-  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-  updateMany?: Maybe<
-    | SessionUpdateManyWithWhereNestedInput[]
-    | SessionUpdateManyWithWhereNestedInput
-  >;
+export interface TournamentPlayerUpsertWithoutScoresInput {
+  update: TournamentPlayerUpdateWithoutScoresDataInput;
+  create: TournamentPlayerCreateWithoutScoresInput;
 }
 
-export type SessionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface SessionUpdateWithWhereUniqueWithoutTournamentInput {
-  where: SessionWhereUniqueInput;
-  data: SessionUpdateWithoutTournamentDataInput;
-}
-
-export interface TournamentPlayerUpdateWithWhereUniqueWithoutPlayerInput {
-  where: TournamentPlayerWhereUniqueInput;
-  data: TournamentPlayerUpdateWithoutPlayerDataInput;
-}
-
-export interface SessionUpdateWithoutTournamentDataInput {
-  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
-  name?: Maybe<String>;
-  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
-}
-
-export interface SessionCreateWithoutGameInput {
-  id?: Maybe<ID_Input>;
-  tournament: TournamentCreateOneWithoutSessionsInput;
-  name: String;
-  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
-}
-
-export interface SessionUpsertWithWhereUniqueWithoutTournamentInput {
-  where: SessionWhereUniqueInput;
-  update: SessionUpdateWithoutTournamentDataInput;
-  create: SessionCreateWithoutTournamentInput;
-}
-
-export interface ScoreCreateWithoutPlayerInput {
-  id?: Maybe<ID_Input>;
-  session: SessionCreateOneWithoutScoresInput;
+export interface ScoreUpdateManyMutationInput {
   score?: Maybe<Int>;
   notes?: Maybe<String>;
+}
+
+export interface ScoreUpsertWithWhereUniqueWithoutSessionInput {
+  where: ScoreWhereUniqueInput;
+  update: ScoreUpdateWithoutSessionDataInput;
+  create: ScoreCreateWithoutSessionInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  username?: Maybe<String>;
+}>;
+
+export interface SessionUpsertWithWhereUniqueWithoutGameInput {
+  where: SessionWhereUniqueInput;
+  update: SessionUpdateWithoutGameDataInput;
+  create: SessionCreateWithoutGameInput;
+}
+
+export interface UserCreateWithoutGamesInput {
+  id?: Maybe<ID_Input>;
+  username: String;
+  password: String;
+  players?: Maybe<PlayerCreateManyWithoutOwnerInput>;
 }
 
 export interface SessionScalarWhereInput {
@@ -1570,7 +1914,56 @@ export interface SessionScalarWhereInput {
   NOT?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
 }
 
-export interface TournamentPlayerWhereInput {
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  username: String;
+  password: String;
+  players?: Maybe<PlayerCreateManyWithoutOwnerInput>;
+  games?: Maybe<GameCreateManyWithoutOwnerInput>;
+}
+
+export interface SessionUpdateManyWithWhereNestedInput {
+  where: SessionScalarWhereInput;
+  data: SessionUpdateManyDataInput;
+}
+
+export interface TournamentPlayerCreateWithoutTournamentInput {
+  id?: Maybe<ID_Input>;
+  player: PlayerCreateOneWithoutTournamentsInput;
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>;
+}
+
+export interface SessionUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface SessionCreateWithoutScoresInput {
+  id?: Maybe<ID_Input>;
+  tournament: TournamentCreateOneWithoutSessionsInput;
+  game: GameCreateOneWithoutSessionsInput;
+  name: String;
+}
+
+export interface GameUpsertWithWhereUniqueWithoutOwnerInput {
+  where: GameWhereUniqueInput;
+  update: GameUpdateWithoutOwnerDataInput;
+  create: GameCreateWithoutOwnerInput;
+}
+
+export interface SessionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SessionWhereInput>;
+  AND?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
+  OR?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
+  NOT?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
+}
+
+export interface GameScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1585,22 +1978,105 @@ export interface TournamentPlayerWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  player?: Maybe<PlayerWhereInput>;
-  tournament?: Maybe<TournamentWhereInput>;
-  role?: Maybe<String>;
-  role_not?: Maybe<String>;
-  role_in?: Maybe<String[] | String>;
-  role_not_in?: Maybe<String[] | String>;
-  role_lt?: Maybe<String>;
-  role_lte?: Maybe<String>;
-  role_gt?: Maybe<String>;
-  role_gte?: Maybe<String>;
-  role_contains?: Maybe<String>;
-  role_not_contains?: Maybe<String>;
-  role_starts_with?: Maybe<String>;
-  role_not_starts_with?: Maybe<String>;
-  role_ends_with?: Maybe<String>;
-  role_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  bgg_id?: Maybe<String>;
+  bgg_id_not?: Maybe<String>;
+  bgg_id_in?: Maybe<String[] | String>;
+  bgg_id_not_in?: Maybe<String[] | String>;
+  bgg_id_lt?: Maybe<String>;
+  bgg_id_lte?: Maybe<String>;
+  bgg_id_gt?: Maybe<String>;
+  bgg_id_gte?: Maybe<String>;
+  bgg_id_contains?: Maybe<String>;
+  bgg_id_not_contains?: Maybe<String>;
+  bgg_id_starts_with?: Maybe<String>;
+  bgg_id_not_starts_with?: Maybe<String>;
+  bgg_id_ends_with?: Maybe<String>;
+  bgg_id_not_ends_with?: Maybe<String>;
+  notes?: Maybe<String>;
+  notes_not?: Maybe<String>;
+  notes_in?: Maybe<String[] | String>;
+  notes_not_in?: Maybe<String[] | String>;
+  notes_lt?: Maybe<String>;
+  notes_lte?: Maybe<String>;
+  notes_gt?: Maybe<String>;
+  notes_gte?: Maybe<String>;
+  notes_contains?: Maybe<String>;
+  notes_not_contains?: Maybe<String>;
+  notes_starts_with?: Maybe<String>;
+  notes_not_starts_with?: Maybe<String>;
+  notes_ends_with?: Maybe<String>;
+  notes_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
+  OR?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
+  NOT?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
+}
+
+export interface SessionUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface GameUpdateManyWithWhereNestedInput {
+  where: GameScalarWhereInput;
+  data: GameUpdateManyDataInput;
+}
+
+export interface PlayerScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  pic?: Maybe<String>;
+  pic_not?: Maybe<String>;
+  pic_in?: Maybe<String[] | String>;
+  pic_not_in?: Maybe<String[] | String>;
+  pic_lt?: Maybe<String>;
+  pic_lte?: Maybe<String>;
+  pic_gt?: Maybe<String>;
+  pic_gte?: Maybe<String>;
+  pic_contains?: Maybe<String>;
+  pic_not_contains?: Maybe<String>;
+  pic_starts_with?: Maybe<String>;
+  pic_not_starts_with?: Maybe<String>;
+  pic_ends_with?: Maybe<String>;
+  pic_not_ends_with?: Maybe<String>;
   nickname?: Maybe<String>;
   nickname_not?: Maybe<String>;
   nickname_in?: Maybe<String[] | String>;
@@ -1615,65 +2091,68 @@ export interface TournamentPlayerWhereInput {
   nickname_not_starts_with?: Maybe<String>;
   nickname_ends_with?: Maybe<String>;
   nickname_not_ends_with?: Maybe<String>;
-  scores_every?: Maybe<ScoreWhereInput>;
-  scores_some?: Maybe<ScoreWhereInput>;
-  scores_none?: Maybe<ScoreWhereInput>;
-  AND?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
-  OR?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
-  NOT?: Maybe<TournamentPlayerWhereInput[] | TournamentPlayerWhereInput>;
+  AND?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+  OR?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+  NOT?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
 }
 
-export interface SessionUpdateManyWithWhereNestedInput {
-  where: SessionScalarWhereInput;
-  data: SessionUpdateManyDataInput;
-}
-
-export type ScoreWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ScoreUpsertWithWhereUniqueWithoutSessionInput {
-  where: ScoreWhereUniqueInput;
-  update: ScoreUpdateWithoutSessionDataInput;
-  create: ScoreCreateWithoutSessionInput;
-}
-
-export interface TournamentPlayerUpsertWithoutScoresInput {
-  update: TournamentPlayerUpdateWithoutScoresDataInput;
-  create: TournamentPlayerCreateWithoutScoresInput;
-}
-
-export interface TournamentUpsertWithoutPlayersInput {
-  update: TournamentUpdateWithoutPlayersDataInput;
-  create: TournamentCreateWithoutPlayersInput;
-}
-
-export interface SessionUpdateManyDataInput {
+export interface GameUpdateManyDataInput {
   name?: Maybe<String>;
-}
-
-export type TournamentWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface TournamentPlayerUpdateManyMutationInput {
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-}
-
-export interface GameCreateWithoutSessionsInput {
-  id?: Maybe<ID_Input>;
-  name: String;
   bgg_id?: Maybe<String>;
   notes?: Maybe<String>;
 }
 
-export interface TournamentPlayerCreateWithoutTournamentInput {
+export interface SessionCreateWithoutGameInput {
   id?: Maybe<ID_Input>;
-  player: PlayerCreateOneWithoutTournamentsInput;
-  role?: Maybe<String>;
-  nickname?: Maybe<String>;
-  scores?: Maybe<ScoreCreateManyWithoutPlayerInput>;
+  tournament: TournamentCreateOneWithoutSessionsInput;
+  name: String;
+  scores?: Maybe<ScoreCreateManyWithoutSessionInput>;
+}
+
+export interface SessionUpdateWithoutTournamentDataInput {
+  game?: Maybe<GameUpdateOneRequiredWithoutSessionsInput>;
+  name?: Maybe<String>;
+  scores?: Maybe<ScoreUpdateManyWithoutSessionInput>;
+}
+
+export interface SessionUpdateWithWhereUniqueWithoutTournamentInput {
+  where: SessionWhereUniqueInput;
+  data: SessionUpdateWithoutTournamentDataInput;
+}
+
+export interface SessionUpdateManyWithoutTournamentInput {
+  create?: Maybe<
+    SessionCreateWithoutTournamentInput[] | SessionCreateWithoutTournamentInput
+  >;
+  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  update?: Maybe<
+    | SessionUpdateWithWhereUniqueWithoutTournamentInput[]
+    | SessionUpdateWithWhereUniqueWithoutTournamentInput
+  >;
+  upsert?: Maybe<
+    | SessionUpsertWithWhereUniqueWithoutTournamentInput[]
+    | SessionUpsertWithWhereUniqueWithoutTournamentInput
+  >;
+  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
+  updateMany?: Maybe<
+    | SessionUpdateManyWithWhereNestedInput[]
+    | SessionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface UserCreateWithoutPlayersInput {
+  id?: Maybe<ID_Input>;
+  username: String;
+  password: String;
+  games?: Maybe<GameCreateManyWithoutOwnerInput>;
 }
 
 export interface TournamentPlayerCreateWithoutPlayerInput {
@@ -1684,8 +2163,249 @@ export interface TournamentPlayerCreateWithoutPlayerInput {
   scores?: Maybe<ScoreCreateManyWithoutPlayerInput>;
 }
 
+export type TournamentPlayerWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface TournamentPlayerUpdateManyMutationInput {
+  role?: Maybe<String>;
+  nickname?: Maybe<String>;
+}
+
+export interface ScoreCreateWithoutSessionInput {
+  id?: Maybe<ID_Input>;
+  player: TournamentPlayerCreateOneWithoutScoresInput;
+  score?: Maybe<Int>;
+  notes?: Maybe<String>;
+}
+
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  username: String;
+  password: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  username: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PlayerConnection {
+  pageInfo: PageInfo;
+  edges: PlayerEdge[];
+}
+
+export interface PlayerConnectionPromise
+  extends Promise<PlayerConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PlayerEdge>>() => T;
+  aggregate: <T = AggregatePlayerPromise>() => T;
+}
+
+export interface PlayerConnectionSubscription
+  extends Promise<AsyncIterator<PlayerConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PlayerEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePlayerSubscription>() => T;
+}
+
+export interface Player {
+  id: ID_Output;
+  name: String;
+  pic?: String;
+  nickname?: String;
+}
+
+export interface PlayerPromise extends Promise<Player>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: <T = UserPromise>() => T;
+  name: () => Promise<String>;
+  pic: () => Promise<String>;
+  nickname: () => Promise<String>;
+  tournaments: <T = FragmentableArray<TournamentPlayer>>(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PlayerSubscription
+  extends Promise<AsyncIterator<Player>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  owner: <T = UserSubscription>() => T;
+  name: () => Promise<AsyncIterator<String>>;
+  pic: () => Promise<AsyncIterator<String>>;
+  nickname: () => Promise<AsyncIterator<String>>;
+  tournaments: <
+    T = Promise<AsyncIterator<TournamentPlayerSubscription>>
+  >(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PlayerNullablePromise
+  extends Promise<Player | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: <T = UserPromise>() => T;
+  name: () => Promise<String>;
+  pic: () => Promise<String>;
+  nickname: () => Promise<String>;
+  tournaments: <T = FragmentableArray<TournamentPlayer>>(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PlayerEdge {
+  node: Player;
+  cursor: String;
+}
+
+export interface PlayerEdgePromise extends Promise<PlayerEdge>, Fragmentable {
+  node: <T = PlayerPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PlayerEdgeSubscription
+  extends Promise<AsyncIterator<PlayerEdge>>,
+    Fragmentable {
+  node: <T = PlayerSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Tournament {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  name: String;
+  startDate?: DateTimeOutput;
+  endDate?: DateTimeOutput;
+  rules?: String;
+  notes?: String;
+}
+
+export interface TournamentPromise extends Promise<Tournament>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
+  rules: () => Promise<String>;
+  notes: () => Promise<String>;
+  sessions: <T = FragmentableArray<Session>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  players: <T = FragmentableArray<TournamentPlayer>>(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface TournamentSubscription
+  extends Promise<AsyncIterator<Tournament>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  owner: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  rules: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
+  sessions: <T = Promise<AsyncIterator<SessionSubscription>>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  players: <T = Promise<AsyncIterator<TournamentPlayerSubscription>>>(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface TournamentNullablePromise
+  extends Promise<Tournament | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
+  rules: () => Promise<String>;
+  notes: () => Promise<String>;
+  sessions: <T = FragmentableArray<Session>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  players: <T = FragmentableArray<TournamentPlayer>>(args?: {
+    where?: TournamentPlayerWhereInput;
+    orderBy?: TournamentPlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface TournamentPlayerPreviousValues {
@@ -1726,65 +2446,41 @@ export interface AggregateGameSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Session {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  name: String;
+export interface AggregateUser {
+  count: Int;
 }
 
-export interface SessionPromise extends Promise<Session>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  tournament: <T = TournamentPromise>() => T;
-  game: <T = GamePromise>() => T;
-  name: () => Promise<String>;
-  scores: <T = FragmentableArray<Score>>(args?: {
-    where?: ScoreWhereInput;
-    orderBy?: ScoreOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface SessionSubscription
-  extends Promise<AsyncIterator<Session>>,
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  tournament: <T = TournamentSubscription>() => T;
-  game: <T = GameSubscription>() => T;
-  name: () => Promise<AsyncIterator<String>>;
-  scores: <T = Promise<AsyncIterator<ScoreSubscription>>>(args?: {
-    where?: ScoreWhereInput;
-    orderBy?: ScoreOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  count: () => Promise<Int>;
 }
 
-export interface SessionNullablePromise
-  extends Promise<Session | null>,
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  tournament: <T = TournamentPromise>() => T;
-  game: <T = GamePromise>() => T;
-  name: () => Promise<String>;
-  scores: <T = FragmentableArray<Score>>(args?: {
-    where?: ScoreWhereInput;
-    orderBy?: ScoreOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface GameEdge {
@@ -1804,24 +2500,82 @@ export interface GameEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Tournament {
+export interface AggregateTournamentPlayer {
+  count: Int;
+}
+
+export interface AggregateTournamentPlayerPromise
+  extends Promise<AggregateTournamentPlayer>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTournamentPlayerSubscription
+  extends Promise<AsyncIterator<AggregateTournamentPlayer>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TournamentPlayerSubscriptionPayload {
+  mutation: MutationType;
+  node: TournamentPlayer;
+  updatedFields: String[];
+  previousValues: TournamentPlayerPreviousValues;
+}
+
+export interface TournamentPlayerSubscriptionPayloadPromise
+  extends Promise<TournamentPlayerSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TournamentPlayerPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TournamentPlayerPreviousValuesPromise>() => T;
+}
+
+export interface TournamentPlayerSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TournamentPlayerSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TournamentPlayerSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TournamentPlayerPreviousValuesSubscription>() => T;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface Game {
   id: ID_Output;
-  createdAt: DateTimeOutput;
   name: String;
-  startDate?: DateTimeOutput;
-  endDate?: DateTimeOutput;
-  rules?: String;
+  bgg_id?: String;
   notes?: String;
 }
 
-export interface TournamentPromise extends Promise<Tournament>, Fragmentable {
+export interface GamePromise extends Promise<Game>, Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  startDate: () => Promise<DateTimeOutput>;
-  endDate: () => Promise<DateTimeOutput>;
-  rules: () => Promise<String>;
-  notes: () => Promise<String>;
+  owner: <T = UserPromise>() => T;
   sessions: <T = FragmentableArray<Session>>(args?: {
     where?: SessionWhereInput;
     orderBy?: SessionOrderByInput;
@@ -1831,27 +2585,16 @@ export interface TournamentPromise extends Promise<Tournament>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  players: <T = FragmentableArray<TournamentPlayer>>(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  name: () => Promise<String>;
+  bgg_id: () => Promise<String>;
+  notes: () => Promise<String>;
 }
 
-export interface TournamentSubscription
-  extends Promise<AsyncIterator<Tournament>>,
+export interface GameSubscription
+  extends Promise<AsyncIterator<Game>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
-  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
-  rules: () => Promise<AsyncIterator<String>>;
-  notes: () => Promise<AsyncIterator<String>>;
+  owner: <T = UserSubscription>() => T;
   sessions: <T = Promise<AsyncIterator<SessionSubscription>>>(args?: {
     where?: SessionWhereInput;
     orderBy?: SessionOrderByInput;
@@ -1861,27 +2604,16 @@ export interface TournamentSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  players: <T = Promise<AsyncIterator<TournamentPlayerSubscription>>>(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  name: () => Promise<AsyncIterator<String>>;
+  bgg_id: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
 }
 
-export interface TournamentNullablePromise
-  extends Promise<Tournament | null>,
+export interface GameNullablePromise
+  extends Promise<Game | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  startDate: () => Promise<DateTimeOutput>;
-  endDate: () => Promise<DateTimeOutput>;
-  rules: () => Promise<String>;
-  notes: () => Promise<String>;
+  owner: <T = UserPromise>() => T;
   sessions: <T = FragmentableArray<Session>>(args?: {
     where?: SessionWhereInput;
     orderBy?: SessionOrderByInput;
@@ -1891,15 +2623,99 @@ export interface TournamentNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  players: <T = FragmentableArray<TournamentPlayer>>(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  name: () => Promise<String>;
+  bgg_id: () => Promise<String>;
+  notes: () => Promise<String>;
+}
+
+export interface TournamentPlayerConnection {
+  pageInfo: PageInfo;
+  edges: TournamentPlayerEdge[];
+}
+
+export interface TournamentPlayerConnectionPromise
+  extends Promise<TournamentPlayerConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TournamentPlayerEdge>>() => T;
+  aggregate: <T = AggregateTournamentPlayerPromise>() => T;
+}
+
+export interface TournamentPlayerConnectionSubscription
+  extends Promise<AsyncIterator<TournamentPlayerConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TournamentPlayerEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTournamentPlayerSubscription>() => T;
+}
+
+export interface GameSubscriptionPayload {
+  mutation: MutationType;
+  node: Game;
+  updatedFields: String[];
+  previousValues: GamePreviousValues;
+}
+
+export interface GameSubscriptionPayloadPromise
+  extends Promise<GameSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = GamePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GamePreviousValuesPromise>() => T;
+}
+
+export interface GameSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GameSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GameSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GamePreviousValuesSubscription>() => T;
+}
+
+export interface TournamentEdge {
+  node: Tournament;
+  cursor: String;
+}
+
+export interface TournamentEdgePromise
+  extends Promise<TournamentEdge>,
+    Fragmentable {
+  node: <T = TournamentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TournamentEdgeSubscription
+  extends Promise<AsyncIterator<TournamentEdge>>,
+    Fragmentable {
+  node: <T = TournamentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface GamePreviousValues {
+  id: ID_Output;
+  name: String;
+  bgg_id?: String;
+  notes?: String;
+}
+
+export interface GamePreviousValuesPromise
+  extends Promise<GamePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  bgg_id: () => Promise<String>;
+  notes: () => Promise<String>;
+}
+
+export interface GamePreviousValuesSubscription
+  extends Promise<AsyncIterator<GamePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  bgg_id: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TournamentPlayer {
@@ -1965,68 +2781,6 @@ export interface TournamentPlayerNullablePromise
   }) => T;
 }
 
-export interface TournamentSubscriptionPayload {
-  mutation: MutationType;
-  node: Tournament;
-  updatedFields: String[];
-  previousValues: TournamentPreviousValues;
-}
-
-export interface TournamentSubscriptionPayloadPromise
-  extends Promise<TournamentSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TournamentPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TournamentPreviousValuesPromise>() => T;
-}
-
-export interface TournamentSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TournamentSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TournamentSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TournamentPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateTournamentPlayer {
-  count: Int;
-}
-
-export interface AggregateTournamentPlayerPromise
-  extends Promise<AggregateTournamentPlayer>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTournamentPlayerSubscription
-  extends Promise<AsyncIterator<AggregateTournamentPlayer>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TournamentPlayerConnection {
-  pageInfo: PageInfo;
-  edges: TournamentPlayerEdge[];
-}
-
-export interface TournamentPlayerConnectionPromise
-  extends Promise<TournamentPlayerConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TournamentPlayerEdge>>() => T;
-  aggregate: <T = AggregateTournamentPlayerPromise>() => T;
-}
-
-export interface TournamentPlayerConnectionSubscription
-  extends Promise<AsyncIterator<TournamentPlayerConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TournamentPlayerEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTournamentPlayerSubscription>() => T;
-}
-
 export interface PageInfo {
   hasNextPage: Boolean;
   hasPreviousPage: Boolean;
@@ -2050,223 +2804,21 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface TournamentEdge {
-  node: Tournament;
+export interface SessionEdge {
+  node: Session;
   cursor: String;
 }
 
-export interface TournamentEdgePromise
-  extends Promise<TournamentEdge>,
-    Fragmentable {
-  node: <T = TournamentPromise>() => T;
+export interface SessionEdgePromise extends Promise<SessionEdge>, Fragmentable {
+  node: <T = SessionPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface TournamentEdgeSubscription
-  extends Promise<AsyncIterator<TournamentEdge>>,
+export interface SessionEdgeSubscription
+  extends Promise<AsyncIterator<SessionEdge>>,
     Fragmentable {
-  node: <T = TournamentSubscription>() => T;
+  node: <T = SessionSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Game {
-  id: ID_Output;
-  name: String;
-  bgg_id?: String;
-  notes?: String;
-}
-
-export interface GamePromise extends Promise<Game>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  sessions: <T = FragmentableArray<Session>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  name: () => Promise<String>;
-  bgg_id: () => Promise<String>;
-  notes: () => Promise<String>;
-}
-
-export interface GameSubscription
-  extends Promise<AsyncIterator<Game>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  sessions: <T = Promise<AsyncIterator<SessionSubscription>>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  name: () => Promise<AsyncIterator<String>>;
-  bgg_id: () => Promise<AsyncIterator<String>>;
-  notes: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GameNullablePromise
-  extends Promise<Game | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  sessions: <T = FragmentableArray<Session>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  name: () => Promise<String>;
-  bgg_id: () => Promise<String>;
-  notes: () => Promise<String>;
-}
-
-export interface AggregateSession {
-  count: Int;
-}
-
-export interface AggregateSessionPromise
-  extends Promise<AggregateSession>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSessionSubscription
-  extends Promise<AsyncIterator<AggregateSession>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface GameSubscriptionPayload {
-  mutation: MutationType;
-  node: Game;
-  updatedFields: String[];
-  previousValues: GamePreviousValues;
-}
-
-export interface GameSubscriptionPayloadPromise
-  extends Promise<GameSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = GamePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = GamePreviousValuesPromise>() => T;
-}
-
-export interface GameSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<GameSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = GameSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = GamePreviousValuesSubscription>() => T;
-}
-
-export interface SessionConnection {
-  pageInfo: PageInfo;
-  edges: SessionEdge[];
-}
-
-export interface SessionConnectionPromise
-  extends Promise<SessionConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SessionEdge>>() => T;
-  aggregate: <T = AggregateSessionPromise>() => T;
-}
-
-export interface SessionConnectionSubscription
-  extends Promise<AsyncIterator<SessionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SessionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSessionSubscription>() => T;
-}
-
-export interface GamePreviousValues {
-  id: ID_Output;
-  name: String;
-  bgg_id?: String;
-  notes?: String;
-}
-
-export interface GamePreviousValuesPromise
-  extends Promise<GamePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  bgg_id: () => Promise<String>;
-  notes: () => Promise<String>;
-}
-
-export interface GamePreviousValuesSubscription
-  extends Promise<AsyncIterator<GamePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  bgg_id: () => Promise<AsyncIterator<String>>;
-  notes: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ScoreEdge {
-  node: Score;
-  cursor: String;
-}
-
-export interface ScoreEdgePromise extends Promise<ScoreEdge>, Fragmentable {
-  node: <T = ScorePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ScoreEdgeSubscription
-  extends Promise<AsyncIterator<ScoreEdge>>,
-    Fragmentable {
-  node: <T = ScoreSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GameConnection {
-  pageInfo: PageInfo;
-  edges: GameEdge[];
-}
-
-export interface GameConnectionPromise
-  extends Promise<GameConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GameEdge>>() => T;
-  aggregate: <T = AggregateGamePromise>() => T;
-}
-
-export interface GameConnectionSubscription
-  extends Promise<AsyncIterator<GameConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GameEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGameSubscription>() => T;
-}
-
-export interface AggregatePlayer {
-  count: Int;
-}
-
-export interface AggregatePlayerPromise
-  extends Promise<AggregatePlayer>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePlayerSubscription
-  extends Promise<AsyncIterator<AggregatePlayer>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PlayerSubscriptionPayload {
@@ -2294,25 +2846,20 @@ export interface PlayerSubscriptionPayloadSubscription
   previousValues: <T = PlayerPreviousValuesSubscription>() => T;
 }
 
-export interface PlayerConnection {
-  pageInfo: PageInfo;
-  edges: PlayerEdge[];
+export interface AggregateScore {
+  count: Int;
 }
 
-export interface PlayerConnectionPromise
-  extends Promise<PlayerConnection>,
+export interface AggregateScorePromise
+  extends Promise<AggregateScore>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PlayerEdge>>() => T;
-  aggregate: <T = AggregatePlayerPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface PlayerConnectionSubscription
-  extends Promise<AsyncIterator<PlayerConnection>>,
+export interface AggregateScoreSubscription
+  extends Promise<AsyncIterator<AggregateScore>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PlayerEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePlayerSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PlayerPreviousValues {
@@ -2340,6 +2887,90 @@ export interface PlayerPreviousValuesSubscription
   nickname: () => Promise<AsyncIterator<String>>;
 }
 
+export interface ScoreConnection {
+  pageInfo: PageInfo;
+  edges: ScoreEdge[];
+}
+
+export interface ScoreConnectionPromise
+  extends Promise<ScoreConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ScoreEdge>>() => T;
+  aggregate: <T = AggregateScorePromise>() => T;
+}
+
+export interface ScoreConnectionSubscription
+  extends Promise<AsyncIterator<ScoreConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ScoreEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateScoreSubscription>() => T;
+}
+
+export interface GameConnection {
+  pageInfo: PageInfo;
+  edges: GameEdge[];
+}
+
+export interface GameConnectionPromise
+  extends Promise<GameConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GameEdge>>() => T;
+  aggregate: <T = AggregateGamePromise>() => T;
+}
+
+export interface GameConnectionSubscription
+  extends Promise<AsyncIterator<GameConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GameEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGameSubscription>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ScoreSubscriptionPayload {
+  mutation: MutationType;
+  node: Score;
+  updatedFields: String[];
+  previousValues: ScorePreviousValues;
+}
+
+export interface ScoreSubscriptionPayloadPromise
+  extends Promise<ScoreSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ScorePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ScorePreviousValuesPromise>() => T;
+}
+
+export interface ScoreSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ScoreSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ScoreSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ScorePreviousValuesSubscription>() => T;
+}
+
 export interface BatchPayload {
   count: Long;
 }
@@ -2354,6 +2985,44 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface ScorePreviousValues {
+  id: ID_Output;
+  score?: Int;
+  notes?: String;
+}
+
+export interface ScorePreviousValuesPromise
+  extends Promise<ScorePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  score: () => Promise<Int>;
+  notes: () => Promise<String>;
+}
+
+export interface ScorePreviousValuesSubscription
+  extends Promise<AsyncIterator<ScorePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  score: () => Promise<AsyncIterator<Int>>;
+  notes: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateTournament {
+  count: Int;
+}
+
+export interface AggregateTournamentPromise
+  extends Promise<AggregateTournament>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTournamentSubscription
+  extends Promise<AsyncIterator<AggregateTournament>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Score {
@@ -2390,188 +3059,20 @@ export interface ScoreNullablePromise
   notes: () => Promise<String>;
 }
 
-export interface AggregateTournament {
+export interface AggregateSession {
   count: Int;
 }
 
-export interface AggregateTournamentPromise
-  extends Promise<AggregateTournament>,
+export interface AggregateSessionPromise
+  extends Promise<AggregateSession>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateTournamentSubscription
-  extends Promise<AsyncIterator<AggregateTournament>>,
+export interface AggregateSessionSubscription
+  extends Promise<AsyncIterator<AggregateSession>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ScoreSubscriptionPayload {
-  mutation: MutationType;
-  node: Score;
-  updatedFields: String[];
-  previousValues: ScorePreviousValues;
-}
-
-export interface ScoreSubscriptionPayloadPromise
-  extends Promise<ScoreSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ScorePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ScorePreviousValuesPromise>() => T;
-}
-
-export interface ScoreSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ScoreSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ScoreSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ScorePreviousValuesSubscription>() => T;
-}
-
-export interface SessionEdge {
-  node: Session;
-  cursor: String;
-}
-
-export interface SessionEdgePromise extends Promise<SessionEdge>, Fragmentable {
-  node: <T = SessionPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface SessionEdgeSubscription
-  extends Promise<AsyncIterator<SessionEdge>>,
-    Fragmentable {
-  node: <T = SessionSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ScorePreviousValues {
-  id: ID_Output;
-  score?: Int;
-  notes?: String;
-}
-
-export interface ScorePreviousValuesPromise
-  extends Promise<ScorePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  score: () => Promise<Int>;
-  notes: () => Promise<String>;
-}
-
-export interface ScorePreviousValuesSubscription
-  extends Promise<AsyncIterator<ScorePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  score: () => Promise<AsyncIterator<Int>>;
-  notes: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ScoreConnection {
-  pageInfo: PageInfo;
-  edges: ScoreEdge[];
-}
-
-export interface ScoreConnectionPromise
-  extends Promise<ScoreConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ScoreEdge>>() => T;
-  aggregate: <T = AggregateScorePromise>() => T;
-}
-
-export interface ScoreConnectionSubscription
-  extends Promise<AsyncIterator<ScoreConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ScoreEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateScoreSubscription>() => T;
-}
-
-export interface Player {
-  id: ID_Output;
-  name: String;
-  pic?: String;
-  nickname?: String;
-}
-
-export interface PlayerPromise extends Promise<Player>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  pic: () => Promise<String>;
-  nickname: () => Promise<String>;
-  tournaments: <T = FragmentableArray<TournamentPlayer>>(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface PlayerSubscription
-  extends Promise<AsyncIterator<Player>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  pic: () => Promise<AsyncIterator<String>>;
-  nickname: () => Promise<AsyncIterator<String>>;
-  tournaments: <
-    T = Promise<AsyncIterator<TournamentPlayerSubscription>>
-  >(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface PlayerNullablePromise
-  extends Promise<Player | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  pic: () => Promise<String>;
-  nickname: () => Promise<String>;
-  tournaments: <T = FragmentableArray<TournamentPlayer>>(args?: {
-    where?: TournamentPlayerWhereInput;
-    orderBy?: TournamentPlayerOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface SessionPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  name: String;
-}
-
-export interface SessionPreviousValuesPromise
-  extends Promise<SessionPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-}
-
-export interface SessionPreviousValuesSubscription
-  extends Promise<AsyncIterator<SessionPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface SessionSubscriptionPayload {
@@ -2597,6 +3098,105 @@ export interface SessionSubscriptionPayloadSubscription
   node: <T = SessionSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = SessionPreviousValuesSubscription>() => T;
+}
+
+export interface ScoreEdge {
+  node: Score;
+  cursor: String;
+}
+
+export interface ScoreEdgePromise extends Promise<ScoreEdge>, Fragmentable {
+  node: <T = ScorePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ScoreEdgeSubscription
+  extends Promise<AsyncIterator<ScoreEdge>>,
+    Fragmentable {
+  node: <T = ScoreSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface User {
+  id: ID_Output;
+  username: String;
+  password: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+  players: <T = FragmentableArray<Player>>(args?: {
+    where?: PlayerWhereInput;
+    orderBy?: PlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  games: <T = FragmentableArray<Game>>(args?: {
+    where?: GameWhereInput;
+    orderBy?: GameOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  username: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  players: <T = Promise<AsyncIterator<PlayerSubscription>>>(args?: {
+    where?: PlayerWhereInput;
+    orderBy?: PlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  games: <T = Promise<AsyncIterator<GameSubscription>>>(args?: {
+    where?: GameWhereInput;
+    orderBy?: GameOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+  players: <T = FragmentableArray<Player>>(args?: {
+    where?: PlayerWhereInput;
+    orderBy?: PlayerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  games: <T = FragmentableArray<Game>>(args?: {
+    where?: GameWhereInput;
+    orderBy?: GameOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface TournamentPreviousValues {
@@ -2633,37 +3233,168 @@ export interface TournamentPreviousValuesSubscription
   notes: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PlayerEdge {
-  node: Player;
+export interface TournamentSubscriptionPayload {
+  mutation: MutationType;
+  node: Tournament;
+  updatedFields: String[];
+  previousValues: TournamentPreviousValues;
+}
+
+export interface TournamentSubscriptionPayloadPromise
+  extends Promise<TournamentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TournamentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TournamentPreviousValuesPromise>() => T;
+}
+
+export interface TournamentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TournamentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TournamentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TournamentPreviousValuesSubscription>() => T;
+}
+
+export interface Session {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  name: String;
+}
+
+export interface SessionPromise extends Promise<Session>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  tournament: <T = TournamentPromise>() => T;
+  game: <T = GamePromise>() => T;
+  name: () => Promise<String>;
+  scores: <T = FragmentableArray<Score>>(args?: {
+    where?: ScoreWhereInput;
+    orderBy?: ScoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface SessionSubscription
+  extends Promise<AsyncIterator<Session>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  tournament: <T = TournamentSubscription>() => T;
+  game: <T = GameSubscription>() => T;
+  name: () => Promise<AsyncIterator<String>>;
+  scores: <T = Promise<AsyncIterator<ScoreSubscription>>>(args?: {
+    where?: ScoreWhereInput;
+    orderBy?: ScoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface SessionNullablePromise
+  extends Promise<Session | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  tournament: <T = TournamentPromise>() => T;
+  game: <T = GamePromise>() => T;
+  name: () => Promise<String>;
+  scores: <T = FragmentableArray<Score>>(args?: {
+    where?: ScoreWhereInput;
+    orderBy?: ScoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface SessionPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  name: String;
+}
+
+export interface SessionPreviousValuesPromise
+  extends Promise<SessionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface SessionPreviousValuesSubscription
+  extends Promise<AsyncIterator<SessionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TournamentPlayerEdge {
+  node: TournamentPlayer;
   cursor: String;
 }
 
-export interface PlayerEdgePromise extends Promise<PlayerEdge>, Fragmentable {
-  node: <T = PlayerPromise>() => T;
+export interface TournamentPlayerEdgePromise
+  extends Promise<TournamentPlayerEdge>,
+    Fragmentable {
+  node: <T = TournamentPlayerPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface PlayerEdgeSubscription
-  extends Promise<AsyncIterator<PlayerEdge>>,
+export interface TournamentPlayerEdgeSubscription
+  extends Promise<AsyncIterator<TournamentPlayerEdge>>,
     Fragmentable {
-  node: <T = PlayerSubscription>() => T;
+  node: <T = TournamentPlayerSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateScore {
+export interface AggregatePlayer {
   count: Int;
 }
 
-export interface AggregateScorePromise
-  extends Promise<AggregateScore>,
+export interface AggregatePlayerPromise
+  extends Promise<AggregatePlayer>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateScoreSubscription
-  extends Promise<AsyncIterator<AggregateScore>>,
+export interface AggregatePlayerSubscription
+  extends Promise<AsyncIterator<AggregatePlayer>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SessionConnection {
+  pageInfo: PageInfo;
+  edges: SessionEdge[];
+}
+
+export interface SessionConnectionPromise
+  extends Promise<SessionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SessionEdge>>() => T;
+  aggregate: <T = AggregateSessionPromise>() => T;
+}
+
+export interface SessionConnectionSubscription
+  extends Promise<AsyncIterator<SessionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SessionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSessionSubscription>() => T;
 }
 
 export interface TournamentConnection {
@@ -2687,63 +3418,6 @@ export interface TournamentConnectionSubscription
   aggregate: <T = AggregateTournamentSubscription>() => T;
 }
 
-export interface TournamentPlayerEdge {
-  node: TournamentPlayer;
-  cursor: String;
-}
-
-export interface TournamentPlayerEdgePromise
-  extends Promise<TournamentPlayerEdge>,
-    Fragmentable {
-  node: <T = TournamentPlayerPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TournamentPlayerEdgeSubscription
-  extends Promise<AsyncIterator<TournamentPlayerEdge>>,
-    Fragmentable {
-  node: <T = TournamentPlayerSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TournamentPlayerSubscriptionPayload {
-  mutation: MutationType;
-  node: TournamentPlayer;
-  updatedFields: String[];
-  previousValues: TournamentPlayerPreviousValues;
-}
-
-export interface TournamentPlayerSubscriptionPayloadPromise
-  extends Promise<TournamentPlayerSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TournamentPlayerPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TournamentPlayerPreviousValuesPromise>() => T;
-}
-
-export interface TournamentPlayerSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TournamentPlayerSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TournamentPlayerSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TournamentPlayerPreviousValuesSubscription>() => T;
-}
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-export type Long = string;
-
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
-
 /*
 DateTime scalar input type, allowing Date
 */
@@ -2755,20 +3429,37 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
-export type Int = number;
+export type ID_Input = string | number;
+export type ID_Output = string;
+
+export type Long = string;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
 
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
 /**
  * Model Metadata
  */
 
 export const models: Model[] = [
+  {
+    name: "User",
+    embedded: false
+  },
   {
     name: "Player",
     embedded: false

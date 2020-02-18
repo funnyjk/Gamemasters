@@ -8,11 +8,9 @@ export interface CREATE_PLAYER_VARS {
 }
 
 export const CREATE_PLAYER = gql`
-    mutation createPlayer($playerName: String!) {
-        createPlayer(
-            data: {
-                name: $playerName
-            }
+    mutation createPlayerNoUser($playerName: String!) {
+        createPlayerNoUser(
+            name: $playerName
         ) {
             id
             name

@@ -7,6 +7,7 @@ import _ from "lodash";
 import {GET_SESSION} from "../../../graphql/Session";
 import {CREATE_TOURNAMENTPLAYER, GET_TOURNAMENTPLAYERS} from "../../../graphql/TournamentPlayer";
 import {Select, MenuItem, InputLabel, FormControl} from '@material-ui/core';
+
 import './styles';
 import {Button} from "muicss/react";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";

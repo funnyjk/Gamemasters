@@ -1,5 +1,14 @@
+type User {
+  id: ID! @id
+  username: String! @unique
+  password: String!
+  players: [Player!]! @relation(onDelete: CASCADE)
+  games: [Game!]! @relation(onDelete: CASCADE)
+}
+
 type Player {
     id: ID! @id
+    owner: User! @relation(onDelete: SET_NULL)
     name: String!
     pic: String
     nickname: String
@@ -34,6 +43,7 @@ type TournamentPlayer {
 
 type Tournament {
     id: ID! @id
+    owner: User @relation(onDelete: SET_NULL)
     createdAt: DateTime! @createdAt
     name: String!
     startDate: DateTime
@@ -46,6 +56,7 @@ type Tournament {
 
 type Game {
     id: ID! @id
+    owner: User @relation(onDelete: SET_NULL)
     sessions: [Session!] @relation(onDelete: CASCADE)
     name: String!
     bgg_id: String

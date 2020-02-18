@@ -11,7 +11,9 @@ export const useCreatePlayer = (playerName: string) => {
   const history = useHistory();
   const [createPlayer] = useMutation<any, CREATE_PLAYER_VARS>(CREATE_PLAYER,
     {
-      variables: {playerName},
+      variables: {
+        playerName
+      },
       update(cache, {data: {createPlayer}}) {
         const {players} = cache.readQuery({query: GET_PLAYERS});
         cache.writeQuery({
@@ -31,9 +33,8 @@ interface ICreatePlayer {
 }
 
 const CreatePlayer = ({}: ICreatePlayer) => {
-  const createPlayer = useCreatePlayer("NewPlayerName");
 
-  return <Button variant="fab" onClick={() => createPlayer()}>
+  return <Button variant="fab" onClick={() => useCreatePlayer("NewPlayerName")}>
     <Add/>
   </Button>
 

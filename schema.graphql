@@ -34,6 +34,10 @@ type AggregateTournamentPlayer {
     count: Int!
 }
 
+type AggregateUser {
+    count: Int!
+}
+
 type BatchPayload {
     count: Long!
 }
@@ -43,6 +47,7 @@ type Game {
     id: ID!
     name: String!
     notes: String
+    owner: User
     sessions(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): [Session!]
 }
 
@@ -71,13 +76,20 @@ type GameSubscriptionPayload {
     updatedFields: [String!]
 }
 
+type LoginResponse {
+    token: String
+    user: User
+}
+
 type Mutation {
     createGame(data: GameCreateInput!): Game!
     createPlayer(data: PlayerCreateInput!): Player!
+    createPlayerNoUser(name: String!): Player!
     createScore(data: ScoreCreateInput!): Score!
     createSession(data: SessionCreateInput!): Session!
     createTournament(data: TournamentCreateInput!): Tournament!
     createTournamentPlayer(data: TournamentPlayerCreateInput!): TournamentPlayer!
+    createUser(data: UserCreateInput!): User!
     deleteGame(where: GameWhereUniqueInput!): Game
     deleteManyGames(where: GameWhereInput): BatchPayload!
     deleteManyPlayers(where: PlayerWhereInput): BatchPayload!
@@ -85,11 +97,15 @@ type Mutation {
     deleteManySessions(where: SessionWhereInput): BatchPayload!
     deleteManyTournamentPlayers(where: TournamentPlayerWhereInput): BatchPayload!
     deleteManyTournaments(where: TournamentWhereInput): BatchPayload!
+    deleteManyUsers(where: UserWhereInput): BatchPayload!
     deletePlayer(where: PlayerWhereUniqueInput!): Player
     deleteScore(where: ScoreWhereUniqueInput!): Score
     deleteSession(where: SessionWhereUniqueInput!): Session
     deleteTournament(where: TournamentWhereUniqueInput!): Tournament
     deleteTournamentPlayer(where: TournamentPlayerWhereUniqueInput!): TournamentPlayer
+    deleteUser(where: UserWhereUniqueInput!): User
+    login(password: String!, username: String!): LoginResponse!
+    register(password: String!, username: String!): User!
     updateGame(data: GameUpdateInput!, where: GameWhereUniqueInput!): Game
     updateManyGames(data: GameUpdateManyMutationInput!, where: GameWhereInput): BatchPayload!
     updateManyPlayers(data: PlayerUpdateManyMutationInput!, where: PlayerWhereInput): BatchPayload!
@@ -97,17 +113,20 @@ type Mutation {
     updateManySessions(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): BatchPayload!
     updateManyTournamentPlayers(data: TournamentPlayerUpdateManyMutationInput!, where: TournamentPlayerWhereInput): BatchPayload!
     updateManyTournaments(data: TournamentUpdateManyMutationInput!, where: TournamentWhereInput): BatchPayload!
+    updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
     updatePlayer(data: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player
     updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
     updateSession(data: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session
     updateTournament(data: TournamentUpdateInput!, where: TournamentWhereUniqueInput!): Tournament
     updateTournamentPlayer(data: TournamentPlayerUpdateInput!, where: TournamentPlayerWhereUniqueInput!): TournamentPlayer
+    updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
     upsertGame(create: GameCreateInput!, update: GameUpdateInput!, where: GameWhereUniqueInput!): Game!
     upsertPlayer(create: PlayerCreateInput!, update: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player!
     upsertScore(create: ScoreCreateInput!, update: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score!
     upsertSession(create: SessionCreateInput!, update: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session!
     upsertTournament(create: TournamentCreateInput!, update: TournamentUpdateInput!, where: TournamentWhereUniqueInput!): Tournament!
     upsertTournamentPlayer(create: TournamentPlayerCreateInput!, update: TournamentPlayerUpdateInput!, where: TournamentPlayerWhereUniqueInput!): TournamentPlayer!
+    upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
 
 type PageInfo {
@@ -121,6 +140,7 @@ type Player {
     id: ID!
     name: String!
     nickname: String
+    owner: User!
     pic: String
     tournaments(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer!]
 }
@@ -151,6 +171,7 @@ type PlayerSubscriptionPayload {
 }
 
 type Query {
+    currentUser: User!
     game(where: GameWhereUniqueInput!): Game
     games(after: String, before: String, first: Int, last: Int, orderBy: GameOrderByInput, skip: Int, where: GameWhereInput): [Game]!
     gamesConnection(after: String, before: String, first: Int, last: Int, orderBy: GameOrderByInput, skip: Int, where: GameWhereInput): GameConnection!
@@ -170,6 +191,9 @@ type Query {
     tournamentPlayersConnection(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): TournamentPlayerConnection!
     tournaments(after: String, before: String, first: Int, last: Int, orderBy: TournamentOrderByInput, skip: Int, where: TournamentWhereInput): [Tournament]!
     tournamentsConnection(after: String, before: String, first: Int, last: Int, orderBy: TournamentOrderByInput, skip: Int, where: TournamentWhereInput): TournamentConnection!
+    user(where: UserWhereUniqueInput!): User
+    users(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User]!
+    usersConnection(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): UserConnection!
 }
 
 type Score {
@@ -244,6 +268,7 @@ type Subscription {
     session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
     tournament(where: TournamentSubscriptionWhereInput): TournamentSubscriptionPayload
     tournamentPlayer(where: TournamentPlayerSubscriptionWhereInput): TournamentPlayerSubscriptionPayload
+    user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type Tournament {
@@ -316,6 +341,38 @@ type TournamentSubscriptionPayload {
     mutation: MutationType!
     node: Tournament
     previousValues: TournamentPreviousValues
+    updatedFields: [String!]
+}
+
+type User {
+    games(after: String, before: String, first: Int, last: Int, orderBy: GameOrderByInput, skip: Int, where: GameWhereInput): [Game!]
+    id: ID!
+    password: String!
+    players(after: String, before: String, first: Int, last: Int, orderBy: PlayerOrderByInput, skip: Int, where: PlayerWhereInput): [Player!]
+    username: String!
+}
+
+type UserConnection {
+    aggregate: AggregateUser!
+    edges: [UserEdge]!
+    pageInfo: PageInfo!
+}
+
+type UserEdge {
+    cursor: String!
+    node: User!
+}
+
+type UserPreviousValues {
+    id: ID!
+    password: String!
+    username: String!
+}
+
+type UserSubscriptionPayload {
+    mutation: MutationType!
+    node: User
+    previousValues: UserPreviousValues
     updatedFields: [String!]
 }
 
@@ -396,12 +453,27 @@ enum TournamentPlayerOrderByInput {
     role_DESC
 }
 
+enum UserOrderByInput {
+    id_ASC
+    id_DESC
+    password_ASC
+    password_DESC
+    username_ASC
+    username_DESC
+}
+
 input GameCreateInput {
     bgg_id: String
     id: ID
     name: String!
     notes: String
+    owner: UserCreateOneWithoutGamesInput
     sessions: SessionCreateManyWithoutGameInput
+}
+
+input GameCreateManyWithoutOwnerInput {
+    connect: [GameWhereUniqueInput!]
+    create: [GameCreateWithoutOwnerInput!]
 }
 
 input GameCreateOneWithoutSessionsInput {
@@ -409,11 +481,82 @@ input GameCreateOneWithoutSessionsInput {
     create: GameCreateWithoutSessionsInput
 }
 
+input GameCreateWithoutOwnerInput {
+    bgg_id: String
+    id: ID
+    name: String!
+    notes: String
+    sessions: SessionCreateManyWithoutGameInput
+}
+
 input GameCreateWithoutSessionsInput {
     bgg_id: String
     id: ID
     name: String!
     notes: String
+    owner: UserCreateOneWithoutGamesInput
+}
+
+input GameScalarWhereInput {
+    AND: [GameScalarWhereInput!]
+    NOT: [GameScalarWhereInput!]
+    OR: [GameScalarWhereInput!]
+    bgg_id: String
+    bgg_id_contains: String
+    bgg_id_ends_with: String
+    bgg_id_gt: String
+    bgg_id_gte: String
+    bgg_id_in: [String!]
+    bgg_id_lt: String
+    bgg_id_lte: String
+    bgg_id_not: String
+    bgg_id_not_contains: String
+    bgg_id_not_ends_with: String
+    bgg_id_not_in: [String!]
+    bgg_id_not_starts_with: String
+    bgg_id_starts_with: String
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    notes: String
+    notes_contains: String
+    notes_ends_with: String
+    notes_gt: String
+    notes_gte: String
+    notes_in: [String!]
+    notes_lt: String
+    notes_lte: String
+    notes_not: String
+    notes_not_contains: String
+    notes_not_ends_with: String
+    notes_not_in: [String!]
+    notes_not_starts_with: String
+    notes_starts_with: String
 }
 
 input GameSubscriptionWhereInput {
@@ -431,13 +574,37 @@ input GameUpdateInput {
     bgg_id: String
     name: String
     notes: String
+    owner: UserUpdateOneWithoutGamesInput
     sessions: SessionUpdateManyWithoutGameInput
+}
+
+input GameUpdateManyDataInput {
+    bgg_id: String
+    name: String
+    notes: String
 }
 
 input GameUpdateManyMutationInput {
     bgg_id: String
     name: String
     notes: String
+}
+
+input GameUpdateManyWithWhereNestedInput {
+    data: GameUpdateManyDataInput!
+    where: GameScalarWhereInput!
+}
+
+input GameUpdateManyWithoutOwnerInput {
+    connect: [GameWhereUniqueInput!]
+    create: [GameCreateWithoutOwnerInput!]
+    delete: [GameWhereUniqueInput!]
+    deleteMany: [GameScalarWhereInput!]
+    disconnect: [GameWhereUniqueInput!]
+    set: [GameWhereUniqueInput!]
+    update: [GameUpdateWithWhereUniqueWithoutOwnerInput!]
+    updateMany: [GameUpdateManyWithWhereNestedInput!]
+    upsert: [GameUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
 input GameUpdateOneRequiredWithoutSessionsInput {
@@ -447,10 +614,29 @@ input GameUpdateOneRequiredWithoutSessionsInput {
     upsert: GameUpsertWithoutSessionsInput
 }
 
+input GameUpdateWithWhereUniqueWithoutOwnerInput {
+    data: GameUpdateWithoutOwnerDataInput!
+    where: GameWhereUniqueInput!
+}
+
+input GameUpdateWithoutOwnerDataInput {
+    bgg_id: String
+    name: String
+    notes: String
+    sessions: SessionUpdateManyWithoutGameInput
+}
+
 input GameUpdateWithoutSessionsDataInput {
     bgg_id: String
     name: String
     notes: String
+    owner: UserUpdateOneWithoutGamesInput
+}
+
+input GameUpsertWithWhereUniqueWithoutOwnerInput {
+    create: GameCreateWithoutOwnerInput!
+    update: GameUpdateWithoutOwnerDataInput!
+    where: GameWhereUniqueInput!
 }
 
 input GameUpsertWithoutSessionsInput {
@@ -518,6 +704,7 @@ input GameWhereInput {
     notes_not_in: [String!]
     notes_not_starts_with: String
     notes_starts_with: String
+    owner: UserWhereInput
     sessions_every: SessionWhereInput
     sessions_none: SessionWhereInput
     sessions_some: SessionWhereInput
@@ -531,8 +718,14 @@ input PlayerCreateInput {
     id: ID
     name: String!
     nickname: String
+    owner: UserCreateOneWithoutPlayersInput!
     pic: String
     tournaments: TournamentPlayerCreateManyWithoutPlayerInput
+}
+
+input PlayerCreateManyWithoutOwnerInput {
+    connect: [PlayerWhereUniqueInput!]
+    create: [PlayerCreateWithoutOwnerInput!]
 }
 
 input PlayerCreateOneWithoutTournamentsInput {
@@ -540,11 +733,82 @@ input PlayerCreateOneWithoutTournamentsInput {
     create: PlayerCreateWithoutTournamentsInput
 }
 
-input PlayerCreateWithoutTournamentsInput {
+input PlayerCreateWithoutOwnerInput {
     id: ID
     name: String!
     nickname: String
     pic: String
+    tournaments: TournamentPlayerCreateManyWithoutPlayerInput
+}
+
+input PlayerCreateWithoutTournamentsInput {
+    id: ID
+    name: String!
+    nickname: String
+    owner: UserCreateOneWithoutPlayersInput!
+    pic: String
+}
+
+input PlayerScalarWhereInput {
+    AND: [PlayerScalarWhereInput!]
+    NOT: [PlayerScalarWhereInput!]
+    OR: [PlayerScalarWhereInput!]
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    name: String
+    name_contains: String
+    name_ends_with: String
+    name_gt: String
+    name_gte: String
+    name_in: [String!]
+    name_lt: String
+    name_lte: String
+    name_not: String
+    name_not_contains: String
+    name_not_ends_with: String
+    name_not_in: [String!]
+    name_not_starts_with: String
+    name_starts_with: String
+    nickname: String
+    nickname_contains: String
+    nickname_ends_with: String
+    nickname_gt: String
+    nickname_gte: String
+    nickname_in: [String!]
+    nickname_lt: String
+    nickname_lte: String
+    nickname_not: String
+    nickname_not_contains: String
+    nickname_not_ends_with: String
+    nickname_not_in: [String!]
+    nickname_not_starts_with: String
+    nickname_starts_with: String
+    pic: String
+    pic_contains: String
+    pic_ends_with: String
+    pic_gt: String
+    pic_gte: String
+    pic_in: [String!]
+    pic_lt: String
+    pic_lte: String
+    pic_not: String
+    pic_not_contains: String
+    pic_not_ends_with: String
+    pic_not_in: [String!]
+    pic_not_starts_with: String
+    pic_starts_with: String
 }
 
 input PlayerSubscriptionWhereInput {
@@ -561,14 +825,38 @@ input PlayerSubscriptionWhereInput {
 input PlayerUpdateInput {
     name: String
     nickname: String
+    owner: UserUpdateOneRequiredWithoutPlayersInput
     pic: String
     tournaments: TournamentPlayerUpdateManyWithoutPlayerInput
+}
+
+input PlayerUpdateManyDataInput {
+    name: String
+    nickname: String
+    pic: String
 }
 
 input PlayerUpdateManyMutationInput {
     name: String
     nickname: String
     pic: String
+}
+
+input PlayerUpdateManyWithWhereNestedInput {
+    data: PlayerUpdateManyDataInput!
+    where: PlayerScalarWhereInput!
+}
+
+input PlayerUpdateManyWithoutOwnerInput {
+    connect: [PlayerWhereUniqueInput!]
+    create: [PlayerCreateWithoutOwnerInput!]
+    delete: [PlayerWhereUniqueInput!]
+    deleteMany: [PlayerScalarWhereInput!]
+    disconnect: [PlayerWhereUniqueInput!]
+    set: [PlayerWhereUniqueInput!]
+    update: [PlayerUpdateWithWhereUniqueWithoutOwnerInput!]
+    updateMany: [PlayerUpdateManyWithWhereNestedInput!]
+    upsert: [PlayerUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
 input PlayerUpdateOneRequiredWithoutTournamentsInput {
@@ -578,10 +866,29 @@ input PlayerUpdateOneRequiredWithoutTournamentsInput {
     upsert: PlayerUpsertWithoutTournamentsInput
 }
 
-input PlayerUpdateWithoutTournamentsDataInput {
+input PlayerUpdateWithWhereUniqueWithoutOwnerInput {
+    data: PlayerUpdateWithoutOwnerDataInput!
+    where: PlayerWhereUniqueInput!
+}
+
+input PlayerUpdateWithoutOwnerDataInput {
     name: String
     nickname: String
     pic: String
+    tournaments: TournamentPlayerUpdateManyWithoutPlayerInput
+}
+
+input PlayerUpdateWithoutTournamentsDataInput {
+    name: String
+    nickname: String
+    owner: UserUpdateOneRequiredWithoutPlayersInput
+    pic: String
+}
+
+input PlayerUpsertWithWhereUniqueWithoutOwnerInput {
+    create: PlayerCreateWithoutOwnerInput!
+    update: PlayerUpdateWithoutOwnerDataInput!
+    where: PlayerWhereUniqueInput!
 }
 
 input PlayerUpsertWithoutTournamentsInput {
@@ -635,6 +942,7 @@ input PlayerWhereInput {
     nickname_not_in: [String!]
     nickname_not_starts_with: String
     nickname_starts_with: String
+    owner: UserWhereInput
     pic: String
     pic_contains: String
     pic_ends_with: String
@@ -1587,6 +1895,158 @@ input TournamentWhereInput {
 
 input TournamentWhereUniqueInput {
     id: ID
+}
+
+input UserCreateInput {
+    games: GameCreateManyWithoutOwnerInput
+    id: ID
+    password: String!
+    players: PlayerCreateManyWithoutOwnerInput
+    username: String!
+}
+
+input UserCreateOneWithoutGamesInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateWithoutGamesInput
+}
+
+input UserCreateOneWithoutPlayersInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateWithoutPlayersInput
+}
+
+input UserCreateWithoutGamesInput {
+    id: ID
+    password: String!
+    players: PlayerCreateManyWithoutOwnerInput
+    username: String!
+}
+
+input UserCreateWithoutPlayersInput {
+    games: GameCreateManyWithoutOwnerInput
+    id: ID
+    password: String!
+    username: String!
+}
+
+input UserSubscriptionWhereInput {
+    AND: [UserSubscriptionWhereInput!]
+    NOT: [UserSubscriptionWhereInput!]
+    OR: [UserSubscriptionWhereInput!]
+    mutation_in: [MutationType!]
+    node: UserWhereInput
+    updatedFields_contains: String
+    updatedFields_contains_every: [String!]
+    updatedFields_contains_some: [String!]
+}
+
+input UserUpdateInput {
+    games: GameUpdateManyWithoutOwnerInput
+    password: String
+    players: PlayerUpdateManyWithoutOwnerInput
+    username: String
+}
+
+input UserUpdateManyMutationInput {
+    password: String
+    username: String
+}
+
+input UserUpdateOneRequiredWithoutPlayersInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateWithoutPlayersInput
+    update: UserUpdateWithoutPlayersDataInput
+    upsert: UserUpsertWithoutPlayersInput
+}
+
+input UserUpdateOneWithoutGamesInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateWithoutGamesInput
+    delete: Boolean
+    disconnect: Boolean
+    update: UserUpdateWithoutGamesDataInput
+    upsert: UserUpsertWithoutGamesInput
+}
+
+input UserUpdateWithoutGamesDataInput {
+    password: String
+    players: PlayerUpdateManyWithoutOwnerInput
+    username: String
+}
+
+input UserUpdateWithoutPlayersDataInput {
+    games: GameUpdateManyWithoutOwnerInput
+    password: String
+    username: String
+}
+
+input UserUpsertWithoutGamesInput {
+    create: UserCreateWithoutGamesInput!
+    update: UserUpdateWithoutGamesDataInput!
+}
+
+input UserUpsertWithoutPlayersInput {
+    create: UserCreateWithoutPlayersInput!
+    update: UserUpdateWithoutPlayersDataInput!
+}
+
+input UserWhereInput {
+    AND: [UserWhereInput!]
+    NOT: [UserWhereInput!]
+    OR: [UserWhereInput!]
+    games_every: GameWhereInput
+    games_none: GameWhereInput
+    games_some: GameWhereInput
+    id: ID
+    id_contains: ID
+    id_ends_with: ID
+    id_gt: ID
+    id_gte: ID
+    id_in: [ID!]
+    id_lt: ID
+    id_lte: ID
+    id_not: ID
+    id_not_contains: ID
+    id_not_ends_with: ID
+    id_not_in: [ID!]
+    id_not_starts_with: ID
+    id_starts_with: ID
+    password: String
+    password_contains: String
+    password_ends_with: String
+    password_gt: String
+    password_gte: String
+    password_in: [String!]
+    password_lt: String
+    password_lte: String
+    password_not: String
+    password_not_contains: String
+    password_not_ends_with: String
+    password_not_in: [String!]
+    password_not_starts_with: String
+    password_starts_with: String
+    players_every: PlayerWhereInput
+    players_none: PlayerWhereInput
+    players_some: PlayerWhereInput
+    username: String
+    username_contains: String
+    username_ends_with: String
+    username_gt: String
+    username_gte: String
+    username_in: [String!]
+    username_lt: String
+    username_lte: String
+    username_not: String
+    username_not_contains: String
+    username_not_ends_with: String
+    username_not_in: [String!]
+    username_not_starts_with: String
+    username_starts_with: String
+}
+
+input UserWhereUniqueInput {
+    id: ID
+    username: String
 }
 
 

@@ -1,9 +1,9 @@
-import React, {useContext, useReducer} from 'react';
+import React, {useContext, useEffect, useReducer, useState} from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
-  Link, NavLink
+  Link, NavLink, Redirect, BrowserRouter
 } from "react-router-dom";
 // import logo from './logo.svg';
 import './App.scss';
@@ -19,24 +19,38 @@ import Scores from "../Score";
 import {Button, Container, Appbar} from 'muicss/react';
 import AppTabs from "../AppTabs";
 
-import Context from '../../context/pageContext/context.ts';
-import reducer from '../../context/pageContext/reducer.ts';
+import Context from '../../context/pageContext/context';
+import reducer from '../../context/pageContext/reducer';
+import Login from "../../pages/Login";
+import {useToken} from "../../hooks/useAuthentication";
+import User from "../../pages/User";
+import PrivateRoute from "../PrivateRoute";
+
+export const userPage = '/';
 
 const App = () => {
   const pageInitState = useContext(Context);
   const [state, dispatch] = useReducer(reducer, pageInitState);
+  useToken();
 
   return (
     <Context.Provider value={{state, dispatch}}>
+      <BrowserRouter>
+        <Switch>
 
-    <Router>
+        <Route path={userPage} exact component={User}/>
+        <Route  path={'/user'}>
+
+
+
+      <Router>
       <div className="app--container">
-          <AppTabs/>
+        <AppTabs/>
         <Container fluid={true} className={"app--grid"}>
         <Switch>
-          <Route exact path="/" >
-            <HomePage/>
-          </Route>
+          <PrivateRoute exact path="/" >
+              <HomePage/>
+          </PrivateRoute>
           <Route path="/players">
             <PlayersPage/>
           </Route>
@@ -50,6 +64,10 @@ const App = () => {
         </Container>
     </div>
     </Router>
+        </Route>
+        </Switch>
+
+      </BrowserRouter>
   </Context.Provider>
   );
 }

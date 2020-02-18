@@ -1,11 +1,14 @@
 import {
   prisma,
   TournamentCreateInput, TournamentUpdateInput, TournamentWhereUniqueInput
-} from "../../../database/generated/prisma";
+} from "../../../../database/generated/prisma";
 
 const mutations = {
-  createTournament(_: any, {data}: {data: TournamentCreateInput;}) {
-    return prisma.createTournament(data)
+  createTournament(_: any, {data}: {data: TournamentCreateInput;}, {user, prisma}: any) {
+    return prisma.createTournament({
+      ...data,
+      owner: {connect: {id: user.id}}
+    })
   },
 
   deleteTournament(_: any, {where}: {where: TournamentWhereUniqueInput;}) {

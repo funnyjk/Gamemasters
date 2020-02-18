@@ -1,7 +1,7 @@
 import {
   prisma,
   ScoreCreateInput, ScoreUpdateInput, ScoreWhereUniqueInput
-} from "../../../database/generated/prisma";
+} from "../../../../database/generated/prisma";
 
 const mutations = {
   createScore(_: any, {data}: { data: ScoreCreateInput }) {

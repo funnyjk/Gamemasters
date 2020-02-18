@@ -1,7 +1,7 @@
 import {
   prisma,
   SessionCreateInput, SessionUpdateInput, SessionWhereUniqueInput
-} from "../../../database/generated/prisma";
+} from "../../../../database/generated/prisma";
 
 const mutations = {
   createSession(_: any, {data}: { data: SessionCreateInput }) {

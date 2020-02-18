@@ -1,7 +1,7 @@
 import {
   prisma,
   TournamentPlayerCreateInput, TournamentPlayerUpdateInput, TournamentPlayerWhereUniqueInput
-} from "../../../database/generated/prisma";
+} from "../../../../database/generated/prisma";
 
 const mutations = {
   createTournamentPlayer(_: any, {data}: { data: TournamentPlayerCreateInput; }) {

@@ -18,8 +18,7 @@ const GamesSelect = ({value, onChange}: IGamesSelect) => {
   const {games} = data;
 
 
-  return <div className={"item_page"}>
-    <FormControl className={"player_list"}>
+  return <FormControl className={"player_list"}>
       <InputLabel id="select-game-label">Select Game</InputLabel>
 
       <Select labelId="select-player-label" onChange={onChange} value={value}>
@@ -30,7 +29,6 @@ const GamesSelect = ({value, onChange}: IGamesSelect) => {
         {!games?.length && <MenuItem disabled={true}>No Games</MenuItem>}
       </Select>
     </FormControl>
-  </div>
 };
 
 export default GamesSelect;

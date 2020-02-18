@@ -34,6 +34,11 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.scss']
     },
+    optimization: {
+        splitChunks: {
+            chunks: "all"
+        }
+    },
     plugins: [
         new MiniCssExtractPlugin({
             filename: "[name].css",
@@ -43,7 +48,8 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'GameMasters',
-            template: path.resolve(__dirname, 'src/index.html')
+            template: path.resolve(__dirname, 'src/index.html'),
+            favicon: path.resolve(__dirname, 'src/favicon.png')
         }),
     ]
 };

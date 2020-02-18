@@ -5,6 +5,7 @@ import './styles';
 import CreateButton from "../CreateButton";
 import Context from '../../context/pageContext/context';
 import {setPage} from "../../context/pageContext/actions";
+import User from "../User";
 
 
 
@@ -50,6 +51,7 @@ const AppTabs = ({}: ITabs) => {
 
 
         <td className={"nav__item--right mui--appbar-height"}>
+          <User/>
           <CreateButton />
         </td>
       </tr>

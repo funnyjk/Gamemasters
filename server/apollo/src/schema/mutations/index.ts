@@ -4,6 +4,7 @@ import tournamentPlayer from './tournamentPlayer';
 import game from './game';
 import session from './session';
 import score from './score';
+import authentication from './authentication';
 
 export const mutations = {
   ...player,
@@ -11,5 +12,6 @@ export const mutations = {
   ...tournamentPlayer,
   ...game,
   ...session,
-  ...score
+  ...score,
+  ...authentication
 };

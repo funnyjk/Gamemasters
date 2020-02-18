@@ -13,6 +13,7 @@ import GameItem from "./GameItem";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import {setPage} from "../../context/pageContext/actions";
 import Context from "../../context/pageContext/context";
+import useGameSubscription from "./GameSubscription";
 
 
 const GamesPage = () => {
@@ -27,7 +28,7 @@ const GamesPage = () => {
   const match = useRouteMatch();
 
   const list_class = (state) ? "component__list" : "component__list--sidebar";
-
+  // useGameSubscription();
   return <div className={"component"}>
     <div className={`${list_class}`}>
       <GamesList/>

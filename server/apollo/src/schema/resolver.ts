@@ -1,6 +1,5 @@
 import {
   prisma,
-  Player,
   PlayerWhereUniqueInput,
   Prisma,
   Score,
@@ -11,41 +10,39 @@ import {
   PlayerWhereInput,
   GameWhereUniqueInput,
   TournamentWhereUniqueInput,
-  SessionWhereInput, SessionWhereUniqueInput, ScoreWhereUniqueInput, TournamentPlayerWhereInput
-} from "../../database/generated/prisma";
+  SessionWhereInput,
+  SessionWhereUniqueInput,
+  ScoreWhereUniqueInput,
+  TournamentPlayerWhereInput,
+  GameSubscriptionWhereInput
+} from "../../../database/generated/prisma";
 import {mutations} from "./mutations";
-import {Simulate} from "react-dom/test-utils";
-import wheel = Simulate.wheel;
+import {queries} from "./queries";
+import { Player } from "./queries/players";
 
-interface IWhere {
-  where: PlayerWhereUniqueInput
-}
 export const resolvers = {
     Query: {
-      players: (_:any, {where}: {where: PlayerWhereInput}) => prisma.players({where}),
-      player: (parent: any, {where}: IWhere) => {
-        const {id} = where;
-        return prisma.player({id})
-      },
+      ...queries,
       tournamentPlayers: (_: any, {where}: {where: TournamentPlayerWhereInput})=> prisma.tournamentPlayers({where}),
       tournamentPlayer: (_: any, {where}: { where: TournamentWhereUniqueInput }) => prisma.tournamentPlayer(where),
-      tournaments: () => prisma.tournaments(),
-      tournament: (_: any, {where}: { where: TournamentWhereUniqueInput }) => prisma.tournament(where),
       sessions: (_:any, {where}: {where: SessionWhereInput}) => prisma.sessions({where}),
       session: (_: any, {where}: { where: SessionWhereUniqueInput }) => prisma.session(where),
       scores: (_:any, {where}: {where: ScoreWhereInput}) => {
-        console.log(where);
         return prisma.scores({where})
       },
       score: (_: any, {where}: { where: ScoreWhereUniqueInput }) => prisma.score(where),
-      games: () => prisma.games(),
-      game: (_:any, {where}: {where: GameWhereUniqueInput}) => prisma.game(where)
+      // games: () => prisma.games(),
+      // game: (_:any, {where}: {where: GameWhereUniqueInput}) => prisma.game(where),
     },
     Mutation: {...mutations},
-    Player: {
-      tournaments: (parent: Player, args: any) => prisma.player({id: parent.id}).tournaments(args),
-      // scores: (parent: Player, args: any) => prisma.player({id: parent.id}).scores(args),
+    Subscription: {
+      game: async (_: any, {where}: {where:GameSubscriptionWhereInput}) => await prisma.$subscribe.game(where)
     },
+    ...Player,
+    // Player: {
+    //   tournaments: (parent: any, args: any) => prisma.player({id: parent.id}).tournaments(args),
+    //   // scores: (parent: Player, args: any) => prisma.player({id: parent.id}).scores(args),
+    // },
     Session: {
       tournament: ({id}: Session, args: any) => prisma.session({id}).tournament(),
       game: ({id}: Session, args: any) => prisma.session({id}).game(),

@@ -4,12 +4,15 @@ import {useHistory} from "react-router-dom";
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_GAME, CREATE_GAME_VARS, GET_GAMES} from "../../../graphql/Game";
 import {Add} from "@material-ui/icons";
+import {useSetIsEdit, useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 
 interface ICreateGame {
 
 }
 
 export const useCreateGame = (gameName: string) => {
+  // const [isEdit] = useToggleIsEdit();
+  const setEdit = useSetIsEdit();
   let history = useHistory();
 
   const [createGame] = useMutation<any, CREATE_GAME_VARS>(CREATE_GAME, {
@@ -19,6 +22,8 @@ export const useCreateGame = (gameName: string) => {
         query: GET_GAMES,
         data: {games: games.concat([createGame])}
       });
+      // console.log(createGame);
+      setEdit(true);
       history.push(`/games/${createGame.id}`);
     },
     variables: {gameName}

@@ -14,7 +14,9 @@ import MutationInput from "../../MutationInput";
 import {useToggle} from "../../../hooks/useToggle";
 import DeleteTournament from "../DeleteTournament";
 
-import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from '@material-ui/core'
+
+import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from '@material-ui/core';
+
 import Context from "../../../context/pageContext/context";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {Form} from "muicss/react";

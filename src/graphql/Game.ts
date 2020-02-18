@@ -51,3 +51,41 @@ export const DELETE_GAME = gql`
         }
     }
 `;
+
+export const SUBSCRIBE_NEW_GAME  = gql`
+  subscription newGame($ownerId: ID!) {
+      game(where: {mutation_in: CREATED, node: {
+          owner: {id: $ownerId}
+      }}) {
+          mutation
+          node {
+              id
+              name
+          }
+      }
+  } 
+`;
+
+export const SUBSCRIBE_DELETE_GAME  = gql`
+  subscription deleteGame {
+      game(where: {mutation_in: DELETED}) {
+          mutation
+          previousValues {
+              id
+          }
+      }
+  } 
+`;
+
+export const SUBSCRIBE_UPDATED_GAME  = gql`
+  subscription updatedGame {
+      game(where: {mutation_in: UPDATED}) {
+          mutation
+          updatedFields
+          node {
+              id
+              name
+          }
+      }
+  } 
+`;

@@ -6,14 +6,19 @@
   "scripts": {
     "start": "ts-node index.ts",
     "ts-node": "ts-node index.ts",
+    "ts-server": "ts-node server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.3.7",
     "apollo-server": "^2.9.16",
-    "graphql": "^14.6.0"
+    "bcryptjs": "^2.4.3",
+    "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "@apollo/gateway": "^0.11.7",
