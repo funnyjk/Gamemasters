@@ -4,7 +4,9 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: ['react-hot-loader/patch', './src/index.tsx'],
+
+    // entry: './src/index.tsx',
     module: {
         rules: [
             {
@@ -28,7 +30,13 @@ module.exports = {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
                 use: 'graphql-tag/loader',
-            }
+            },
+            {
+                test:/\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader',
+                ],
+            },
         ]
     },
     resolve: {
@@ -49,7 +57,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'GameMasters',
             template: path.resolve(__dirname, 'src/index.html'),
-            favicon: path.resolve(__dirname, 'src/favicon.png')
+            favicon: path.resolve(__dirname, 'src/favicon.png'),
+            logo: path.resolve(__dirname, 'src/logo.png')
         }),
     ]
 };

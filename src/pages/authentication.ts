@@ -31,10 +31,11 @@ export interface SIGNUP_RETURN {
 export interface SIGNUP_VARS {
   username: string;
   password: string;
+  email: string;
 }
 export const SIGNUP = gql`
-    mutation signup($username: String!, $password: String!){
-        register(username: $username, password: $password) {
+    mutation signup($username: String!, $password: String!, $email: String!){
+        register(username: $username, password: $password, email: $email) {
             id
             username
         }

@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, useRouteMatch} from "react-router-dom";
 import ScoresList from "../../../Score/ScoresList";
 import {Panel} from "muicss/react";
+import DuplicateSession from "../../DuplicateSession";
 
 interface ISessionsListItem {
   session: any;
@@ -18,6 +19,11 @@ const SessionsListItem = ({session}: ISessionsListItem) => {
       }}>{session.name}</Link>
     </h3>
     {session.game?.name}
+    <div>
+      {/*TODO Duplicate Session Button*/}
+      {/*<DuplicateSession/>*/}
+
+    </div>
     {/*<ScoresList scores={session.scores}/>*/}
   </Panel>
 };

@@ -23,7 +23,6 @@ export const useCreateGame = (gameName: string) => {
         data: {games: games.concat([createGame])}
       });
       // console.log(createGame);
-      setEdit(true);
       history.push(`/games/${createGame.id}`);
     },
     variables: {gameName}

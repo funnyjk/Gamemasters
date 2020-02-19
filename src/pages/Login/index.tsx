@@ -1,30 +1,69 @@
-import React, {useState} from "react";
-import {Button, FormGroup, FormControlLabel, Input} from "@material-ui/core";
-import {useAuthentication, useSetAuthentication, useToken, useUser} from "../../hooks/useAuthentication";
-import {useHistory} from "react-router-dom";
+import React, {Dispatch, useEffect, useState} from "react";
+import {
+  Button,
+  FilledInput,
+  FormControl,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  TextField
+} from "@material-ui/core";
+import {Alert} from '@material-ui/lab';
+
+import {useAuthentication} from "../../hooks/useAuthentication";
+import {useHistory, useLocation} from "react-router-dom";
 import {useMutation} from "@apollo/react-hooks";
 import {LOGIN, LOGIN_RETURN, LOGIN_VARS} from "../authentication";
+import {useToggle} from "../../hooks/useToggle";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
 
-export default function Login(props: any) {
-  const [localToken, setLocalToken] = useToken();
-  const [user, setUser] = useUser();
+interface ILogin {
+  usernameState: any;
+  passwordState: [string, Dispatch<string>];
+}
+
+const Login = ({usernameState, passwordState}: ILogin) => {
+  const [error, setError] = useState("");
+  const AddError = (msg: string) => {
+    setError(msg);
+
+  }
+  const auth = useAuthentication();
   const history = useHistory();
+  const location = useLocation();
+  const {from}: any = location.state || {from: {pathname: "/home"}};
   const [doLogin] = useMutation<LOGIN_RETURN, LOGIN_VARS>(LOGIN, {
     update(cache, {data: {login: {token, user}}}) {
-      setLocalToken(token);
-      setUser(user.id);
-      location.pathname = '/user#/';
-
+      auth.login(token, ()=>{
+        history.replace(from);
+      });
+    },
+    onError: error => {
+      AddError(error.graphQLErrors[0].message);
     }
-  })
+  });
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("Test");
-  const [password, setPassword] = useState("Test");
+  const [username, setUsername] = usernameState;
+  const [password, setPassword] = passwordState;
 
+  useEffect((): any => {
+    const errorTimer = setTimeout(function () {
+      setError("")
+    }, 3000);
+    return () => clearTimeout(errorTimer)
+  }, [error]);
 
   // function validateForm() {
   //   return email.length > 0 && password.length > 0;
   // }
+  const validateForm = () => {
+    return !(validateFormLength())
+  }
+
+  function validateFormLength() {
+    return (username.length > 0 && password.length > 0);
+  }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -36,10 +75,14 @@ export default function Login(props: any) {
     });
     // userHasAuthenticated();
   }
-
+  const [viewPassword, setViewPassword] = useToggle(false);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
   return (
     <div className="Login">
-      <form onSubmit={handleSubmit}>
+      {error && <Alert severity={"error"}>{error}</Alert>}
+      <form onSubmit={handleSubmit} className={"user__form"}>
         {/*<FormGroup id="email">*/}
         {/*  <FormControlLabel label={"Email"} control={*/}
         {/*  <Input*/}
@@ -48,29 +91,49 @@ export default function Login(props: any) {
         {/*    onChange={e => setEmail(e.target.value)}*/}
         {/*  />}/>*/}
         {/*</FormGroup>        */}
+        <TextField id="username"
+                   autoComplete={"username"}
+                   variant="filled" label="Username" value={username} onChange={e => setUsername(e.target.value)}/>
+        <FormControl variant="filled">
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <FilledInput id="password"
 
-        <FormGroup id="username">
-          <FormControlLabel label={"Username"} control={
-          <Input
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />}/>
-        </FormGroup>
+                       autoComplete={"current-password"}
 
-        <FormGroup id="password">
-          <FormControlLabel label={"Password"} control={
-            <Input
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              type="password"
-            />
-          }/>
-        </FormGroup>
-        <Button type="submit">
+                       type={viewPassword ? 'text' : 'password'}
+                       value={password} onChange={e => setPassword(e.target.value)}
+                       endAdornment={
+                         <InputAdornment position="end" tabIndex={-1}>
+                           <IconButton
+                             tabIndex={-1}
+                             aria-label="toggle password visibility"
+                             onClick={setViewPassword}
+                             onMouseDown={handleMouseDownPassword}
+                           >
+                             {viewPassword ? <Visibility/> : <VisibilityOff/>}
+                           </IconButton>
+                         </InputAdornment>}
+          />
+        </FormControl>
+        <Button variant="contained" type="submit" color={"primary"} disabled={validateForm()} disableElevation>
           Login
         </Button>
+
+
       </form>
+
+      {/*<Button onClick={()=> auth.login("Test", () => {*/}
+      {/*  history.replace(from);*/}
+      {/*})}>*/}
+      {/*  Login*/}
+      {/*</Button>*/}
+      {/*<Button onClick={()=> auth.signout( () => {*/}
+      {/*  history.replace(from);*/}
+      {/*})}>*/}
+      {/*  signout*/}
+      {/*</Button>*/}
     </div>
   );
-}
+};
+
+export default Login;

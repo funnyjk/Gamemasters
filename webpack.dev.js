@@ -13,6 +13,11 @@ module.exports = merge(common, {
         port: 8000,
         hot: true
     },
+    resolve: {
+        alias: {
+            'react-dom': '@hot-loader/react-dom',
+        },
+    },
     output: {
         publicPath: "/",
         filename: 'main.js',

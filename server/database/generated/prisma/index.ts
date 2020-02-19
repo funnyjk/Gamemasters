@@ -408,6 +408,8 @@ export type UserOrderByInput =
   | "id_DESC"
   | "username_ASC"
   | "username_DESC"
+  | "email_ASC"
+  | "email_DESC"
   | "password_ASC"
   | "password_DESC";
 
@@ -744,6 +746,20 @@ export interface UserWhereInput {
   username_not_starts_with?: Maybe<String>;
   username_ends_with?: Maybe<String>;
   username_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -846,6 +862,7 @@ export interface PlayerWhereInput {
 
 export interface UserUpdateWithoutGamesDataInput {
   username?: Maybe<String>;
+  email?: Maybe<String>;
   password?: Maybe<String>;
   players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
 }
@@ -886,6 +903,7 @@ export interface PlayerUpdateManyWithoutOwnerInput {
 
 export interface UserUpdateManyMutationInput {
   username?: Maybe<String>;
+  email?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -1024,6 +1042,7 @@ export interface ScoreUpdateInput {
 
 export interface UserUpdateDataInput {
   username?: Maybe<String>;
+  email?: Maybe<String>;
   password?: Maybe<String>;
   players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
   games?: Maybe<GameUpdateManyWithoutOwnerInput>;
@@ -1042,7 +1061,7 @@ export interface PlayerUpsertWithWhereUniqueWithoutOwnerInput {
 }
 
 export interface PlayerUpdateInput {
-  owner?: Maybe<UserUpdateOneRequiredWithoutPlayersInput>;
+  owner?: Maybe<UserUpdateOneWithoutPlayersInput>;
   name?: Maybe<String>;
   pic?: Maybe<String>;
   nickname?: Maybe<String>;
@@ -1272,7 +1291,7 @@ export interface TournamentCreateOneWithoutSessionsInput {
 }
 
 export interface PlayerUpdateWithoutTournamentsDataInput {
-  owner?: Maybe<UserUpdateOneRequiredWithoutPlayersInput>;
+  owner?: Maybe<UserUpdateOneWithoutPlayersInput>;
   name?: Maybe<String>;
   pic?: Maybe<String>;
   nickname?: Maybe<String>;
@@ -1288,10 +1307,12 @@ export interface TournamentPlayerCreateManyWithoutTournamentInput {
   >;
 }
 
-export interface UserUpdateOneRequiredWithoutPlayersInput {
+export interface UserUpdateOneWithoutPlayersInput {
   create?: Maybe<UserCreateWithoutPlayersInput>;
   update?: Maybe<UserUpdateWithoutPlayersDataInput>;
   upsert?: Maybe<UserUpsertWithoutPlayersInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -1302,6 +1323,7 @@ export interface PlayerCreateOneWithoutTournamentsInput {
 
 export interface UserUpdateWithoutPlayersDataInput {
   username?: Maybe<String>;
+  email?: Maybe<String>;
   password?: Maybe<String>;
   games?: Maybe<GameUpdateManyWithoutOwnerInput>;
 }
@@ -1475,6 +1497,7 @@ export interface GameUpdateOneRequiredWithoutSessionsInput {
 
 export interface UserUpdateInput {
   username?: Maybe<String>;
+  email?: Maybe<String>;
   password?: Maybe<String>;
   players?: Maybe<PlayerUpdateManyWithoutOwnerInput>;
   games?: Maybe<GameUpdateManyWithoutOwnerInput>;
@@ -1584,7 +1607,7 @@ export interface ScoreScalarWhereInput {
 
 export interface PlayerCreateInput {
   id?: Maybe<ID_Input>;
-  owner: UserCreateOneWithoutPlayersInput;
+  owner?: Maybe<UserCreateOneWithoutPlayersInput>;
   name: String;
   pic?: Maybe<String>;
   nickname?: Maybe<String>;
@@ -1731,7 +1754,7 @@ export interface TournamentUpsertWithoutSessionsInput {
 
 export interface PlayerCreateWithoutTournamentsInput {
   id?: Maybe<ID_Input>;
-  owner: UserCreateOneWithoutPlayersInput;
+  owner?: Maybe<UserCreateOneWithoutPlayersInput>;
   name: String;
   pic?: Maybe<String>;
   nickname?: Maybe<String>;
@@ -1857,6 +1880,7 @@ export interface ScoreUpsertWithWhereUniqueWithoutSessionInput {
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   username?: Maybe<String>;
+  email?: Maybe<String>;
 }>;
 
 export interface SessionUpsertWithWhereUniqueWithoutGameInput {
@@ -1868,6 +1892,7 @@ export interface SessionUpsertWithWhereUniqueWithoutGameInput {
 export interface UserCreateWithoutGamesInput {
   id?: Maybe<ID_Input>;
   username: String;
+  email: String;
   password: String;
   players?: Maybe<PlayerCreateManyWithoutOwnerInput>;
 }
@@ -1917,6 +1942,7 @@ export interface SessionScalarWhereInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   username: String;
+  email: String;
   password: String;
   players?: Maybe<PlayerCreateManyWithoutOwnerInput>;
   games?: Maybe<GameCreateManyWithoutOwnerInput>;
@@ -2151,6 +2177,7 @@ export interface UserUpsertNestedInput {
 export interface UserCreateWithoutPlayersInput {
   id?: Maybe<ID_Input>;
   username: String;
+  email: String;
   password: String;
   games?: Maybe<GameCreateManyWithoutOwnerInput>;
 }
@@ -2186,6 +2213,7 @@ export interface NodeNode {
 export interface UserPreviousValues {
   id: ID_Output;
   username: String;
+  email: String;
   password: String;
 }
 
@@ -2194,6 +2222,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
 }
 
@@ -2202,6 +2231,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
 }
 
@@ -3120,12 +3150,14 @@ export interface ScoreEdgeSubscription
 export interface User {
   id: ID_Output;
   username: String;
+  email: String;
   password: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;
@@ -3152,6 +3184,7 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   players: <T = Promise<AsyncIterator<PlayerSubscription>>>(args?: {
     where?: PlayerWhereInput;
@@ -3178,6 +3211,7 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;

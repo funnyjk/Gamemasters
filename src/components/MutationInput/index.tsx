@@ -15,7 +15,7 @@ interface IMutationInput {
 }
 
 const MutationInput = ({mutation, options, optionsData, type, name, defaultValue, label, disabled = false}: IMutationInput) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(defaultValue);
   const [doMutation] = useMutation(mutation, options);
   const onBlur = ({target}: any) => {
     const {name, value} = target;
@@ -37,8 +37,8 @@ const MutationInput = ({mutation, options, optionsData, type, name, defaultValue
   }, [defaultValue]);
 
   if(disabled) return <span>{inputValue}</span>;
-  return <Input label={label} name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} disabled={disabled}
+  return <Input autoFocus={true} label={label} name={name} type={type} value={inputValue} onChange={changeValue} onBlur={onBlur} disabled={disabled}
                 floatingLabel={true}/>
 };
 
-export default MutationInput;
+export default React.memo(MutationInput);

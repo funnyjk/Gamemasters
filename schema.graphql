@@ -84,7 +84,6 @@ type LoginResponse {
 type Mutation {
     createGame(data: GameCreateInput!): Game!
     createPlayer(data: PlayerCreateInput!): Player!
-    createPlayerNoUser(name: String!): Player!
     createScore(data: ScoreCreateInput!): Score!
     createSession(data: SessionCreateInput!): Session!
     createTournament(data: TournamentCreateInput!): Tournament!
@@ -99,6 +98,7 @@ type Mutation {
     deleteManyTournaments(where: TournamentWhereInput): BatchPayload!
     deleteManyUsers(where: UserWhereInput): BatchPayload!
     deletePlayer(where: PlayerWhereUniqueInput!): Player
+    deleteProfile: User!
     deleteScore(where: ScoreWhereUniqueInput!): Score
     deleteSession(where: SessionWhereUniqueInput!): Session
     deleteTournament(where: TournamentWhereUniqueInput!): Tournament
@@ -140,7 +140,7 @@ type Player {
     id: ID!
     name: String!
     nickname: String
-    owner: User!
+    owner: User
     pic: String
     tournaments(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer!]
 }
@@ -277,6 +277,7 @@ type Tournament {
     id: ID!
     name: String!
     notes: String
+    owner: User
     players(after: String, before: String, first: Int, last: Int, orderBy: TournamentPlayerOrderByInput, skip: Int, where: TournamentPlayerWhereInput): [TournamentPlayer!]
     rules: String
     sessions(after: String, before: String, first: Int, last: Int, orderBy: SessionOrderByInput, skip: Int, where: SessionWhereInput): [Session!]
@@ -718,7 +719,7 @@ input PlayerCreateInput {
     id: ID
     name: String!
     nickname: String
-    owner: UserCreateOneWithoutPlayersInput!
+    owner: UserCreateOneWithoutPlayersInput
     pic: String
     tournaments: TournamentPlayerCreateManyWithoutPlayerInput
 }
@@ -745,7 +746,7 @@ input PlayerCreateWithoutTournamentsInput {
     id: ID
     name: String!
     nickname: String
-    owner: UserCreateOneWithoutPlayersInput!
+    owner: UserCreateOneWithoutPlayersInput
     pic: String
 }
 
@@ -825,7 +826,7 @@ input PlayerSubscriptionWhereInput {
 input PlayerUpdateInput {
     name: String
     nickname: String
-    owner: UserUpdateOneRequiredWithoutPlayersInput
+    owner: UserUpdateOneWithoutPlayersInput
     pic: String
     tournaments: TournamentPlayerUpdateManyWithoutPlayerInput
 }
@@ -881,7 +882,7 @@ input PlayerUpdateWithoutOwnerDataInput {
 input PlayerUpdateWithoutTournamentsDataInput {
     name: String
     nickname: String
-    owner: UserUpdateOneRequiredWithoutPlayersInput
+    owner: UserUpdateOneWithoutPlayersInput
     pic: String
 }
 
@@ -1428,6 +1429,7 @@ input TournamentCreateInput {
     id: ID
     name: String!
     notes: String
+    owner: UserCreateOneInput
     players: TournamentPlayerCreateManyWithoutTournamentInput
     rules: String
     sessions: SessionCreateManyWithoutTournamentInput
@@ -1449,6 +1451,7 @@ input TournamentCreateWithoutPlayersInput {
     id: ID
     name: String!
     notes: String
+    owner: UserCreateOneInput
     rules: String
     sessions: SessionCreateManyWithoutTournamentInput
     startDate: DateTime
@@ -1459,6 +1462,7 @@ input TournamentCreateWithoutSessionsInput {
     id: ID
     name: String!
     notes: String
+    owner: UserCreateOneInput
     players: TournamentPlayerCreateManyWithoutTournamentInput
     rules: String
     startDate: DateTime
@@ -1745,6 +1749,7 @@ input TournamentUpdateInput {
     endDate: DateTime
     name: String
     notes: String
+    owner: UserUpdateOneInput
     players: TournamentPlayerUpdateManyWithoutTournamentInput
     rules: String
     sessions: SessionUpdateManyWithoutTournamentInput
@@ -1777,6 +1782,7 @@ input TournamentUpdateWithoutPlayersDataInput {
     endDate: DateTime
     name: String
     notes: String
+    owner: UserUpdateOneInput
     rules: String
     sessions: SessionUpdateManyWithoutTournamentInput
     startDate: DateTime
@@ -1786,6 +1792,7 @@ input TournamentUpdateWithoutSessionsDataInput {
     endDate: DateTime
     name: String
     notes: String
+    owner: UserUpdateOneInput
     players: TournamentPlayerUpdateManyWithoutTournamentInput
     rules: String
     startDate: DateTime
@@ -1863,6 +1870,7 @@ input TournamentWhereInput {
     notes_not_in: [String!]
     notes_not_starts_with: String
     notes_starts_with: String
+    owner: UserWhereInput
     players_every: TournamentPlayerWhereInput
     players_none: TournamentPlayerWhereInput
     players_some: TournamentPlayerWhereInput
@@ -1905,6 +1913,11 @@ input UserCreateInput {
     username: String!
 }
 
+input UserCreateOneInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateInput
+}
+
 input UserCreateOneWithoutGamesInput {
     connect: UserWhereUniqueInput
     create: UserCreateWithoutGamesInput
@@ -1940,6 +1953,13 @@ input UserSubscriptionWhereInput {
     updatedFields_contains_some: [String!]
 }
 
+input UserUpdateDataInput {
+    games: GameUpdateManyWithoutOwnerInput
+    password: String
+    players: PlayerUpdateManyWithoutOwnerInput
+    username: String
+}
+
 input UserUpdateInput {
     games: GameUpdateManyWithoutOwnerInput
     password: String
@@ -1952,11 +1972,13 @@ input UserUpdateManyMutationInput {
     username: String
 }
 
-input UserUpdateOneRequiredWithoutPlayersInput {
+input UserUpdateOneInput {
     connect: UserWhereUniqueInput
-    create: UserCreateWithoutPlayersInput
-    update: UserUpdateWithoutPlayersDataInput
-    upsert: UserUpsertWithoutPlayersInput
+    create: UserCreateInput
+    delete: Boolean
+    disconnect: Boolean
+    update: UserUpdateDataInput
+    upsert: UserUpsertNestedInput
 }
 
 input UserUpdateOneWithoutGamesInput {
@@ -1966,6 +1988,15 @@ input UserUpdateOneWithoutGamesInput {
     disconnect: Boolean
     update: UserUpdateWithoutGamesDataInput
     upsert: UserUpsertWithoutGamesInput
+}
+
+input UserUpdateOneWithoutPlayersInput {
+    connect: UserWhereUniqueInput
+    create: UserCreateWithoutPlayersInput
+    delete: Boolean
+    disconnect: Boolean
+    update: UserUpdateWithoutPlayersDataInput
+    upsert: UserUpsertWithoutPlayersInput
 }
 
 input UserUpdateWithoutGamesDataInput {
@@ -1978,6 +2009,11 @@ input UserUpdateWithoutPlayersDataInput {
     games: GameUpdateManyWithoutOwnerInput
     password: String
     username: String
+}
+
+input UserUpsertNestedInput {
+    create: UserCreateInput!
+    update: UserUpdateDataInput!
 }
 
 input UserUpsertWithoutGamesInput {

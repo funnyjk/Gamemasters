@@ -8,3 +8,11 @@ export const GET_USER = gql`
         }
     }
 `;
+
+export const DELETE_USER = gql`
+    mutation {
+        deleteProfile {
+            id
+        }
+    }
+`;

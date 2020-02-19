@@ -7,14 +7,20 @@ import GamesSelect from "../../GamesPage/GamesSelect";
 import {Button} from "muicss/react";
 import {FormControl, FormGroup} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
+import { useHistory } from 'react-router-dom';
 
 interface ICreateSession {
   tournament: any;
 }
 
 const CreateSession = ({tournament}: ICreateSession) => {
+  const history = useHistory();
   const {data} = useQuery(GET_GAMES);
   const [createSession] = useMutation<any, CREATE_SESSION_VARS>(CREATE_SESSION, {
+    update(cache, {data: {createSession}}) {
+      console.log(data)
+      history.push(`/tournaments/${tournament.id}/sessions/${createSession.id}`);
+    },
     refetchQueries: [{query: GET_TOURNAMENT_SESSIONS, variables:{tournamentId: tournament?.id}}]
   });
   const [gameId, setGameId] = useState("");

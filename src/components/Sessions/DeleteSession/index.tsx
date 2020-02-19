@@ -17,7 +17,7 @@ const DeleteSession = ({disabled = false}: IDeleteSession) => {
       sessionId
     },
     update() {
-      history.push(`/tournaments/${tournamentId}`);
+      history.push(`/tournaments/${tournamentId}/sessions`);
     },
     refetchQueries: [{query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}}]
   };

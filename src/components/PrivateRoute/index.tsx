@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import AuthContext from '../../context/authenticationContext/context';
+import {AuthContext} from '../../context/authenticationContext/context';
 import { Route, Redirect } from 'react-router-dom';
 
 interface IPrivateRoute {
@@ -8,11 +8,11 @@ interface IPrivateRoute {
 }
 
 const PrivateRoute = ({children, ...rest}: IPrivateRoute) => {
-  const auth = useContext(AuthContext);
+  const {state} = useContext(AuthContext);
   return <Route
     {...rest}
     render={({location}) =>
-      auth.isAuthenticated ? (
+      state.isAuthenticated ? (
         children
       ) : (
         <Redirect

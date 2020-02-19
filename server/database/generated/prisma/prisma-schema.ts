@@ -399,7 +399,7 @@ type PageInfo {
 
 type Player {
   id: ID!
-  owner: User!
+  owner: User
   name: String!
   pic: String
   nickname: String
@@ -414,7 +414,7 @@ type PlayerConnection {
 
 input PlayerCreateInput {
   id: ID
-  owner: UserCreateOneWithoutPlayersInput!
+  owner: UserCreateOneWithoutPlayersInput
   name: String!
   pic: String
   nickname: String
@@ -441,7 +441,7 @@ input PlayerCreateWithoutOwnerInput {
 
 input PlayerCreateWithoutTournamentsInput {
   id: ID
-  owner: UserCreateOneWithoutPlayersInput!
+  owner: UserCreateOneWithoutPlayersInput
   name: String!
   pic: String
   nickname: String
@@ -551,7 +551,7 @@ input PlayerSubscriptionWhereInput {
 }
 
 input PlayerUpdateInput {
-  owner: UserUpdateOneRequiredWithoutPlayersInput
+  owner: UserUpdateOneWithoutPlayersInput
   name: String
   pic: String
   nickname: String
@@ -602,7 +602,7 @@ input PlayerUpdateWithoutOwnerDataInput {
 }
 
 input PlayerUpdateWithoutTournamentsDataInput {
-  owner: UserUpdateOneRequiredWithoutPlayersInput
+  owner: UserUpdateOneWithoutPlayersInput
   name: String
   pic: String
   nickname: String
@@ -1853,6 +1853,7 @@ input TournamentWhereUniqueInput {
 type User {
   id: ID!
   username: String!
+  email: String!
   password: String!
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
   games(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Game!]
@@ -1867,6 +1868,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   username: String!
+  email: String!
   password: String!
   players: PlayerCreateManyWithoutOwnerInput
   games: GameCreateManyWithoutOwnerInput
@@ -1890,6 +1892,7 @@ input UserCreateOneWithoutPlayersInput {
 input UserCreateWithoutGamesInput {
   id: ID
   username: String!
+  email: String!
   password: String!
   players: PlayerCreateManyWithoutOwnerInput
 }
@@ -1897,6 +1900,7 @@ input UserCreateWithoutGamesInput {
 input UserCreateWithoutPlayersInput {
   id: ID
   username: String!
+  email: String!
   password: String!
   games: GameCreateManyWithoutOwnerInput
 }
@@ -1911,6 +1915,8 @@ enum UserOrderByInput {
   id_DESC
   username_ASC
   username_DESC
+  email_ASC
+  email_DESC
   password_ASC
   password_DESC
 }
@@ -1918,6 +1924,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   username: String!
+  email: String!
   password: String!
 }
 
@@ -1941,6 +1948,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateDataInput {
   username: String
+  email: String
   password: String
   players: PlayerUpdateManyWithoutOwnerInput
   games: GameUpdateManyWithoutOwnerInput
@@ -1948,6 +1956,7 @@ input UserUpdateDataInput {
 
 input UserUpdateInput {
   username: String
+  email: String
   password: String
   players: PlayerUpdateManyWithoutOwnerInput
   games: GameUpdateManyWithoutOwnerInput
@@ -1955,6 +1964,7 @@ input UserUpdateInput {
 
 input UserUpdateManyMutationInput {
   username: String
+  email: String
   password: String
 }
 
@@ -1967,13 +1977,6 @@ input UserUpdateOneInput {
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredWithoutPlayersInput {
-  create: UserCreateWithoutPlayersInput
-  update: UserUpdateWithoutPlayersDataInput
-  upsert: UserUpsertWithoutPlayersInput
-  connect: UserWhereUniqueInput
-}
-
 input UserUpdateOneWithoutGamesInput {
   create: UserCreateWithoutGamesInput
   update: UserUpdateWithoutGamesDataInput
@@ -1983,14 +1986,25 @@ input UserUpdateOneWithoutGamesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneWithoutPlayersInput {
+  create: UserCreateWithoutPlayersInput
+  update: UserUpdateWithoutPlayersDataInput
+  upsert: UserUpsertWithoutPlayersInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateWithoutGamesDataInput {
   username: String
+  email: String
   password: String
   players: PlayerUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateWithoutPlayersDataInput {
   username: String
+  email: String
   password: String
   games: GameUpdateManyWithoutOwnerInput
 }
@@ -2039,6 +2053,20 @@ input UserWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -2067,5 +2095,6 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   username: String
+  email: String
 }
 `

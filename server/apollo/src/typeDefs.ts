@@ -1,4 +1,3 @@
-// import {typeDefs as genType} from '../../database/generated/prisma/prisma-schema';
 const {gql} = require('apollo-server');
 
 export const typeDefs = gql`
@@ -8,9 +7,9 @@ export const typeDefs = gql`
     }
     
     extend type Mutation {
-        register(username: String!, password: String!): User!
+        register(username: String!, password: String!, email: String!): User!
         login(username: String!, password: String!): LoginResponse!
-        createPlayerNoUser(name: String!): Player!
+        deleteProfile: User!
     }
 
     type LoginResponse {

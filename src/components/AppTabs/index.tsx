@@ -5,9 +5,13 @@ import './styles';
 import CreateButton from "../CreateButton";
 import Context from '../../context/pageContext/context';
 import {setPage} from "../../context/pageContext/actions";
-import User from "../User";
+import {AuthButton} from "../Profile";
 
+import {setConfig} from 'react-hot-loader';
 
+setConfig({
+  reloadHooks: false,
+});
 
 interface ITabs {
 
@@ -36,23 +40,21 @@ const AppTabs = ({}: ITabs) => {
 
         <td className={"nav__item mui-list--inline mui--appbar-height"}>
             <li>
-              <NavLink exact={true} to={useTo('/',"")} className={"mui-btn mui-btn--primary"}>Home</NavLink>
+              <NavLink exact={true} to={'/home'} className={"mui-btn mui-btn--primary"}>Home</NavLink>
             </li>
             <li className={"nav__item"}>
-              <NavLink to={useTo('/players',"players")} className={"mui-btn mui-btn--primary"}>Players</NavLink>
+              <NavLink to={'/players'} className={"mui-btn mui-btn--primary"}>Players</NavLink>
             </li>
             <li className={"nav__item"}>
-              <NavLink to={useTo('/tournaments', "tournaments")} className={"mui-btn mui-btn--primary"}>Tournaments</NavLink>
+              <NavLink to='/tournaments' className={"mui-btn mui-btn--primary"}>Tournaments</NavLink>
             </li>
             <li className={"nav__item"}>
-              <NavLink to={useTo('/games', "games")} className={"mui-btn mui-btn--primary"}>Games</NavLink>
+              <NavLink to="/games" className={"mui-btn mui-btn--primary"}>Games</NavLink>
             </li>
         </td>
-
-
         <td className={"nav__item--right mui--appbar-height"}>
-          <User/>
-          <CreateButton />
+          <CreateButton/>
+          <AuthButton/>
         </td>
       </tr>
       </tbody>

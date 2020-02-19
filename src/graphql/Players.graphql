@@ -28,14 +28,3 @@ query getPlayer($playerId: ID) {
         pic
     }
 }
-
-mutation setPlayer($playerData: PlayerUpdateInput!, $playerID: ID) {
-updatePlayer(
-    data: $playerData
-    where: {id: $playerID}
-    ) {
-    id
-    name
-    pic
-    }
-}

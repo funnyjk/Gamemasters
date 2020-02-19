@@ -87,11 +87,13 @@ body {
 
 a {
   &.active {
-    color: #FFF;
-    background-color: #424242;
+    color: #FFF !important;
+    background-color: #424242 !important;
   }
 }
-
+label {
+  overflow-y: hidden;
+}
 .item_page {
   display: grid;
   grid-template-rows: auto auto;

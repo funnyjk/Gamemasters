@@ -4,55 +4,22 @@ import {useMutation, useQuery} from "@apollo/react-hooks";
 import {gql} from "apollo-boost";
 import {GET_PLAYERS} from "../PlayersList";
 import { useParams, useHistory } from 'react-router-dom';
-import {getPlayer, setPlayer} from "../../../graphql/Players.graphql";
+import {getPlayer} from "../../../graphql/Players.graphql";
 import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import {Button} from "muicss/react";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from "@material-ui/core";
+import MutationInput from "../../MutationInput";
+import {DELETE_PLAYER, DELETE_PLAYER_VARS, GET_PLAYER, GET_PLAYER_VARS, UPDATE_PLAYER} from "../../../graphql/Players";
 
-const SET_PLAYER = setPlayer;
-
-const GET_PLAYER = getPlayer;
-const DELETE_PLAYER = gql`
-    mutation deletePlayer($playerID: ID!) {
-        deletePlayer(
-            where: {
-                id: $playerID
-            }
-        ) {
-            id
-        }
-    }
-`;
-
-
-interface IPlayerComp {
-  player?: any;
-}
-interface IScore {
-  score: any
-}
 const Player = () => {
   let history = useHistory();
-  const [setPlayer] = useMutation(SET_PLAYER);
   const [isEdit, toggleEdit] = useToggleIsEdit();
-
-  const SetPlayerName = ({target}: any) => {
-    const key = target.name;
-    const value = target.value;
-    setPlayer({
-      variables: {
-        playerData: {[key]: value},
-        playerID: player.id
-      }
-    })
-  };
 
   const {playerId} = useParams();
   const id = playerId || "";
-  const {data} = useQuery(GET_PLAYER, ({variables: {playerId: id}}));
-  const player = data?.player;
-  const [deletePlayer] = useMutation(DELETE_PLAYER, {
+  const {loading, error, data} = useQuery<any, GET_PLAYER_VARS>(GET_PLAYER, ({variables: {playerId: id}}));
+  const [deletePlayer] = useMutation<any, DELETE_PLAYER_VARS>(DELETE_PLAYER, {
     update(cache, {data: {deletePlayer}}) {
       const {players} = cache.readQuery({query: GET_PLAYERS});
       cache.writeQuery({
@@ -64,7 +31,18 @@ const Player = () => {
     refetchQueries: [{query: GET_TOURNAMENTS}]
   });
 
+
+  const updateOptions = {
+    variables: {playerId}
+  }
+  
+  if(error) return <pre>{JSON.stringify(error, null, 2)}</pre>
+  if(loading) return null;
+  if(!data) return <div>No Player</div>;
+
+  const {player} = data;
   const byTourn = _.groupBy(player?.scores, 'session.tournament.name');
+
 
   return <div className={"item_page"}>
     <div className={"item_page__controls"}>
@@ -75,9 +53,11 @@ const Player = () => {
       }/>
     </FormGroup>
     </div>
-    <h3>{!isEdit? <span>{player?.name}</span> : <input name="name" defaultValue={player?.name} onBlur={SetPlayerName}/>}</h3>
-    {isEdit && <Button color={"danger"} onClick={()=>deletePlayer({variables:{playerID:player.id}}) }>DELETE</Button>}
+    <h3>{!isEdit ? <span>{player?.name}</span> :
+      <MutationInput mutation={UPDATE_PLAYER} options={updateOptions} type={"text"} name={"name"} defaultValue={player.name}
+                     optionsData={"playerData"}/>}</h3>
 
+    {isEdit && <Button color={"danger"} onClick={()=>deletePlayer({variables:{playerId}}) }>DELETE</Button>}
 
     {Object.entries(byTourn).map(([tournamentName, value]) => {
       return <div key={player.name + tournamentName}>

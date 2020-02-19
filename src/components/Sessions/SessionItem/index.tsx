@@ -67,14 +67,18 @@ const SessionItem = ({tournament}: ISessionItem) => {
   const {session} = data;
   const {scores} = session;
 
+  const props  = {
+    tabIndex: -1
+  }
+
   return <div>
-    <Form inline={true}>
+    <div>
       <UpdateSession sessionId={sessionId} defaultValue={session.name} name={"name"} disabled={!isEdit} label={"Session Name"}/>
     {isEdit && <DeleteSession disabled={!isEdit}/>}
-    </Form>
+    </div>
     {!isEdit? <h5>{session?.game.name}</h5> : <GamesSelect value={session.game.id} onChange={selectedGameId}/>}
     {scores && <Scores scores={scores} tournament={tournament} session={session}/> }
   </div>
 };
 
-export default SessionItem;
+export default React.memo(SessionItem);

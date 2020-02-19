@@ -15,7 +15,7 @@ const useCreateButton = (create: any) => {
     case "tournaments":
       return createTournament;
     default:
-      return () => console.log("Nothing to add");
+      return null;
   }
 };
 

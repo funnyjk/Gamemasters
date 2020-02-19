@@ -7,6 +7,7 @@ import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
 import {Fab, FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import {Button} from "muicss/react";
+import {GET_TOURNAMENT_GAMES, GET_TOURNAMENT_SCORES} from "../../../graphql/Tournament";
 
 
 interface ICreateScore {
@@ -26,10 +27,12 @@ const CreateScore = ({tournamentPlayers, sessionPlayers}: ICreateScore) => {
         playerId,
         sessionId: sessionId
       },
-      refetchQueries: [{
-        query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}}, {
-        query: GET_SESSION, variables: {sessionId}
-      }]
+      refetchQueries: [
+        {query: GET_TOURNAMENT_SESSIONS, variables: {tournamentId}},
+        {query: GET_TOURNAMENT_SCORES, variables: {tournamentId}},
+        {query: GET_TOURNAMENT_GAMES, variables: {tournamentId}},
+        {query: GET_SESSION, variables: {sessionId}}
+      ]
     })
 
     setPlayerId("")
