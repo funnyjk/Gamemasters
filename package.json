@@ -11,6 +11,7 @@
     "@types/muicss": "^0.9.1",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-link-ws": "^1.0.19",
+    "cors": "^2.8.5",
     "graphql-server-express": "^1.4.1",
     "graphql-subscriptions": "^1.1.0",
     "graphql.macro": "^1.4.2",
