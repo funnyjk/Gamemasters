@@ -8,12 +8,12 @@ export const config = (): OConfig => {
   switch (env) {
     case 'production':
       return {
-        uri: 'http://gmmstrs.com:4000',
+        uri: 'http://gmmstrs.com:4000/graphql',
         url: 'http://gmmstrs.com'
       };
     case 'development':
       return {
-        uri: 'http://localhost:4000',
+        uri: 'http://localhost:4000/graphql',
         url: 'http://localhost:8000'
       };
   }

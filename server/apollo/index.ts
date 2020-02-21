@@ -3,8 +3,22 @@ import jwt from 'jsonwebtoken';
 import {typeDefs as genTypes} from "../database/generated/prisma/prisma-schema";
 import {typeDefs} from "./src/typeDefs";
 import {prisma, User,} from "../database/generated/prisma";
-import {ApolloServer} from 'apollo-server';
+import {ApolloServer} from 'apollo-server-express';
 import {resolvers} from "./src/schema/resolver";
+
+import express from 'express';
+import fs from 'fs'
+import https from 'https'
+import http from 'http'
+
+const configurations = {
+    // Note: You may need sudo to run on port 443
+    production: {ssl: true, port: 4000, hostname: 'gmmstrs.com'},
+    development: {ssl: false, port: 4000, hostname: 'localhost'}
+};
+const environment  = process.env.NODE_ENV || 'production';
+//@ts-ignore
+const config = configurations[environment];
 
 const getUser = (token: string) => {
     try {
@@ -15,24 +29,14 @@ const getUser = (token: string) => {
     } catch (err) {
         return null
     }
-}
-
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-
-// const gateway = new ApolloGateway({
-//     serviceList: [
-//         {name: 'gamemasters', url: 'http://localhost:4466/database/dev'}
-//     ]
-// });
-// const server = new ApolloServer({gateway, subscriptions: false});
+};
 
 export interface ApolloContext {
     user: User;
     prisma: typeof prisma;
 }
 
-const server = new ApolloServer({
+const apollo = new ApolloServer({
     typeDefs: [genTypes, typeDefs],
     resolvers,
     context: ({req}) => {
@@ -46,8 +50,26 @@ const server = new ApolloServer({
     }
 });
 
-// The `listen` method launches a web server.
-server.listen().then(({url}) => {
-    console.log(`🚀  Server ready at ${url}`);
-});
+const app = express();
+const corsOption = {
+    origin: 'http://localhost:8000',
+    credentials: true
+}
+apollo.applyMiddleware({app, cors: corsOption});
 
+let server;
+if(config.ssl) {
+    server = https.createServer({
+        key: fs.readFileSync('../../server.key'),
+        cert: fs.readFileSync('../../server.cert')
+    })
+} else {
+    server = http.createServer(app)
+}
+
+server.listen({port: config.port}, () =>
+  console.log(
+    '🚀 Server ready at',
+    `http${config.ssl ? 's' : ''}://${config.hostname}:${config.port}${apollo.graphqlPath}`
+  )
+)

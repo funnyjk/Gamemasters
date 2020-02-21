@@ -5,3 +5,5 @@ package-lock.json
 my-app/
 .idea/
 dist/"sendgrid.env" 
+!/sendgrid.env
+sendgrid.env

@@ -7,17 +7,16 @@ interface IForgotPassword {
     id: string;
     url: string;
 };
-export const forgotPasswordSend = ({to, token,id, url}: IForgotPassword) => {
+export const forgotPasswordSend = async ({to, token,id, url}: IForgotPassword) => {
     const link = `${url}/#/reset/${id}/${token}`;
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.setApiKey('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');
     const msg = {
         to,
         from: 'no-reply@gmmstrs.com',
         subject: 'Reset Password',
-        // text: `${url}/#/reset/${id}/${token}`
-        html: `<a href=${link}>${link}</a>`,
+        // text: `${url}/#/reset/${id}/${token}`,
+        html: `<a href=${link}>${link}</a>`
     };
 
-    sgMail.send(msg);
-    return "";
+    const onSend = await sgMail.send(msg);
 };

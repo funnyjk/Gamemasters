@@ -123,11 +123,7 @@ const mutations = {
       exp: moment.utc().add(900, 'seconds').toISOString()
     });
 
-    //TODO: Send token to user in email
-    // forgotPassword(user.email, user.password);
-    // return vague;
-    // link: {site}/reset/{user.id}/{token}
-    forgotPasswordSend({
+    await forgotPasswordSend({
       id: user.id,
       token,
       url: config().url,
