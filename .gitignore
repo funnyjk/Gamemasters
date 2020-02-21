@@ -7,3 +7,5 @@ my-app/
 dist/"sendgrid.env" 
 !/sendgrid.env
 sendgrid.env
+*/generated/
+!/server/database/generated/

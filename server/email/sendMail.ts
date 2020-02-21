@@ -9,7 +9,7 @@ interface IForgotPassword {
 };
 export const forgotPasswordSend = async ({to, token,id, url}: IForgotPassword) => {
     const link = `${url}/#/reset/${id}/${token}`;
-    sgMail.setApiKey('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');
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
         to,
         from: 'no-reply@gmmstrs.com',
