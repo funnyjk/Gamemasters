@@ -28,8 +28,7 @@ type Score {
 type Session {
     id: ID! @id
     createdAt: DateTime! @createdAt
-    tournament: Tournament! @relation(onDelete: SET_NULL)
-    game: Game! @relation(onDelete: SET_NULL)
+    tournamentGame: TournamentGame! @relation(onDelete: SET_NULL)
     name: String!
     scores: [Score] @relation(onDelete: CASCADE)
 }
@@ -52,17 +51,24 @@ type Tournament {
     endDate: DateTime
     rules: String
     notes: String
-    sessions: [Session!] @relation(onDelete: CASCADE)
+    games: [TournamentGame!] @relation(name: "TournamentToGame", onDelete: CASCADE)
     players: [TournamentPlayer!] @relation(name: "TournamentToPlayer", onDelete: CASCADE)
 }
 
 type Game {
     id: ID! @id
     owner: User @relation(onDelete: SET_NULL)
-    sessions: [Session!] @relation(onDelete: CASCADE)
+    tournaments: [TournamentGame!] @relation(name: "GameToTournament", onDelete: CASCADE)
     name: String!
     bgg_id: String
     notes: String
+}
+
+type TournamentGame {
+    id: ID! @id
+    game: Game! @relation(name: "GameToTournament", onDelete: SET_NULL)
+    tournament: Tournament! @relation(name: "TournamentToGame",  onDelete: SET_NULL)
+    sessions: [Session] @relation(onDelete: CASCADE)
 }
 
 type ResetPassword {

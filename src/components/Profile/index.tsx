@@ -38,7 +38,7 @@ export const AuthButton = () => {
 
   return isAuthenticated ? (
     <div className={"auth_button"}>
-      <NavLink to={"/profile"} className={"mui-btn mui-btn--primary"}>{name}</NavLink>
+      <NavLink to={"/profile"} className={"mui-btn mui-btn--primary mui-btn--raised"}>{name}</NavLink>
 
     </div>
   ) : (
