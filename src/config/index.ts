@@ -8,8 +8,8 @@ export const config = (): OConfig => {
   switch (env) {
     case 'production':
       return {
-        uri: 'http://gmmstrs.com:4000/graphql',
-        url: 'http://gmmstrs.com'
+        uri: 'https://gmmstrs.com:4000/graphql',
+        url: 'https://gmmstrs.com'
       };
     case 'development':
       return {
