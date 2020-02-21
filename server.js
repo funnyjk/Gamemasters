@@ -1,9 +1,11 @@
 var path = require("path");
 var express = require("express");
+var fs = require('fs');
+var https = require('https');
 var cors = require('cors');
 
 var DIST_DIR = path.join(__dirname, "dist");
-var PORT = 80;
+var PORT = 443;
 var app = express();
 
 //Serving the files on the dist folder
@@ -15,4 +17,10 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
-app.listen(PORT);
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+    .listen(PORT, function () {
+        console.log(`Example app listening on port ${PORT}!`)
+    });
