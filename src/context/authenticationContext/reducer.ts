@@ -6,7 +6,6 @@ const reducer = (state: IAuthContext, action: any): IAuthContext => {
   switch (action.type) {
     case LOGIN:
       localStorage.setItem('token', action.payload);
-      console.log("TEST")
       return {
         ...state,
         isAuthenticated: true

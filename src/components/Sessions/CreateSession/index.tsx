@@ -18,7 +18,6 @@ const CreateSession = ({tournament}: ICreateSession) => {
   const {data} = useQuery(GET_GAMES);
   const [createSession] = useMutation<any, CREATE_SESSION_VARS>(CREATE_SESSION, {
     update(cache, {data: {createSession}}) {
-      console.log(data)
       history.push(`/tournaments/${tournament.id}/sessions/${createSession.id}`);
     },
     refetchQueries: [{query: GET_TOURNAMENT_SESSIONS, variables:{tournamentId: tournament?.id}}]
