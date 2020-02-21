@@ -8,6 +8,7 @@ import MutationInput from "../../MutationInput";
 import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from "@material-ui/core";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {Button} from "muicss/react";
+import Confirm from "../../Confirm";
 
 const GameItem = () => {
   const [isEdit, toggleEdit] = useToggleIsEdit();
@@ -16,7 +17,9 @@ const GameItem = () => {
   const {gameId} = useParams();
   const {loading, error, data} = useQuery(GET_GAME, {variables: {gameId}});
 
-  const [updateGame] = useMutation(UPDATE_GAME);
+  const [updateGame] = useMutation(UPDATE_GAME, {
+    // update(cache, {data: {updateGame}}) {
+  });
   const [deleteGame] = useMutation(DELETE_GAME, {
     update(cache, {data: {deleteGame}}) {
       const {games} = cache.readQuery({query: GET_GAMES});
@@ -48,8 +51,11 @@ const GameItem = () => {
         }/>
       </FormGroup>
     </div>
-    <h3>{!isEdit? <span>{game.name}</span>: <MutationInput mutation={UPDATE_GAME} options={updateOptions} type={"text"} name={"name"} defaultValue={game.name} optionsData={"gameData"}/>}</h3>
-    {isEdit && <Button color={"danger"} onClick={()=>deleteGame({variables:{gameId}})}>Delete</Button> }
+    <h3>{!isEdit? <span>{game.name}</span>: <MutationInput auto={true} mutation={UPDATE_GAME} options={updateOptions} label={"Game Name"} type={"text"} name={"name"} defaultValue={game.name} optionsData={"gameData"}/>}</h3>
+    <div className={"field"}>{!isEdit? <span>{game.notes}</span>: <MutationInput mutation={UPDATE_GAME} options={updateOptions} label="Game Notes" mult={true} type={"text"} name={"notes"} defaultValue={game.notes} optionsData={"gameData"}/>}</div>
+
+    {isEdit && <Confirm action={() => deleteGame({variables: {gameId}})} initState={false}>Delete</Confirm> }
+    {/*{isEdit && <Button color={"danger"} onClick={()=>deleteGame({variables:{gameId}})}>Delete</Button> }*/}
   </div>;
 };
 

@@ -94,6 +94,10 @@ a {
 label {
   overflow-y: hidden;
 }
+
+.field {
+  overflow: auto;
+}
 .item_page {
   display: grid;
   grid-template-rows: auto auto;
@@ -133,4 +137,47 @@ label {
 
 .flex-inline {
   display: inline-flex;
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 16px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #333333;
+}
+
+::-webkit-scrollbar-track {
+  background: #DBDBDB;
+  border: 0px none #ffffff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #e1e1e1;
+}
+
+::-webkit-scrollbar-track:active {
+  background: #c0c0c0;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

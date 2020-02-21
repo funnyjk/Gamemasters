@@ -14,6 +14,7 @@ export const GET_GAME = gql`
         game(where:{id: $gameId}) {
             id
             name
+            notes
         }
     }
 `;
@@ -39,6 +40,7 @@ export const UPDATE_GAME = gql`
         ) {
             id
             name
+            notes
         }
     }
 `;

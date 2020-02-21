@@ -1,10 +1,11 @@
 type User {
   id: ID! @id
-  username: String! @unique
   email: String! @unique
   password: String!
+  resetPassword: ResetPassword @relation(onDelete: CASCADE)
   players: [Player!]! @relation(onDelete: CASCADE)
   games: [Game!]! @relation(onDelete: CASCADE)
+  tournaments: [Tournament!]! @relation(onDelete: CASCADE)
 }
 
 type Player {
@@ -62,4 +63,11 @@ type Game {
     name: String!
     bgg_id: String
     notes: String
+}
+
+type ResetPassword {
+    id: ID! @id
+    user: User! @relation(link: INLINE, onDelete: SET_NULL)
+    token: String! @unique
+    exp: DateTime!
 }

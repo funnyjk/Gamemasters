@@ -2,6 +2,7 @@ import React from 'react';
 import MutationButton from "../../MutationButton";
 import {DELETE_TOURNAMENT, GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import { useHistory } from 'react-router-dom';
+import Confirm, {ConfirmChildAction} from "../../Confirm";
 
 interface IDeleteTournament {
   isEdit: boolean;
@@ -20,8 +21,12 @@ const DeleteTournament = ({tournamentId, isEdit}: IDeleteTournament) => {
     refetchQueries: [{query: GET_TOURNAMENTS}]
   };
 
-  return <MutationButton mutation={DELETE_TOURNAMENT} options={deleteOptions} text={"Delete"} disabled={!isEdit} color={"danger"}/>
 
+
+  // return <Confirm action={() => deleteGame({variables: {gameId}})} initState={false}>Delete</Confirm>
+  return <ConfirmChildAction initState={false} label={"Delete"}>
+    <MutationButton mutation={DELETE_TOURNAMENT} options={deleteOptions} text={"Confirm"} disabled={!isEdit} color={"danger"}/>
+  </ConfirmChildAction>
 };
 
 export default DeleteTournament;

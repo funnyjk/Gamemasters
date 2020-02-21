@@ -1,10 +1,8 @@
 import React, {useContext, useEffect} from 'react';
 import TournamentsList from "./TournamentsList";
-import {Route, Switch, useRouteMatch, useParams, useLocation} from "react-router-dom";
+import {Route, Switch, useRouteMatch, useLocation} from "react-router-dom";
 import TournamentItem from "./TournamentItem";
-import {useMutation} from "@apollo/react-hooks";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
-import CreateTournament from "./CreateTournament";
 import Context from "../../context/pageContext/context";
 import {setPage} from "../../context/pageContext/actions";
 

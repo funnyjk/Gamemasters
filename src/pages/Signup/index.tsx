@@ -8,11 +8,10 @@ import {Visibility, VisibilityOff} from "@material-ui/icons";
 import {useToggle} from "../../hooks/useToggle";
 
 interface ISignup {
-  usernameState: [string, Dispatch<string>];
-  passwordState: [string, Dispatch<string>];
+
 }
 
-const Signup = ({usernameState, passwordState}: ISignup) => {
+const Signup = ({}: ISignup) => {
   const [error, setError] = useState("");
   const AddError = (msg: string) => {
     setError(msg);
@@ -21,19 +20,20 @@ const Signup = ({usernameState, passwordState}: ISignup) => {
   // const [user, setUser] = useUser();
   const history = useHistory();
   const [doLogin] = useMutation<SIGNUP_RETURN, SIGNUP_VARS>(SIGNUP, {
-    update(cache, {data: {register: {id, username}}}) {
+    update(cache, {data: {register: {id, email}}}) {
       // setUser(id);
       setPassword("");
       setConfirmPassword("");
       history.push('/login')
     },
     onError: error => {
-      AddError(error.graphQLErrors[0].message);
+      console.error(error)
+      // AddError(error.graphQLErrors[0].message);
     }
   })
   const [email, setEmail] = useState("");
-  const [username, setUsername] = usernameState;
-  const [password, setPassword] = passwordState;
+  // const [username, setUsername] = usernameState;
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
 
@@ -46,14 +46,13 @@ const Signup = ({usernameState, passwordState}: ISignup) => {
   }
 
   function validateFormLength() {
-    return (username.length > 0 && password.length > 0 && confirmPassword.length > 0);
+    return (email.length > 0 && password.length > 0 && confirmPassword.length > 0);
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     const test = doLogin({
       variables: {
-        username,
         password,
         email
       }
@@ -86,12 +85,8 @@ const Signup = ({usernameState, passwordState}: ISignup) => {
         {/*  />}/>*/}
         {/*</FormGroup>        */}
 
-        <TextField id="username"
-                   autoComplete={"username"}
-                   variant="filled" label="Username" value={username}
-                   onChange={e => setUsername(e.target.value)}/>
         <TextField id="email"
-                   autoComplete={"username"}
+                   autoComplete={"email"}
                    type={"email"}
                    variant="filled" label="Email" value={email}
                    onChange={e => setEmail(e.target.value)}/>

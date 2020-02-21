@@ -1,4 +1,4 @@
-// import {hot} from 'react-hot-loader/root';
+import {hot} from 'react-hot-loader/root';
 
 import React, {useContext, useReducer} from 'react';
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
@@ -21,10 +21,9 @@ const App = () => {
   return (
     <AuthContextProvider>
       <Context.Provider value={{state, dispatch}}>
-
         <Router>
           <Switch>
-            <Route exact path="/(login|register)" component={User}/>
+            <Route path="/(login|register|reset|forgot-password)" component={User}/>
             <PrivateRoute path={['/:id', '/']} ><MainApp/></PrivateRoute>
           </Switch>
         </Router>
@@ -33,4 +32,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default hot(App);

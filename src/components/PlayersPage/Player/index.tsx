@@ -5,12 +5,14 @@ import {gql} from "apollo-boost";
 import {GET_PLAYERS} from "../PlayersList";
 import { useParams, useHistory } from 'react-router-dom';
 import {getPlayer} from "../../../graphql/Players.graphql";
-import {GET_TOURNAMENTS} from "../../../graphql/Tournament";
+import {DELETE_TOURNAMENT, GET_TOURNAMENTS} from "../../../graphql/Tournament";
 import {Button} from "muicss/react";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from "@material-ui/core";
 import MutationInput from "../../MutationInput";
 import {DELETE_PLAYER, DELETE_PLAYER_VARS, GET_PLAYER, GET_PLAYER_VARS, UPDATE_PLAYER} from "../../../graphql/Players";
+import {ConfirmChildAction} from "../../Confirm";
+import MutationButton from "../../MutationButton";
 
 const Player = () => {
   let history = useHistory();
@@ -57,8 +59,9 @@ const Player = () => {
       <MutationInput mutation={UPDATE_PLAYER} options={updateOptions} type={"text"} name={"name"} defaultValue={player.name}
                      optionsData={"playerData"}/>}</h3>
 
-    {isEdit && <Button color={"danger"} onClick={()=>deletePlayer({variables:{playerId}}) }>DELETE</Button>}
-
+    {isEdit && <ConfirmChildAction initState={false} label={"Delete"}>
+      <Button color={"danger"} onClick={() => deletePlayer({variables: {playerId}})}>Confirm</Button>
+  </ConfirmChildAction> }
     {Object.entries(byTourn).map(([tournamentName, value]) => {
       return <div key={player.name + tournamentName}>
         <h4>{tournamentName}</h4>

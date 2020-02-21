@@ -1,10 +1,11 @@
 import React from 'react';
 import {DELETE_SCORE, GET_SCORES_SESSION} from "../../../graphql/Score";
 import {useHistory, useParams} from "react-router-dom";
-import {GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
+import {DELETE_SESSION, GET_SESSION, GET_TOURNAMENT_SESSIONS} from "../../../graphql/Session";
 import MutationButton from "../../MutationButton";
 import {GET_TOURNAMENT_SCORES} from "../../../graphql/Tournament";
 import {Delete} from "@material-ui/icons";
+import {ConfirmChildAction} from "../../Confirm";
 
 interface IDeleteScore {
   scoreId: string;
@@ -28,7 +29,10 @@ const DeleteScore = ({scoreId, disabled = false}: IDeleteScore) => {
     variables: { scoreId }
   };
 
-  return <MutationButton disabled={disabled} color={"danger"} mutation={DELETE_SCORE} options={options} text={<Delete/>}/>
+  return <React.Fragment>{!disabled && <ConfirmChildAction initState={false} label={<Delete/>}>
+    <MutationButton disabled={disabled} color={"danger"} mutation={DELETE_SCORE} options={options} text={"confirm"}/>
+  </ConfirmChildAction>}
+  </React.Fragment>;
 };
 
 export default DeleteScore;

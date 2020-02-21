@@ -12,18 +12,18 @@ import {
 import {Alert} from '@material-ui/lab';
 
 import {useAuthentication} from "../../hooks/useAuthentication";
-import {useHistory, useLocation} from "react-router-dom";
+import {Link, NavLink, useHistory, useLocation} from "react-router-dom";
 import {useMutation} from "@apollo/react-hooks";
 import {LOGIN, LOGIN_RETURN, LOGIN_VARS} from "../authentication";
 import {useToggle} from "../../hooks/useToggle";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {Container} from "muicss/react";
 
 interface ILogin {
-  usernameState: any;
-  passwordState: [string, Dispatch<string>];
+
 }
 
-const Login = ({usernameState, passwordState}: ILogin) => {
+const Login = ({}: ILogin) => {
   const [error, setError] = useState("");
   const AddError = (msg: string) => {
     setError(msg);
@@ -44,8 +44,8 @@ const Login = ({usernameState, passwordState}: ILogin) => {
     }
   });
   const [email, setEmail] = useState("");
-  const [username, setUsername] = usernameState;
-  const [password, setPassword] = passwordState;
+  // const [username, setUsername] = usernameState;
+  const [password, setPassword] = useState("");
 
   useEffect((): any => {
     const errorTimer = setTimeout(function () {
@@ -62,14 +62,14 @@ const Login = ({usernameState, passwordState}: ILogin) => {
   }
 
   function validateFormLength() {
-    return (username.length > 0 && password.length > 0);
+    return (email.length > 0 && password.length > 0);
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     const test = doLogin({
       variables: {
-        username,
+        email,
         password
       }
     });
@@ -91,9 +91,9 @@ const Login = ({usernameState, passwordState}: ILogin) => {
         {/*    onChange={e => setEmail(e.target.value)}*/}
         {/*  />}/>*/}
         {/*</FormGroup>        */}
-        <TextField id="username"
-                   autoComplete={"username"}
-                   variant="filled" label="Username" value={username} onChange={e => setUsername(e.target.value)}/>
+        <TextField id="email"
+                   autoComplete={"email"}
+                   variant="filled" label="Email" value={email} onChange={e => setEmail(e.target.value)}/>
         <FormControl variant="filled">
           <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
           <FilledInput id="password"
@@ -132,6 +132,8 @@ const Login = ({usernameState, passwordState}: ILogin) => {
       {/*})}>*/}
       {/*  signout*/}
       {/*</Button>*/}
+      <Link className={"mui-btn mui-btn--primary"} to={'/forgot-password'}>Forgot Password</Link>
+
     </div>
   );
 };

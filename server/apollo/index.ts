@@ -2,9 +2,8 @@ import jwt from 'jsonwebtoken';
 
 import {typeDefs as genTypes} from "../database/generated/prisma/prisma-schema";
 import {typeDefs} from "./src/typeDefs";
-import {prisma,} from "../database/generated/prisma";
+import {prisma, User,} from "../database/generated/prisma";
 import {ApolloServer} from 'apollo-server';
-import {ApolloGateway} from "@apollo/gateway";
 import {resolvers} from "./src/schema/resolver";
 
 const getUser = (token: string) => {
@@ -27,6 +26,11 @@ const getUser = (token: string) => {
 //     ]
 // });
 // const server = new ApolloServer({gateway, subscriptions: false});
+
+export interface ApolloContext {
+    user: User;
+    prisma: typeof prisma;
+}
 
 const server = new ApolloServer({
     typeDefs: [genTypes, typeDefs],
