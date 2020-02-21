@@ -2,6 +2,7 @@ var path = require("path");
 var express = require("express");
 var fs = require('fs');
 var https = require('https');
+var http = require('http');
 var cors = require('cors');
 
 var DIST_DIR = path.join(__dirname, "dist");
@@ -24,3 +25,8 @@ https.createServer({
     .listen(PORT, function () {
         console.log(`Example app listening on port ${PORT}!`)
     });
+
+http.createServer(function (req, res) {
+    res.writeHead(301, {"Location": "https://" + req.headers['host'] + req.url});
+    res.end();
+}).listen(80);
