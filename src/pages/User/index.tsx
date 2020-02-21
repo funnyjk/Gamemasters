@@ -24,7 +24,7 @@ const User = ({}: IUser) => {
 
   return <Container fluid={true}>
     <div>
-    <img src={logo}/>
+    <img className={"logo"} src={logo}/>
     </div>
     <Route exact path="/" render={() => <Redirect to="/login"/>}/>
     <NavLink className={"mui-btn mui-btn--primary"} to={'/login'}>Login</NavLink>
