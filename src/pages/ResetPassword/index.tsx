@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import {IconButton, TextField} from "@material-ui/core";
 import Button from "muicss/lib/react/button";
 import {useMutation} from "@apollo/react-hooks";
@@ -12,6 +12,7 @@ interface IResetPassword {
 }
 
 const ResetPassword = ({}: IResetPassword) => {
+  const history = useHistory();
   const {token, id} = useParams();
   const [viewPass, setViewPass] = useState(false);
   const [password, setPassword] = useState("");
@@ -22,6 +23,7 @@ const ResetPassword = ({}: IResetPassword) => {
   const [resetPassword] = useMutation<any, RESET_PASSWORD_VARS>(RESET_PASSWORD, {
     onCompleted({resetPassword}) {
       setMsg(resetPassword);
+      history.push('/login');
     },
     onError: error => {
         setError(error.graphQLErrors[0].message);
