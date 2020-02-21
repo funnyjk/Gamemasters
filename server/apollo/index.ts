@@ -13,8 +13,18 @@ import http from 'http'
 
 const configurations = {
     // Note: You may need sudo to run on port 443
-    production: {ssl: true, port: 4000, hostname: 'gmmstrs.com'},
-    development: {ssl: false, port: 4000, hostname: 'localhost'}
+    production: {
+        ssl: true,
+        port: 4000,
+        hostname: 'gmmstrs.com',
+        cors: 'https://gmmstrs.com'
+    },
+    development: {
+        ssl: false,
+        port: 4000,
+        hostname: 'localhost',
+        cors: 'http://localhost:8000'
+    }
 };
 const environment  = process.env.NODE_ENV || 'production';
 //@ts-ignore
@@ -52,7 +62,7 @@ const apollo = new ApolloServer({
 
 const app = express();
 const corsOption = {
-    origin: 'http://localhost:8000',
+    origin: config.cors,
     credentials: true
 }
 apollo.applyMiddleware({app, cors: corsOption});
@@ -70,7 +80,7 @@ const credentials = {
 };
 let server;
 if(config.ssl) {
-    server = https.createServer(credentials)
+    server = https.createServer(credentials, app)
 } else {
     server = http.createServer(app)
 }
