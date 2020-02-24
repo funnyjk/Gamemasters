@@ -1,4 +1,12 @@
 .auth_button {
   align-self: center;
-  margin: 0 5px;
+  //margin: 0 5px;
+}
+
+.profile__btn {
+  color: white;
+  &.active {
+    color: #424242 !important;
+    //background-color: #424242 !important;
+  }
 }

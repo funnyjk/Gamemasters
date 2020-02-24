@@ -39,9 +39,9 @@ const AppTabs = ({}: ITabs) => {
       <tr className={"nav__table__row"}>
 
         <td className={"nav__item mui-list--inline mui--appbar-height"}>
-            <li>
-              <NavLink exact={true} to={'/home'} className={"mui-btn mui-btn--primary"}>Home</NavLink>
-            </li>
+            {/*<li>*/}
+              {/*<NavLink exact={true} to={'/home'} className={"mui-btn mui-btn--primary"}>Home</NavLink>*/}
+            {/*</li>*/}
             <li className={"nav__item"}>
               <NavLink to={'/players'} className={"mui-btn mui-btn--primary"}>Players</NavLink>
             </li>

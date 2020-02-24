@@ -52,7 +52,7 @@ const GameItem = () => {
       </FormGroup>
     </div>
     <h3>{!isEdit? <span>{game.name}</span>: <MutationInput auto={true} mutation={UPDATE_GAME} options={updateOptions} label={"Game Name"} type={"text"} name={"name"} defaultValue={game.name} optionsData={"gameData"}/>}</h3>
-    <div className={"field"}>{!isEdit? <span>{game.notes}</span>: <MutationInput mutation={UPDATE_GAME} options={updateOptions} label="Game Notes" mult={true} type={"text"} name={"notes"} defaultValue={game.notes} optionsData={"gameData"}/>}</div>
+    <div className={"field"}>{!isEdit? <span>{game.notes || ""}</span>: <MutationInput mutation={UPDATE_GAME} options={updateOptions} label="Game Notes" mult={true} type={"text"} name={"notes"} defaultValue={game.notes || ""} optionsData={"gameData"}/>}</div>
 
     {isEdit && <Confirm action={() => deleteGame({variables: {gameId}})} initState={false}>Delete</Confirm> }
     {/*{isEdit && <Button color={"danger"} onClick={()=>deleteGame({variables:{gameId}})}>Delete</Button> }*/}

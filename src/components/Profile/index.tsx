@@ -5,6 +5,7 @@ import useAuthentication from "../../hooks/useAuthentication";
 import './styles';
 import Confirm from "../Confirm";
 import ChangePassword from "./ChangePassword";
+import {Settings} from '@material-ui/icons'
 
 const Profile = () => {
   let history = useHistory();
@@ -38,7 +39,7 @@ export const AuthButton = () => {
 
   return isAuthenticated ? (
     <div className={"auth_button"}>
-      <NavLink to={"/profile"} className={"mui-btn mui-btn--primary"}>{name}</NavLink>
+      <NavLink to={"/profile"} className={"profile__btn"}><Settings/></NavLink>
 
     </div>
   ) : (

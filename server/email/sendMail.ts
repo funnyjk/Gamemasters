@@ -17,6 +17,5 @@ export const forgotPasswordSend = async ({to, token,id, url}: IForgotPassword) =
         // text: `${url}/#/reset/${id}/${token}`,
         html: `<a href=${link}>${link}</a>`
     };
-
     const onSend = await sgMail.send(msg);
 };

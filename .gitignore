@@ -8,4 +8,5 @@ dist/"sendgrid.env"
 !/sendgrid.env
 sendgrid.env
 */generated/
-!/server/database/generated/
+server/database/generated/
+generated/

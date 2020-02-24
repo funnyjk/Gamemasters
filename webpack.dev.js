@@ -18,6 +18,24 @@ module.exports = merge(common, {
             'react-dom': '@hot-loader/react-dom',
         },
     },
+    module: {
+        rules: [
+            {
+                test: /\.(scss|css)$/,
+                exclude: /\.module\.(scss|css)$/,
+                use: [
+                    {
+                        loader: 'style-loader'
+                    }, {
+                        loader: "css-loader",
+                    }, {
+                        loader: "sass-loader"
+                    }
+                ]
+            },
+        ]
+
+    },
     output: {
         publicPath: "/",
         filename: 'main.js',

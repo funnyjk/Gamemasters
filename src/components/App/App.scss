@@ -63,6 +63,7 @@ body {
 }
 .component {
   display: grid;
+  flex-direction: column-reverse;
   grid-template-columns: 300px auto;
   //grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
   grid-template-rows: auto;
@@ -85,7 +86,7 @@ body {
   padding: 10px;
 }
 
-a {
+.mui-btn {
   &.active {
     color: #FFF !important;
     background-color: #424242 !important;

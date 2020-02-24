@@ -4,7 +4,7 @@ interface OConfig {
 }
 
 export const config = (): OConfig => {
-  const env = process.env.NODE_ENV;
+  const env = process.env.NODE_ENV || 'production';
   switch (env) {
     case 'production':
       return {
