@@ -113,7 +113,13 @@ const mutations = {
     const user = await prisma.user({email});
     if (!user) return vague;
     const resetExists = await prisma.$exists.resetPassword({user});
-    if(resetExists) return vague;
+    if(resetExists) {
+      prisma.resetPasswords({where: user}).then(async (records) => {
+        await records.map(async (record) => {
+          await prisma.deleteResetPassword({id: record.id});
+        })
+      });
+    };
     const token = crypto.randomBytes(32).toString('hex');
     const hashedToken = await bcrypt.hash(token, 10);
 

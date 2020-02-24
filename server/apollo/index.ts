@@ -67,20 +67,13 @@ const corsOption = {
 }
 apollo.applyMiddleware({app, cors: corsOption});
 
-
-// Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/chain.pem', 'utf8');
-
-const credentials = {
-    key: privateKey,
-    cert: certificate,
-    ca: ca
-};
 let server;
 if(config.ssl) {
-    server = https.createServer(credentials, app)
+    server = https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/privkey.pem', 'utf8'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/cert.pem', 'utf8'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/gmmstrs.com/chain.pem', 'utf8')
+    }, app)
 } else {
     server = http.createServer(app)
 }
