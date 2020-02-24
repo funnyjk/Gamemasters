@@ -62,7 +62,7 @@ const apollo = new ApolloServer({
 
 const app = express();
 const corsOption = {
-    origin: config.cors,
+    origin: [config.cors, 'https://167.71.106.10'],
     credentials: true
 }
 apollo.applyMiddleware({app, cors: corsOption});
