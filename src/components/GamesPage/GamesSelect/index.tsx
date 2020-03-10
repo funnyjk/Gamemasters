@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {useQuery} from "@apollo/react-hooks";
-import {GET_GAMES} from "../../../graphql/Game";
-import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {createGame, GET_GAMES} from "../../../graphql/Game";
+import {FormControl, FormGroup, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import SelectCreate from "../../SelectCreate";
 
 interface IGamesSelect {
   value: any;
@@ -17,18 +18,22 @@ const GamesSelect = ({value, onChange}: IGamesSelect) => {
 
   const {games} = data;
 
+  const onclickTest = () => {
+    console.log("TEST")
+  }
 
-  return <FormControl className={"player_list"}>
-      <InputLabel id="select-game-label">Select Game</InputLabel>
+  return <SelectCreate label={"Games"} options={games} value={value} onChange={onChange}/>
 
-      <Select labelId="select-player-label" onChange={onChange} value={value}>
-        {games?.map((game: any, key: any) => {
-          return <MenuItem value={game.id} key={key}>{game.name}</MenuItem>
-        })}
-
-        {!games?.length && <MenuItem disabled={true}>No Games</MenuItem>}
-      </Select>
-    </FormControl>
+  // return <FormControl className={"player_list"}>
+  //     <InputLabel id="select-game-label">Select Game</InputLabel>
+  //   <Select labelId="select-player-label" onChange={onChange} value={value}>
+  //     {games?.map((game: any, key: any) => {
+  //         return <MenuItem value={game.id} key={key}>{game.name}</MenuItem>
+  //       })}
+  //
+  //       {!games?.length && <MenuItem disabled={true}>No Games</MenuItem>}
+  //     </Select>
+  //   </FormControl>
 };
 
 export default GamesSelect;

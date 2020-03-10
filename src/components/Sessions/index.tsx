@@ -6,7 +6,7 @@ import {Tournament} from "../../../server/database/generated/prisma";
 import CreateSession from "./CreateSession";
 
 interface ISessions {
-  tournament: Tournament;
+  tournament: Tournament | any;
 }
 
 const Sessions = ({tournament}: ISessions) => {

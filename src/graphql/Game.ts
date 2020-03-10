@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import {useMutation} from "@apollo/react-hooks";
 
 export const GET_GAMES = gql`
     query {
@@ -31,6 +32,22 @@ export const CREATE_GAME = gql`
         }
     }   
 `;
+
+export const createGame = (gameName: any): [any, any] => useMutation<any, CREATE_GAME_VARS>(CREATE_GAME, {
+    update(cache, {data: {createGame}}) {
+        const {games} = cache.readQuery({query: GET_GAMES});
+        cache.writeQuery({
+            query: GET_GAMES,
+            data: {games: games.concat([createGame])}
+        });
+    },
+    variables: {gameName}
+});
+
+export interface UPDATE_GAME_VARS {
+    gameData: any;
+    gameId: string;
+}
 
 export const UPDATE_GAME = gql`
     mutation setGame($gameData: GameUpdateInput!, $gameId: ID) {
@@ -91,3 +108,4 @@ export const SUBSCRIBE_UPDATED_GAME  = gql`
       }
   } 
 `;
+

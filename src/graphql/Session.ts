@@ -2,7 +2,7 @@ import {gql} from "apollo-boost";
 import {SessionUpdateInput} from "../../server/database/generated/prisma";
 
 export interface GET_TOURNAMENT_SESSIONS_VARS {
-  tournamentId: string;
+    tournamentId: string;
 }
 export const GET_TOURNAMENT_SESSIONS = gql`
     query getSessions($tournamentId: ID!) {
@@ -28,6 +28,32 @@ export const GET_TOURNAMENT_SESSIONS = gql`
     }
 `;
 
+
+export interface GET_SESSION_OUT {
+    session: {
+        id: string;
+        name: string;
+        tournament: {
+            id: string;
+            name: string;
+        }
+        game: {
+            id: string
+            name: string;
+        }
+        scores: Array<{
+            id: string;
+            score: number;
+            player: {
+                id: string;
+                player: {
+                    id: string;
+                    name: string;
+                }
+            }
+        }>
+    }
+}
 export interface GET_SESSION_VARS {
     sessionId: string;
 }
@@ -36,6 +62,10 @@ export const GET_SESSION = gql`
         session(where: {id: $sessionId}) {
             id
             name
+            tournament {
+                id
+                name
+            }
             game {
                 id
                 name
@@ -52,7 +82,7 @@ export const GET_SESSION = gql`
                 }
             }
         }
-    }   
+    }
 `;
 
 export interface CREATE_SESSION_VARS {
@@ -105,9 +135,57 @@ export const DELETE_SESSION = gql`
 `;
 
 export const SUBSCRIBE_SESSIONS = gql`
-  subscription sessionsChanged {
-      session(where: {mutation_in: [CREATED, DELETED, UPDATED]}) {
-          updatedFields
-      }
-  } 
+    subscription sessionsChanged {
+        session(where: {mutation_in: [CREATED, DELETED, UPDATED]}) {
+            updatedFields
+        }
+    }
+`;
+
+
+export interface SESSION_BY_GAME_OUT {
+    sessions: Array<{
+        id: string;
+        tournament: {
+            id: string;
+            name: string;
+            scores: Array<{
+                id: string;
+                score: number;
+                player: {
+                    id: string;
+                    name: string;
+                }
+            }>
+        }
+    }>
+}
+export interface SESSION_BY_GAME_VARS {
+    gameId: string;
+}
+export const SESSION_BY_GAME = gql`
+    query sessionsByGame($gameId: ID!){
+        sessions(where: {
+            game: {
+                id: $gameId
+            }
+        }) {
+            id
+            tournament {
+                id
+                name
+            }
+            scores {
+                id
+                score
+                player {
+                    id
+                    player {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
 `;

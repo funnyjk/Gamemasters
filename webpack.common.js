@@ -13,19 +13,20 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
-            }, {
-                test: /\.(scss|css)$/,
-                exclude: /\.module\.(scss|css)$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader
-                    }, {
-                        loader: "css-loader",
-                    }, {
-                        loader: "sass-loader"
-                    }
-                ]
             },
+            // {
+            //     test: /\.(scss|css)$/,
+            //     exclude: /\.module\.(scss|css)$/,
+            //     use: [
+            //         {
+            //             loader: MiniCssExtractPlugin.loader
+            //         }, {
+            //             loader: "css-loader",
+            //         }, {
+            //             loader: "sass-loader"
+            //         }
+            //     ]
+            // },
             {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
@@ -48,11 +49,11 @@ module.exports = {
         }
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css",
-            // path: path.join(__dirname, './templates')
-        }),
+        // new MiniCssExtractPlugin({
+        //     filename: "[name].css",
+        //     chunkFilename: "[id].css",
+        //     // path: path.join(__dirname, './templates')
+        // }),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'GameMasters',

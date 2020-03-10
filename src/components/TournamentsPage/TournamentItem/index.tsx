@@ -1,7 +1,13 @@
 import React, {useContext} from 'react';
 import {useQuery} from "@apollo/react-hooks";
 import {NavLink, Route, useHistory, useParams, useRouteMatch, Switch} from "react-router-dom";
-import {GET_TOURNAMENT, GET_TOURNAMENTS, UPDATE_TOURNAMENT} from "../../../graphql/Tournament";
+import {
+    GET_TOURNAMENT,
+    GET_TOURNAMENT_OUT,
+    GET_TOURNAMENT_VARS,
+    GET_TOURNAMENTS,
+    UPDATE_TOURNAMENT
+} from "../../../graphql/Tournament";
 import CreateTournamentPlayer from "../../TournamentPlayer/createTournamentPlayer";
 import _ from "lodash";
 import {GET_PLAYERS} from "../../PlayersPage/PlayersList";
@@ -15,13 +21,22 @@ import {useToggle} from "../../../hooks/useToggle";
 import DeleteTournament from "../DeleteTournament";
 
 
-import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from '@material-ui/core';
+import {
+    FormControlLabel,
+    FormGroup,
+    Switch as ToggleSwitch,
+    Table,
+    TableBody, TableCell,
+    TableFooter,
+    TableHead, TableRow
+} from '@material-ui/core';
 
 import Context from "../../../context/pageContext/context";
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {Form} from "muicss/react";
 import CreateSession from "../../Sessions/CreateSession";
 import TournamentTable from "../TournamentTable";
+import SessionItem from "../../Sessions/Item";
 
 const TournamentItem = () => {
     // const {state, dispatch} = useContext(Context);
@@ -29,7 +44,7 @@ const TournamentItem = () => {
     const [isEdit, toggleEdit] = useToggleIsEdit();
 
     const {tournamentId} = useParams();
-    const getTournament = useQuery(GET_TOURNAMENT, {variables: {tournamentId}});
+    const getTournament = useQuery<GET_TOURNAMENT_OUT, GET_TOURNAMENT_VARS>(GET_TOURNAMENT, {variables: {tournamentId}});
     const getPlayers = useQuery(GET_PLAYERS);
     const tournament = getTournament.data?.tournament;
     const players = getPlayers.data?.players;
@@ -50,6 +65,9 @@ const TournamentItem = () => {
     if(getTournament.error) return <pre>{JSON.stringify(getTournament.error, null, 2)}</pre>;
     if(getTournament.loading) return <div>Loading</div>;
     if(!tournament) return <div>No Tournament</div>;
+
+    const gameSessions = _.groupBy(tournament.sessions,(session)=>session.game.name);
+    console.log(gameSessions)
 
     return <div className={"item_page"}>
         <div className={"item_page__controls"}>
@@ -93,9 +111,19 @@ const TournamentItem = () => {
             <Switch>
                 <Route exact path={`${match.path}/sessions`}>
                     <Sessions tournament={tournament}/>
-                    {/*<div className={"component__item"}>*/}
+
+                    {/*{Object.entries(gameSessions).map(([game, sessions], index) => {*/}
+                    {/*    return <div>*/}
+                    {/*        <h3>{game}</h3>*/}
+                    {/*        {sessions.map(({id})=> {*/}
+                    {/*            return <div><SessionItem key={index} id={id}/></div>*/}
+                    {/*        })}*/}
+                    {/*    </div>*/}
+                    {/*    // return <SessionItem key={index} id={id}/>*/}
+                    {/*})}*/}
+                    <div className={"component__item"}>
                     <CreateSession tournament={tournament}/>
-                    {/*</div>*/}
+                    </div>
                 </Route>
 
                 <Route exact path={`${match.path}/players`}>
@@ -119,4 +147,28 @@ const TournamentItem = () => {
     </div>
 };
 
+export const TournamentItemTesting = () => {
+    const {tournamentId} = useParams();
+    const [isEdit] = useToggleIsEdit();
+
+    const getTournament = useQuery<GET_TOURNAMENT_OUT, GET_TOURNAMENT_VARS>(GET_TOURNAMENT, {variables: {tournamentId}});
+    if (getTournament.error) return <pre>{JSON.stringify(getTournament.error, null, 2)}</pre>;
+    if(getTournament.loading) return <div>Loading</div>;
+    if(!getTournament.data) return <div>No Tournament</div>;
+    const {tournament} = getTournament.data;
+    const gameSessions = _.groupBy(tournament.sessions,(session)=>session.game.name);
+    return <div>
+        <h2>Scoreboard</h2>
+        <div className={"scoreboard"}>
+        {Object.entries(gameSessions).map(([game, sessions], index) => {
+            return <div key={index}>
+                <h3 className={"scoreboard__game"}>{game}</h3>
+                {sessions.map(({id}, _idx) => {
+                    return <SessionItem key={_idx} id={id} isEdit={isEdit}/>
+                })}
+            </div>
+        })}
+        </div>
+    </div>
+};
 export default React.memo(TournamentItem);

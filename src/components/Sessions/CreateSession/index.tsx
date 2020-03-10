@@ -31,8 +31,7 @@ const CreateSession = ({tournament}: ICreateSession) => {
   
   const {games} = data;
   return <FormGroup>
-    <GamesSelect value={gameId} onChange={selectedGameId}/>
-
+    <GamesSelect value={gameId} onChange={setGameId}/>
     <Button variant={"primary"} disabled={(gameId.length == 0)}
             onClick={() => createSession({variables: {tournamentId: tournament.id, gameId, name: "New Session"}})}>
         <Add/>

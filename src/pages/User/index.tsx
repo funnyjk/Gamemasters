@@ -13,6 +13,7 @@ import {Container} from "muicss/react";
 import './styles';
 import ResetPassword from "../ResetPassword";
 import ForgotPassword from "../ForgotPassword";
+import Testing from "../Testing";
 
 interface IUser {
 
@@ -24,11 +25,11 @@ const User = ({}: IUser) => {
 
   return <Container fluid={true}>
     <div>
-    <img className={"logo"} src={logo}/>
+      {/*<img className={"logo"} src={logo}/>*/}
     </div>
     <Route exact path="/" render={() => <Redirect to="/login"/>}/>
-    <NavLink className={"mui-btn mui-btn--primary"} to={'/login'}>Login</NavLink>
-    <NavLink className={"mui-btn mui-btn--primary"} to={'/register'}>Signup</NavLink>
+    {/*<NavLink className={"mui-btn mui-btn--primary"} to={'/login'}>Login</NavLink>*/}
+    {/*<NavLink className={"mui-btn mui-btn--primary"} to={'/register'}>Signup</NavLink>*/}
     <Route path={'/login'}><Login/></Route>
     <Route exact path={'/register'}><Signup/></Route>
     <Route path={'/forgot-password'}>
@@ -36,6 +37,9 @@ const User = ({}: IUser) => {
     </Route>
     <Route exact path={'/reset/:id/:token'}>
         <ResetPassword/>
+    </Route>
+    <Route exact path={'/testing/:id'}>
+        <Testing/>
     </Route>
   </Container>
 };

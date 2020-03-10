@@ -7,3 +7,13 @@
 .tournament-item--tournament-player-list--item {
   display: inline-flex;
 }
+
+.scoreboard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+}
+.scoreboard__game {
+  text-align-last: center;
+}

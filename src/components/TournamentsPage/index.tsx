@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import TournamentsList from "./TournamentsList";
 import {Route, Switch, useRouteMatch, useLocation} from "react-router-dom";
-import TournamentItem from "./TournamentItem";
+import TournamentItem, { TournamentItemTesting } from "./TournamentItem";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import Context from "../../context/pageContext/context";
 import {setPage} from "../../context/pageContext/actions";
@@ -28,6 +28,7 @@ const TournamentsPage = () => {
       <Route path={`${match.path}/:tournamentId`}>
         <div className={"component__item tournament__item"}>
           <TournamentItem/>
+          <TournamentItemTesting/>
         </div>
       </Route>
     </Switch>

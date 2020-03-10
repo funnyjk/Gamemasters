@@ -23,7 +23,7 @@ const App = () => {
       <Context.Provider value={{state, dispatch}}>
         <Router>
           <Switch>
-            <Route path="/(login|register|reset|forgot-password)" component={User}/>
+            <Route path="/(login|register|reset|forgot-password|testing)" component={User}/>
             <PrivateRoute path={['/:id', '/']} ><MainApp/></PrivateRoute>
           </Switch>
         </Router>

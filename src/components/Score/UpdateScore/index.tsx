@@ -10,6 +10,21 @@ interface IUpdateScore {
   score: any;
 }
 
+export const useChangeScore = () => {
+  const [updateScore] = useMutation<any, UPDATE_SCORE_VARS>(UPDATE_SCORE);
+  const changeScore = (scoreId: string, value: number) => {
+    updateScore({
+      variables: {
+        scoreData: {score: +value || 0},
+        scoreId
+      }
+    })
+  };
+  return {
+    changeScore
+  }
+};
+
 const UpdateScore = ({score}: IUpdateScore) => {
   const {tournamentId} = useParams();
   const [scoreValue, setScoreValue] = useState(+score.score || 0);
@@ -45,3 +60,4 @@ const UpdateScore = ({score}: IUpdateScore) => {
 };
 
 export default UpdateScore;
+

@@ -22,6 +22,29 @@ export const GET_TOURNAMENTS = gql`
     }
 `;
 
+
+export interface GET_TOURNAMENT_OUT {
+    tournament: {
+        id: string;
+        name: string;
+        sessions: Array<{
+            id: string;
+            name: string;
+            game: {
+                id: string;
+                name: string;
+            }
+        }>
+        players: Array<{
+            id: string;
+            player: {
+                id: string;
+                name: string;
+                pic: string;
+            }
+        }>
+    }
+}
 export interface GET_TOURNAMENT_VARS {
     tournamentId: string;
 }
@@ -33,6 +56,10 @@ export const GET_TOURNAMENT = gql`
             sessions {
                 id
                 name
+                game {
+                    id
+                    name
+                }
             }
             players {
                 id

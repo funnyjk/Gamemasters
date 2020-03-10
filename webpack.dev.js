@@ -13,6 +13,21 @@ module.exports = merge(common, {
         port: 8000,
         hot: true
     },
+    module: {
+        rules: [{
+            test: /\.(scss|css)$/,
+            exclude: /\.module\.(scss|css)$/,
+            use: [
+                {
+                    loader: 'style-loader'
+                }, {
+                    loader: "css-loader",
+                }, {
+                    loader: "sass-loader"
+                }
+            ]
+        }]
+    },
     resolve: {
         alias: {
             'react-dom': '@hot-loader/react-dom',

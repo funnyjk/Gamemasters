@@ -50,12 +50,11 @@ const SessionItem = ({tournament}: ISessionItem) => {
     }
   };
   const [gameId, setGameId] = useState();
-  const selectedGameId = ({target}: any) => {
-    const {value} = target;
+  const selectedGameId = (id: string) => {
     updateSession({variables: {
       sessionId,
       sessionData: {
-        game: {connect: {id: value}}
+        game: {connect: {id}}
       }
     }})
     // setGameId(target.value);

@@ -1,0 +1,51 @@
+.session_item{
+  margin: 10px 20px;
+  max-width: 600px;
+}
+
+.session_item__body {
+  padding: 10px 20px;
+  //width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.session_item__name {
+  background-color: papayawhip;
+  text-transform: uppercase;
+}
+
+.session_item__score {
+  display: grid;
+  width: 100%;
+  grid-column: 2;
+  grid-template-columns: auto 100px;
+}
+
+.session_item__score__player {
+}
+
+.session_item__score__value {
+  justify-self: end;
+}
+
+.session_item__footer {
+  display: flex;
+  padding: 5px 20px;
+  margin: 0 0 10px 0;
+  font-size: .75em;
+
+  background: papayawhip;
+
+  //background: lighten(#424242, 20%);
+  //color: #DBDBDB;
+  place-content: space-between;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+}
+.session_item__footer_container {
+  width: 100%;
+}
+.session_item__tournament {
+}
+.session_item__game {}

@@ -9,6 +9,7 @@ import {FormControlLabel, FormGroup, Switch as ToggleSwitch} from "@material-ui/
 import {useToggleIsEdit} from "../../../hooks/useToggleIsEdit";
 import {Button} from "muicss/react";
 import Confirm from "../../Confirm";
+import GameSessions from "../GameSessions";
 
 const GameItem = () => {
   const [isEdit, toggleEdit] = useToggleIsEdit();
@@ -55,6 +56,7 @@ const GameItem = () => {
     <div className={"field"}>{!isEdit? <span>{game.notes}</span>: <MutationInput mutation={UPDATE_GAME} options={updateOptions} label="Game Notes" mult={true} type={"text"} name={"notes"} defaultValue={game.notes} optionsData={"gameData"}/>}</div>
 
     {isEdit && <Confirm action={() => deleteGame({variables: {gameId}})} initState={false}>Delete</Confirm> }
+    <GameSessions gameId={gameId}/>
     {/*{isEdit && <Button color={"danger"} onClick={()=>deleteGame({variables:{gameId}})}>Delete</Button> }*/}
   </div>;
 };
